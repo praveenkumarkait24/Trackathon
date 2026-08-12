@@ -275,6 +275,11 @@ BEGIN
     RETURN NEW;
   END IF;
 
+  -- Only enforce progression if the new status is active (ongoing, completed, qualified, not_qualified)
+  IF NEW.status IN ('upcoming', 'skipped', 'cancelled') THEN
+    RETURN NEW;
+  END IF;
+
   -- Verify previous round exists and is completed/qualified
   IF NOT EXISTS (
     SELECT 1 FROM hackathon_rounds
@@ -282,7 +287,7 @@ BEGIN
       AND round_number = NEW.round_number - 1
       AND status IN ('completed', 'qualified')
   ) THEN
-    RAISE EXCEPTION 'Round progression restriction: Round % can only be added if Round % is completed or qualified.', NEW.round_number, NEW.round_number - 1;
+    RAISE EXCEPTION 'Round progression restriction: Round % can only be unlocked/completed if Round % is completed or qualified.', NEW.round_number, NEW.round_number - 1;
   END IF;
 
   RETURN NEW;

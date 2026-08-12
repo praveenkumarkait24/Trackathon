@@ -59,7 +59,8 @@ export const createRound = async (req: AuthenticatedRequest, res: Response) => {
     }
 
     // Business Rule check for Round Progression
-    if (roundNumber > 1) {
+    // Only enforce progression if the new status is active (ongoing, completed, qualified, not_qualified)
+    if (roundNumber > 1 && ['ongoing', 'completed', 'qualified', 'not_qualified'].includes(roundData.status || 'upcoming')) {
       const { data: prevRound, error: prevErr } = await supabaseAdmin
         .from('hackathon_rounds')
         .select('status')
@@ -73,7 +74,7 @@ export const createRound = async (req: AuthenticatedRequest, res: Response) => {
 
       if (!prevRound || !['completed', 'qualified'].includes(prevRound.status)) {
         return res.status(400).json({
-          error: `Round progression violation: Cannot add Round ${roundNumber}. The previous Round ${roundNumber - 1} must exist and its status must be 'completed' or 'qualified' (current: ${prevRound ? prevRound.status : 'does not exist'}).`
+          error: `Round progression violation: Cannot add Round ${roundNumber} with active status. The previous Round ${roundNumber - 1} must exist and its status must be 'completed' or 'qualified' (current: ${prevRound ? prevRound.status : 'does not exist'}).`
         });
       }
     }
@@ -145,6 +146,26 @@ export const updateRound = async (req: AuthenticatedRequest, res: Response) => {
     }
 
     const roundNumber = currentRound.round_number;
+
+    // Business Rule check for Round Progression on Update
+    if (roundNumber > 1 && ['ongoing', 'completed', 'qualified', 'not_qualified'].includes(newStatus)) {
+      const { data: prevRound, error: prevErr } = await supabaseAdmin
+        .from('hackathon_rounds')
+        .select('status')
+        .eq('hackathon_id', hackathonId)
+        .eq('round_number', roundNumber - 1)
+        .maybeSingle();
+
+      if (prevErr) {
+        return res.status(500).json({ error: 'Database check failed: ' + prevErr.message });
+      }
+
+      if (!prevRound || !['completed', 'qualified'].includes(prevRound.status)) {
+        return res.status(400).json({
+          error: `Round progression violation: Cannot set Round ${roundNumber} to active status. The previous Round ${roundNumber - 1} must exist and its status must be 'completed' or 'qualified' (current: ${prevRound ? prevRound.status : 'does not exist'}).`
+        });
+      }
+    }
 
     // Prevent changing the status of a round to failure/incomplete if subsequent rounds exist
     if (newStatus && !['completed', 'qualified'].includes(newStatus)) {
