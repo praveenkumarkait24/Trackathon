@@ -1,6 +1,7 @@
 import { Response } from 'express';
 import { AuthenticatedRequest } from '../middleware/auth.js';
 import { supabaseAdmin } from '../config/supabase.js';
+import { sendEmail } from '../config/mailer.js';
 
 export const getTeamMembers = async (req: AuthenticatedRequest, res: Response) => {
   try {
@@ -259,9 +260,13 @@ export const addTeamMemberManually = async (req: AuthenticatedRequest, res: Resp
     // 3. Find if user exists by email to pre-link user_id
     let registeredUserId: string | null = null;
     if (email) {
-      const { data: userData } = await supabaseAdmin.auth.admin.getUserByEmail(email.trim()).catch(() => ({ data: null }));
-      if (userData?.user?.id) {
-        registeredUserId = userData.user.id;
+      const { data: usersData } = await supabaseAdmin.auth.admin.listUsers();
+      if (usersData?.users) {
+        const targetEmail = email.trim().toLowerCase();
+        const foundUser = usersData.users.find(u => u.email?.toLowerCase() === targetEmail);
+        if (foundUser) {
+          registeredUserId = foundUser.id;
+        }
       }
     }
 
