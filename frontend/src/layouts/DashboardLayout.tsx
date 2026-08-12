@@ -209,12 +209,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) =>
         {/* Top Navbar Header - Desktop only */}
         <header className="hidden md:flex items-center justify-end px-8 py-4 bg-[#090d16]/30 border-b border-cardBorder/30">
           <div className="flex items-center space-x-4">
-            <Link to="/settings" className="p-2 bg-white/5 hover:bg-white/10 rounded-xl text-gray-400 hover:text-white transition-all">
-              <Bell size={18} />
-            </Link>
-            <div className="h-6 w-px bg-cardBorder"></div>
-            <Link to="/profile" className="flex items-center space-x-2 text-sm text-gray-300 hover:text-white transition-colors">
-              <span className="font-semibold">{user?.user_metadata?.full_name || 'Student'}</span>
+            <Link to="/profile" className="flex items-center space-x-2.5 text-sm text-gray-300 hover:text-white transition-colors">
               <div className="w-8 h-8 rounded-full bg-gradient-to-br from-indigo-500 to-cyan-400 flex items-center justify-center font-bold text-white text-xs overflow-hidden">
                 {user?.user_metadata?.avatar_url || user?.user_metadata?.picture ? (
                   <img 
@@ -226,6 +221,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) =>
                   user?.email?.charAt(0).toUpperCase() || 'S'
                 )}
               </div>
+              <span className="font-semibold">{user?.user_metadata?.full_name || 'Student'}</span>
             </Link>
           </div>
         </header>
