@@ -209,3 +209,124 @@ export const deleteGoogleCalendarEvent = async (
     console.error(`Failed to delete Google Calendar event for user ${userId}:`, err);
   }
 };
+
+export const syncAllHackathonEventsForUser = async (userId: string, hackathonId: string) => {
+  try {
+    const { data: hackathon } = await supabaseAdmin
+      .from('hackathons')
+      .select('*')
+      .eq('id', hackathonId)
+      .maybeSingle();
+
+    if (!hackathon) return;
+
+    if (hackathon.registration_deadline) {
+      const regDeadline = new Date(hackathon.registration_deadline);
+      await upsertGoogleCalendarEvent(userId, hackathonId, null, 'registration_deadline', {
+        summary: `[Deadline] Register for ${hackathon.name}`,
+        description: `Registration deadline for ${hackathon.name} (Organized by ${hackathon.organizer}).\nWebsite: ${hackathon.website_url || 'N/A'}`,
+        startDate: regDeadline,
+        endDate: new Date(regDeadline.getTime() + 30 * 60 * 1000)
+      });
+    }
+
+    if (hackathon.start_date && hackathon.end_date) {
+      await upsertGoogleCalendarEvent(userId, hackathonId, null, 'hackathon_start', {
+        summary: `[Start] ${hackathon.name}`,
+        description: `Start of ${hackathon.name} (Organized by ${hackathon.organizer}).\nWebsite: ${hackathon.website_url || 'N/A'}`,
+        startDate: new Date(hackathon.start_date),
+        endDate: new Date(hackathon.end_date)
+      });
+    }
+
+    const { data: rounds } = await supabaseAdmin
+      .from('hackathon_rounds')
+      .select('*')
+      .eq('hackathon_id', hackathonId);
+
+    if (rounds && rounds.length > 0) {
+      for (const round of rounds) {
+        if (round.date) {
+          const roundDate = new Date(round.date);
+          await upsertGoogleCalendarEvent(userId, hackathonId, round.id, 'round_date', {
+            summary: `[Round ${round.round_number}] ${round.round_name} - ${hackathon.name}`,
+            description: `${round.description || 'Event round'}\nVenue: ${round.venue || 'N/A'}`,
+            startDate: roundDate,
+            endDate: new Date(roundDate.getTime() + 60 * 60 * 1000)
+          });
+        }
+      }
+    }
+  } catch (err) {
+    console.error(`Failed to sync all hackathon events for user ${userId}:`, err);
+  }
+};
+
+export const syncEventForTeam = async (
+  hackathonId: string,
+  roundId: string | null,
+  eventType: 'registration_deadline' | 'hackathon_start' | 'hackathon_end' | 'round_date' | 'round_submission',
+  eventData: EventData
+) => {
+  try {
+    const { data: hackathon } = await supabaseAdmin
+      .from('hackathons')
+      .select('user_id')
+      .eq('id', hackathonId)
+      .maybeSingle();
+
+    if (!hackathon) return;
+
+    await upsertGoogleCalendarEvent(hackathon.user_id, hackathonId, roundId, eventType, eventData);
+
+    const { data: teammates } = await supabaseAdmin
+      .from('team_members')
+      .select('user_id')
+      .eq('hackathon_id', hackathonId)
+      .neq('user_id', null);
+
+    if (teammates && teammates.length > 0) {
+      for (const mate of teammates) {
+        if (mate.user_id) {
+          await upsertGoogleCalendarEvent(mate.user_id, hackathonId, roundId, eventType, eventData);
+        }
+      }
+    }
+  } catch (err) {
+    console.error(`Failed to sync event for team of hackathon ${hackathonId}:`, err);
+  }
+};
+
+export const deleteEventForTeam = async (
+  hackathonId: string,
+  roundId: string | null,
+  eventType?: 'registration_deadline' | 'hackathon_start' | 'hackathon_end' | 'round_date' | 'round_submission'
+) => {
+  try {
+    const { data: hackathon } = await supabaseAdmin
+      .from('hackathons')
+      .select('user_id')
+      .eq('id', hackathonId)
+      .maybeSingle();
+
+    if (!hackathon) return;
+
+    await deleteGoogleCalendarEvent(hackathon.user_id, hackathonId, roundId, eventType);
+
+    const { data: teammates } = await supabaseAdmin
+      .from('team_members')
+      .select('user_id')
+      .eq('hackathon_id', hackathonId)
+      .neq('user_id', null);
+
+    if (teammates && teammates.length > 0) {
+      for (const mate of teammates) {
+        if (mate.user_id) {
+          await deleteGoogleCalendarEvent(mate.user_id, hackathonId, roundId, eventType);
+        }
+      }
+    }
+  } catch (err) {
+    console.error(`Failed to delete event for team of hackathon ${hackathonId}:`, err);
+  }
+};

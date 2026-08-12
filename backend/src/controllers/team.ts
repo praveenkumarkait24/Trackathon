@@ -2,6 +2,7 @@ import { Response } from 'express';
 import { AuthenticatedRequest } from '../middleware/auth.js';
 import { supabaseAdmin } from '../config/supabase.js';
 import { sendEmail } from '../config/mailer.js';
+import { syncAllHackathonEventsForUser } from '../services/calendar.js';
 
 export const getTeamMembers = async (req: AuthenticatedRequest, res: Response) => {
   try {
@@ -240,6 +241,9 @@ export const joinTeam = async (req: AuthenticatedRequest, res: Response) => {
       return res.status(500).json({ error: 'Failed to join team: ' + insertErr.message });
     }
 
+    // Sync all existing hackathon calendar events to the new teammate
+    await syncAllHackathonEventsForUser(userId, id).catch(err => console.error('Failed to sync events for joining user:', err));
+
     res.status(201).json(newMember);
   } catch (err: any) {
     res.status(500).json({ error: err.message });
@@ -318,6 +322,11 @@ export const addTeamMemberManually = async (req: AuthenticatedRequest, res: Resp
 
     if (insertErr) {
       return res.status(500).json({ error: 'Failed to add team member: ' + insertErr.message });
+    }
+
+    if (registeredUserId) {
+      // Sync existing calendar events to the newly added teammate
+      await syncAllHackathonEventsForUser(registeredUserId, hackathonId).catch(err => console.error('Failed to sync events for manually added user:', err));
     }
 
     res.status(201).json(newMember);

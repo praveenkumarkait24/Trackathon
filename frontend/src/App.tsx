@@ -55,7 +55,9 @@ const GuestRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   }
 
   if (user) {
-    return <Navigate to="/" replace />;
+    const params = new URLSearchParams(window.location.search);
+    const redirectTo = params.get('redirectTo') || '/';
+    return <Navigate to={redirectTo} replace />;
   }
 
   return <>{children}</>;

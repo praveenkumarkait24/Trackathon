@@ -32,7 +32,7 @@ export const Dashboard: React.FC = () => {
   const [hackathons, setHackathons] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [showCalendarModal, setShowCalendarModal] = useState(false);
+
 
   useEffect(() => {
     const fetchDashboardData = async () => {
@@ -49,78 +49,7 @@ export const Dashboard: React.FC = () => {
     fetchDashboardData();
   }, []);
 
-  useEffect(() => {
-    const checkCalendarSync = async () => {
-      const askSync = localStorage.getItem('ask_calendar_sync');
-      if (askSync === 'true') {
-        try {
-          const { data, error: connError } = await supabase
-            .from('google_connections')
-            .select('user_id')
-            .maybeSingle();
-            
-          if (!data && !connError) {
-            setShowCalendarModal(true);
-          }
-        } catch (err) {
-          console.error('Error checking Google Calendar connection:', err);
-        } finally {
-          localStorage.removeItem('ask_calendar_sync');
-        }
-      }
-    };
-    checkCalendarSync();
-  }, []);
 
-  const handleConnectCalendar = async () => {
-    try {
-      const { url } = await api.get('/calendar/auth-url');
-      if (url) {
-        window.location.href = url;
-      }
-    } catch (err) {
-      console.error('Failed to initiate Google Calendar connection:', err);
-      alert('Could not start Google connection. Please check your credentials.');
-    }
-  };
-
-  const renderCalendarModal = () => {
-    if (!showCalendarModal) return null;
-    return (
-      <div className="fixed inset-0 z-50 bg-[#070b13]/80 backdrop-blur-md flex items-center justify-center p-4 animate-fade-in">
-        <div className="w-full max-w-md glass-panel p-8 rounded-3xl border border-indigo-500/20 text-center relative z-10 animate-scale-up shadow-glowIndigo">
-          <div className="w-16 h-16 bg-indigo-500/10 text-indigo-400 rounded-full flex items-center justify-center mx-auto mb-6 shadow-glow">
-            <Calendar className="h-8 w-8 animate-pulse" />
-          </div>
-          
-          <h2 className="text-2xl font-extrabold text-white font-outfit mb-4">
-            Sync with Google Calendar 🗓️
-          </h2>
-          
-          <p className="text-gray-300 text-sm leading-relaxed mb-6">
-            Would you like to automatically sync registration deadlines, round dates, and schedules of tracked hackathons directly to your Google Calendar? Keep track of everything in one place.
-          </p>
-          
-          <div className="space-y-3">
-            <button
-              onClick={handleConnectCalendar}
-              className="w-full py-3.5 bg-indigoAccent hover:bg-indigo-600 text-white rounded-xl font-bold shadow-glow hover:shadow-indigo-500/20 transition-all flex items-center justify-center space-x-2"
-            >
-              <span>Yes, Sync Calendar</span>
-              <ArrowRight size={16} />
-            </button>
-            
-            <button
-              onClick={() => setShowCalendarModal(false)}
-              className="w-full py-3 bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white rounded-xl font-semibold border border-cardBorder transition-all"
-            >
-              Skip for Now
-            </button>
-          </div>
-        </div>
-      </div>
-    );
-  };
 
   if (loading) {
     return (
@@ -269,7 +198,6 @@ export const Dashboard: React.FC = () => {
             </p>
           </div>
         </div>
-        {renderCalendarModal()}
       </div>
     );
   }
@@ -507,7 +435,7 @@ export const Dashboard: React.FC = () => {
           </div>
         </div>
       </div>
-      {renderCalendarModal()}
+
     </div>
   );
 };

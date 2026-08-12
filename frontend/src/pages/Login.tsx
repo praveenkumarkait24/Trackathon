@@ -6,7 +6,7 @@ import { Trophy, Mail, Lock, AlertTriangle, ArrowRight } from 'lucide-react';
 
 export const Login: React.FC = () => {
   const navigate = useNavigate();
-  const { signInWithGoogleIdToken } = useAuth();
+  const { signInWithGoogle } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -15,51 +15,17 @@ export const Login: React.FC = () => {
   const params = new URLSearchParams(window.location.search);
   const redirectTo = params.get('redirectTo') || '/';
 
-  useEffect(() => {
-    const initializeGis = () => {
-      const google = (window as any).google;
-      if (google) {
-        google.accounts.id.initialize({
-          client_id: '836715210968-9mn1jnhl3uces5nk9153490kmmki2t36.apps.googleusercontent.com',
-          callback: async (response: any) => {
-            setLoading(true);
-            setError(null);
-            try {
-              await signInWithGoogleIdToken(response.credential);
-              navigate(redirectTo);
-            } catch (err: any) {
-              setError(err.message || 'Failed to authenticate via Google.');
-            } finally {
-              setLoading(false);
-            }
-          },
-        });
-
-        google.accounts.id.renderButton(
-          document.getElementById('google-signin-button'),
-          { 
-            theme: 'filled_dark', 
-            size: 'large', 
-            width: 384,
-            text: 'continue_with',
-            shape: 'rectangular'
-          }
-        );
-      }
-    };
-
-    if ((window as any).google) {
-      initializeGis();
-    } else {
-      const checkGisLoaded = setInterval(() => {
-        if ((window as any).google) {
-          clearInterval(checkGisLoaded);
-          initializeGis();
-        }
-      }, 100);
-      return () => clearInterval(checkGisLoaded);
+  const handleGoogleSignIn = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const redirectUrl = `${window.location.origin}/login?redirectTo=${encodeURIComponent(redirectTo)}`;
+      await signInWithGoogle(redirectUrl);
+    } catch (err: any) {
+      setError(err.message || 'Failed to authenticate via Google.');
+      setLoading(false);
     }
-  }, [navigate, signInWithGoogleIdToken]);
+  };
 
   const handleEmailLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -167,8 +133,21 @@ export const Login: React.FC = () => {
         </div>
 
         {/* Google Sign In */}
-        <div className="w-full flex justify-center py-1">
-          <div id="google-signin-button"></div>
+        <div className="w-full py-1">
+          <button
+            type="button"
+            onClick={handleGoogleSignIn}
+            disabled={loading}
+            className="w-full py-3 bg-white/5 hover:bg-white/10 text-gray-200 hover:text-white rounded-xl font-bold transition-all border border-cardBorder flex items-center justify-center space-x-2.5 disabled:opacity-50"
+          >
+            <svg className="w-4 h-4" viewBox="0 0 24 24">
+              <path
+                fill="#EA4335"
+                d="M12.24 10.285V14.4h6.887c-.648 2.41-2.519 4.114-5.136 4.114-3.41 0-6.19-2.78-6.19-6.19 0-3.41 2.78-6.19 6.19-6.19 1.487 0 2.851.53 3.92 1.4l3.078-3.079C18.995 2.096 15.824 1 12.24 1 5.96 1 12 5.96 1 12s4.96 11 11.24 11c6.516 0 11.26-4.577 11.26-11.24 0-.712-.082-1.393-.24-2.085H12.24z"
+              />
+            </svg>
+            <span>Continue with Google</span>
+          </button>
         </div>
 
         {/* Redirect Footer */}

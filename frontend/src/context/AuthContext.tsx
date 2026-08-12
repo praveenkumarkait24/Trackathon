@@ -1,13 +1,14 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import type { User, Session } from '@supabase/supabase-js';
 import { supabase } from '../services/supabase.js';
+import { api } from '../services/api.js';
 
 interface AuthContextType {
   user: User | null;
   session: Session | null;
   loading: boolean;
   signOut: () => Promise<void>;
-  signInWithGoogle: () => Promise<void>;
+  signInWithGoogle: (redirectToUrl?: string) => Promise<void>;
   signInWithGoogleIdToken: (idToken: string) => Promise<void>;
 }
 
@@ -35,6 +36,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setSession(newSession);
       setUser(newSession?.user ?? null);
       setLoading(false);
+
+      if (newSession?.provider_token && newSession.user?.id) {
+        api.post('/calendar/save-provider-token', {
+          provider_token: newSession.provider_token,
+          provider_refresh_token: newSession.provider_refresh_token || null,
+          expires_in: newSession.expires_in
+        }).catch(err => console.error('Failed to sync provider token to backend:', err));
+      }
     });
 
     const subscription = authListener?.data?.subscription;
@@ -56,11 +65,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
-  const signInWithGoogle = async () => {
+  const signInWithGoogle = async (redirectToUrl?: string) => {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: window.location.origin
+        redirectTo: redirectToUrl || `${window.location.origin}/`,
+        scopes: 'https://www.googleapis.com/auth/calendar.events',
+        queryParams: {
+          access_type: 'offline',
+          prompt: 'consent'
+        }
       }
     });
     if (error) throw error;

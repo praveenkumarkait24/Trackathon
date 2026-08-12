@@ -1,7 +1,7 @@
 import { Response } from 'express';
 import { AuthenticatedRequest } from '../middleware/auth.js';
 import { supabaseAdmin } from '../config/supabase.js';
-import { upsertGoogleCalendarEvent, deleteGoogleCalendarEvent } from '../services/calendar.js';
+import { syncEventForTeam, deleteEventForTeam } from '../services/calendar.js';
 
 export const getRounds = async (req: AuthenticatedRequest, res: Response) => {
   try {
@@ -98,7 +98,7 @@ export const createRound = async (req: AuthenticatedRequest, res: Response) => {
       // Create a default 1-hour window for the event
       const end = new Date(roundDate.getTime() + 60 * 60 * 1000);
       
-      await upsertGoogleCalendarEvent(userId, hackathonId, round.id, 'round_date', {
+      await syncEventForTeam(hackathonId, round.id, 'round_date', {
         summary: `[Trackathon] ${hackathon.name} - ${round.round_name}`,
         description: `Round details:\nDescription: ${round.description || 'N/A'}\nVenue/Meeting link: ${round.venue || round.meeting_link || 'N/A'}`,
         startDate: roundDate,
@@ -182,14 +182,14 @@ export const updateRound = async (req: AuthenticatedRequest, res: Response) => {
     // Sync to Google Calendar
     if (updatedRound && updatedRound.date) {
       const roundDate = new Date(updatedRound.date);
-      await upsertGoogleCalendarEvent(userId, hackathonId, updatedRound.id, 'round_date', {
+      await syncEventForTeam(hackathonId, updatedRound.id, 'round_date', {
         summary: `[Trackathon] ${hackathon.name} - ${updatedRound.round_name}`,
         description: `Round details:\nDescription: ${updatedRound.description || 'N/A'}\nVenue/Meeting link: ${updatedRound.venue || updatedRound.meeting_link || 'N/A'}`,
         startDate: roundDate,
         endDate: new Date(roundDate.getTime() + 60 * 60 * 1000),
       });
     } else {
-      await deleteGoogleCalendarEvent(userId, hackathonId, roundId, 'round_date');
+      await deleteEventForTeam(hackathonId, roundId, 'round_date');
     }
 
     res.json(updatedRound);
@@ -241,7 +241,7 @@ export const deleteRound = async (req: AuthenticatedRequest, res: Response) => {
     }
 
     // Delete synced calendar events first
-    await deleteGoogleCalendarEvent(userId, hackathonId, roundId);
+    await deleteEventForTeam(hackathonId, roundId);
 
     const { error: deleteErr } = await supabaseAdmin
       .from('hackathon_rounds')

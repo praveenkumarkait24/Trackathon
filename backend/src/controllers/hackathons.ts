@@ -1,7 +1,7 @@
 import { Response } from 'express';
 import { AuthenticatedRequest } from '../middleware/auth.js';
 import { supabaseAdmin } from '../config/supabase.js';
-import { upsertGoogleCalendarEvent, deleteGoogleCalendarEvent } from '../services/calendar.js';
+import { syncEventForTeam, deleteEventForTeam } from '../services/calendar.js';
 import multer from 'multer';
 
 // Poster upload configurations
@@ -146,7 +146,7 @@ export const createHackathon = async (req: AuthenticatedRequest, res: Response) 
       if (hackathon.registration_deadline) {
         const deadline = new Date(hackathon.registration_deadline);
         const end = new Date(deadline.getTime() + 60 * 60 * 1000); // +1 hour duration
-        await upsertGoogleCalendarEvent(userId, hackathon.id, null, 'registration_deadline', {
+        await syncEventForTeam(hackathon.id, null, 'registration_deadline', {
           summary: `[Trackathon] ${hackathon.name} - Registration Deadline`,
           description: `Deadline to register for the hackathon organized by ${hackathon.organizer}.\nLink: ${hackathon.registration_link || 'N/A'}`,
           startDate: deadline,
@@ -158,7 +158,7 @@ export const createHackathon = async (req: AuthenticatedRequest, res: Response) 
       if (hackathon.start_date) {
         const start = new Date(hackathon.start_date);
         const end = hackathon.end_date ? new Date(hackathon.end_date) : new Date(start.getTime() + 2 * 60 * 60 * 1000); // default +2 hours
-        await upsertGoogleCalendarEvent(userId, hackathon.id, null, 'hackathon_start', {
+        await syncEventForTeam(hackathon.id, null, 'hackathon_start', {
           summary: `[Trackathon] ${hackathon.name} - Start`,
           description: `Hackathon event start organized by ${hackathon.organizer}.\nVenue/Location: ${hackathon.location || 'N/A'}`,
           startDate: start,
@@ -212,28 +212,28 @@ export const updateHackathon = async (req: AuthenticatedRequest, res: Response) 
       // 1. Sync Registration Deadline
       if (hackathon.registration_deadline) {
         const deadline = new Date(hackathon.registration_deadline);
-        await upsertGoogleCalendarEvent(userId, hackathon.id, null, 'registration_deadline', {
+        await syncEventForTeam(hackathon.id, null, 'registration_deadline', {
           summary: `[Trackathon] ${hackathon.name} - Registration Deadline`,
           description: `Deadline to register for the hackathon organized by ${hackathon.organizer}.\nLink: ${hackathon.registration_link || 'N/A'}`,
           startDate: deadline,
           endDate: new Date(deadline.getTime() + 60 * 60 * 1000),
         });
       } else {
-        await deleteGoogleCalendarEvent(userId, hackathon.id, null, 'registration_deadline');
+        await deleteEventForTeam(hackathon.id, null, 'registration_deadline');
       }
-
+ 
       // 2. Sync Start & End Events
       if (hackathon.start_date) {
         const start = new Date(hackathon.start_date);
         const end = hackathon.end_date ? new Date(hackathon.end_date) : new Date(start.getTime() + 2 * 60 * 60 * 1000);
-        await upsertGoogleCalendarEvent(userId, hackathon.id, null, 'hackathon_start', {
+        await syncEventForTeam(hackathon.id, null, 'hackathon_start', {
           summary: `[Trackathon] ${hackathon.name} - Start`,
           description: `Hackathon event start organized by ${hackathon.organizer}.\nVenue/Location: ${hackathon.location || 'N/A'}`,
           startDate: start,
           endDate: end,
         });
       } else {
-        await deleteGoogleCalendarEvent(userId, hackathon.id, null, 'hackathon_start');
+        await deleteEventForTeam(hackathon.id, null, 'hackathon_start');
       }
     }
 
@@ -262,7 +262,7 @@ export const deleteHackathon = async (req: AuthenticatedRequest, res: Response) 
     }
 
     // Delete synced Google Calendar Events first
-    await deleteGoogleCalendarEvent(userId, id, null);
+    await deleteEventForTeam(id, null);
 
     const { error: deleteErr } = await supabaseAdmin
       .from('hackathons')

@@ -7,7 +7,6 @@ import {
   ArrowLeft, 
   Edit, 
   Trash2, 
-  Calendar, 
   MapPin, 
   ExternalLink, 
   Users, 
@@ -15,15 +14,12 @@ import {
   Plus, 
   CheckCircle2, 
   XCircle,
-  HelpCircle,
   FileCheck,
   Github,
   Video,
   Award,
   Clock,
-  Sparkles,
-  Info,
-  CalendarCheck2
+  AlertTriangle
 } from 'lucide-react';
 
 interface Round {
@@ -313,16 +309,7 @@ export const HackathonDetails: React.FC = () => {
     }
   };
 
-  const handleSyncToGoogleCalendar = async () => {
-    try {
-      const res = await api.get('/calendar/auth-url');
-      if (res.url) {
-        window.location.href = res.url; // Redirect to google OAuth consent page
-      }
-    } catch (err: any) {
-      alert('OAuth initialization failed. Check backend calendar configurations.');
-    }
-  };
+
 
   if (loading) {
     return (
@@ -363,14 +350,7 @@ export const HackathonDetails: React.FC = () => {
           <span>Back to Hackathons</span>
         </button>
         <div className="flex flex-wrap gap-2.5">
-          {/* Calendar Sync Control */}
-          <button
-            onClick={handleSyncToGoogleCalendar}
-            className="flex items-center space-x-2 px-4 py-2.5 bg-white/5 hover:bg-white/10 text-gray-300 hover:text-white border border-cardBorder rounded-xl text-xs font-bold transition-all"
-          >
-            <CalendarCheck2 size={15} className="text-indigo-400" />
-            <span>Connect Calendar</span>
-          </button>
+
           <Link
             to={`/hackathons/${id}/edit`}
             className="flex items-center space-x-2 px-4 py-2.5 bg-indigoAccent/10 hover:bg-indigoAccent/20 text-indigo-300 hover:text-indigo-200 border border-indigoAccent/30 rounded-xl text-xs font-bold transition-all"

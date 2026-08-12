@@ -138,17 +138,7 @@ export const Settings: React.FC = () => {
     }
   };
 
-  const handleConnectGoogle = async () => {
-    try {
-      const { url } = await api.get('/calendar/auth-url');
-      if (url) {
-        window.location.href = url; // Redirect to google authorization screen
-      }
-    } catch (err) {
-      console.error(err);
-      alert('Could not initialize Google OAuth flow. Configure Calendar variables.');
-    }
-  };
+
 
   if (loading) {
     return (
@@ -176,37 +166,7 @@ export const Settings: React.FC = () => {
 
       {/* Main Settings Card */}
       <div className="space-y-6">
-        {/* Section 1: Google Calendar Integration */}
-        <div className="glass-panel p-6 rounded-2xl border border-cardBorder space-y-5">
-          <h3 className="font-bold text-white border-b border-cardBorder/30 pb-3 flex items-center space-x-2">
-            <CalendarCheck size={18} className="text-indigo-400" />
-            <span>Calendar Synchronization</span>
-          </h3>
 
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <div className="space-y-1">
-              <p className="text-sm font-bold text-gray-200">Sync with Google Calendar</p>
-              <p className="text-xs text-gray-500 max-w-md leading-relaxed">
-                Connect your Google Account to automatically populate registration deadlines, round dates, and event schedules to Google Calendar.
-              </p>
-            </div>
-
-            <button
-              onClick={handleConnectGoogle}
-              className="flex items-center justify-center space-x-2 px-5 py-2.5 bg-white/5 hover:bg-white/10 text-gray-300 hover:text-white border border-cardBorder hover:border-gray-600 rounded-xl text-xs font-extrabold transition-all shrink-0 w-fit"
-            >
-              <span>Connect Google Calendar</span>
-              <ArrowRight size={14} />
-            </button>
-          </div>
-
-          <div className="flex items-center space-x-3 p-4 bg-[#090d16]/30 border border-cardBorder rounded-xl">
-            <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 shadow-glowEmerald animate-pulse"></div>
-            <p className="text-xs text-gray-400">
-              Note: Token refreshes are handled in the backend securely. We never expose Google Secrets to the browser.
-            </p>
-          </div>
-        </div>
 
         {/* Section 2: Notification Toggles */}
         <div className="glass-panel p-6 rounded-2xl border border-cardBorder space-y-6">

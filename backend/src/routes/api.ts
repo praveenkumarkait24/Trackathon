@@ -29,6 +29,7 @@ router.use(requireAuth);
 
 // Google Calendar OAuth Auth URL generation
 router.get('/calendar/auth-url', authController.getAuthUrl);
+router.post('/calendar/save-provider-token', authController.saveProviderToken);
 
 // Profile Endpoints
 router.get('/profile', profileController.getProfile);

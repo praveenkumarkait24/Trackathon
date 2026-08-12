@@ -69,4 +69,44 @@ export const handleCallback = async (req: any, res: Response) => {
     res.status(500).send('Internal validation failed during authentication: ' + error.message);
   }
 };
-export default { getAuthUrl, handleCallback };
+
+export const saveProviderToken = async (req: AuthenticatedRequest, res: Response) => {
+  try {
+    const userId = req.user?.id;
+    if (!userId) return res.status(401).json({ error: 'Unauthorized: Session missing' });
+
+    const { provider_token, provider_refresh_token, expires_in } = req.body;
+    if (!provider_token) {
+      return res.status(400).json({ error: 'provider_token is required' });
+    }
+
+    const connectionData: any = {
+      user_id: userId,
+      access_token: provider_token,
+      updated_at: new Date().toISOString()
+    };
+
+    if (expires_in) {
+      connectionData.expiry_date = Date.now() + (expires_in * 1000);
+    }
+
+    if (provider_refresh_token) {
+      connectionData.refresh_token = provider_refresh_token;
+    }
+
+    const { error } = await supabaseAdmin
+      .from('google_connections')
+      .upsert(connectionData, { onConflict: 'user_id' });
+
+    if (error) {
+      console.error('Database connection error saving Google provider token:', error);
+      return res.status(500).json({ error: 'Internal database error: ' + error.message });
+    }
+
+    res.json({ message: 'Google provider token saved successfully.' });
+  } catch (err: any) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+export default { getAuthUrl, handleCallback, saveProviderToken };
