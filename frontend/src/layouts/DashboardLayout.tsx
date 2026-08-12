@@ -106,8 +106,16 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) =>
         {/* User profile section & logout */}
         <div className="p-4 border-t border-cardBorder space-y-4">
           <div className="flex items-center space-x-3 px-2">
-            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-indigo-500 to-cyan-400 flex items-center justify-center font-bold text-white shadow-glow">
-              {user?.email?.charAt(0).toUpperCase() || 'S'}
+            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-indigo-500 to-cyan-400 flex items-center justify-center font-bold text-white shadow-glow overflow-hidden">
+              {user?.user_metadata?.avatar_url || user?.user_metadata?.picture ? (
+                <img 
+                  src={user.user_metadata.avatar_url || user.user_metadata.picture} 
+                  alt="Avatar" 
+                  className="w-full h-full object-cover" 
+                />
+              ) : (
+                user?.email?.charAt(0).toUpperCase() || 'S'
+              )}
             </div>
             <div className="flex-1 min-w-0">
               <p className="text-sm font-semibold truncate text-gray-200">
@@ -166,8 +174,16 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) =>
 
             <div className="border-t border-cardBorder pt-4 space-y-4">
               <div className="flex items-center space-x-3">
-                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-indigo-500 to-cyan-400 flex items-center justify-center font-bold text-white shadow-glow">
-                  {user?.email?.charAt(0).toUpperCase() || 'S'}
+                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-indigo-500 to-cyan-400 flex items-center justify-center font-bold text-white shadow-glow overflow-hidden">
+                  {user?.user_metadata?.avatar_url || user?.user_metadata?.picture ? (
+                    <img 
+                      src={user.user_metadata.avatar_url || user.user_metadata.picture} 
+                      alt="Avatar" 
+                      className="w-full h-full object-cover" 
+                    />
+                  ) : (
+                    user?.email?.charAt(0).toUpperCase() || 'S'
+                  )}
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-semibold truncate text-gray-200">
@@ -199,8 +215,16 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) =>
             <div className="h-6 w-px bg-cardBorder"></div>
             <Link to="/profile" className="flex items-center space-x-2 text-sm text-gray-300 hover:text-white transition-colors">
               <span className="font-semibold">{user?.user_metadata?.full_name || 'Student'}</span>
-              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-indigo-500 to-cyan-400 flex items-center justify-center font-bold text-white text-xs">
-                {user?.email?.charAt(0).toUpperCase() || 'S'}
+              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-indigo-500 to-cyan-400 flex items-center justify-center font-bold text-white text-xs overflow-hidden">
+                {user?.user_metadata?.avatar_url || user?.user_metadata?.picture ? (
+                  <img 
+                    src={user.user_metadata.avatar_url || user.user_metadata.picture} 
+                    alt="Avatar" 
+                    className="w-full h-full object-cover" 
+                  />
+                ) : (
+                  user?.email?.charAt(0).toUpperCase() || 'S'
+                )}
               </div>
             </Link>
           </div>
