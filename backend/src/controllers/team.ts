@@ -323,7 +323,7 @@ export const inviteTeamMemberByEmail = async (req: AuthenticatedRequest, res: Re
       .maybeSingle();
 
     const senderName = senderProfile?.full_name || 'Your team lead';
-    const inviteUrl = `${process.env.FRONTEND_URL || 'http://localhost:5173'}/hackathons/${hackathonId}/join`;
+    const inviteUrl = `${process.env.FRONTEND_URL || 'https://trackathon-blush.vercel.app'}/hackathons/${hackathonId}/join`;
 
     // 2. Send Invitation Email
     const emailSubject = `Invitation to join team "${hackathon.team_name || 'Trackathon Team'}" for ${hackathon.name}`;

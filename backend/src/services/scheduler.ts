@@ -200,7 +200,7 @@ const evaluateAndTrigger = async (
                 <p>${description}</p>
                 <p style="font-size: 16px; font-weight: bold; color: #1e1b4b;">This event is starting in approximately ${timeRemaining}.</p>
                 <div style="margin: 25px 0;">
-                  <a href="${process.env.FRONTEND_URL || 'http://localhost:5173'}${targetUrl}" style="background-color: #4f46e5; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-weight: bold;">View Details on Trackathon</a>
+                  <a href="${process.env.FRONTEND_URL || 'https://trackathon-blush.vercel.app'}${targetUrl}" style="background-color: #4f46e5; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-weight: bold;">View Details on Trackathon</a>
                 </div>
                 <hr style="border: 0; border-top: 1px solid #eaeaea;" />
                 <p style="font-size: 12px; color: #6b7280;">You received this because email notifications are enabled in your settings. You can modify these configurations anytime.</p>

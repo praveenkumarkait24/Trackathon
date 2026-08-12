@@ -62,7 +62,7 @@ export const handleCallback = async (req: any, res: Response) => {
       return res.status(500).send('Internal database error: ' + error.message);
     }
 
-    const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
+    const frontendUrl = process.env.FRONTEND_URL || 'https://trackathon-blush.vercel.app';
     res.redirect(`${frontendUrl}/settings?google_connected=success`);
   } catch (error: any) {
     console.error('Google OAuth redirect callback handling failed:', error);

@@ -1,6 +1,6 @@
 import { supabase } from './supabase.js';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+const API_URL = import.meta.env.VITE_API_URL || 'https://trackathon-backend-yxsw.onrender.com/api';
 
 async function getHeaders(isMultipart = false): Promise<HeadersInit> {
   const headers: HeadersInit = {};
