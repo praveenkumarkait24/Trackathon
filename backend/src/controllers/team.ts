@@ -9,16 +9,34 @@ export const getTeamMembers = async (req: AuthenticatedRequest, res: Response) =
     const { id: hackathonId } = req.params;
     if (!userId) return res.status(401).json({ error: 'Unauthorized' });
 
-    // Verify ownership of the hackathon
+    // Fetch hackathon details
     const { data: hackathon, error: fetchErr } = await supabaseAdmin
       .from('hackathons')
-      .select('id')
+      .select('id, user_id')
       .eq('id', hackathonId)
-      .eq('user_id', userId)
       .maybeSingle();
 
     if (fetchErr || !hackathon) {
-      return res.status(404).json({ error: 'Hackathon not found or access denied.' });
+      return res.status(404).json({ error: 'Hackathon not found.' });
+    }
+
+    const isOwner = hackathon.user_id === userId;
+    let isTeammate = false;
+
+    if (!isOwner) {
+      const { data: memberRecord } = await supabaseAdmin
+        .from('team_members')
+        .select('id')
+        .eq('hackathon_id', hackathonId)
+        .eq('user_id', userId)
+        .maybeSingle();
+      if (memberRecord) {
+        isTeammate = true;
+      }
+    }
+
+    if (!isOwner && !isTeammate) {
+      return res.status(403).json({ error: 'Access denied: you are not a member of this team.' });
     }
 
     const { data: members, error } = await supabaseAdmin
@@ -186,8 +204,21 @@ export const joinTeam = async (req: AuthenticatedRequest, res: Response) => {
     const { data: userData } = await supabaseAdmin.auth.admin.getUserById(userId);
     const email = userData?.user?.email;
 
+    const fullName = profile?.full_name || userData?.user?.user_metadata?.full_name || email?.split('@')[0] || 'Teammate';
+    const college = profile?.college || null;
+    const department = profile?.department || null;
+
     if (!profile) {
-      return res.status(400).json({ error: 'Please set up your profile details before joining a team.' });
+      // Auto-create a stub profile for smooth joining
+      const { error: stubErr } = await supabaseAdmin.from('profiles').insert({
+        id: userId,
+        full_name: fullName,
+        college: college,
+        department: department
+      });
+      if (stubErr) {
+        console.error('Failed to auto-create stub profile:', stubErr);
+      }
     }
 
     // 6. Insert new team member record
@@ -196,10 +227,10 @@ export const joinTeam = async (req: AuthenticatedRequest, res: Response) => {
       .insert({
         hackathon_id: id,
         user_id: userId,
-        name: profile.full_name,
+        name: fullName,
         email: email || null,
-        college: profile.college || null,
-        department: profile.department || null,
+        college: college,
+        department: department,
         role: role
       })
       .select()
