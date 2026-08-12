@@ -1,6 +1,6 @@
 import { Response } from 'express';
 import { AuthenticatedRequest } from '../middleware/auth.js';
-import { supabaseAdmin } from '../config/supabase.js';
+import { supabaseAdmin, ensureBucketExists } from '../config/supabase.js';
 import multer from 'multer';
 
 // Profile picture multer configuration
@@ -86,6 +86,9 @@ export const uploadAvatar = async (req: AuthenticatedRequest, res: Response) => 
     const file = req.file;
     const fileExtension = file.originalname.split('.').pop() || 'png';
     const filePath = `avatars/${userId}-${Date.now()}.${fileExtension}`;
+
+    // Ensure storage bucket exists
+    await ensureBucketExists('avatars');
 
     // Upload to Supabase Storage
     const { error: uploadError } = await supabaseAdmin.storage

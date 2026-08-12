@@ -1,6 +1,6 @@
 import { Response } from 'express';
 import { AuthenticatedRequest } from '../middleware/auth.js';
-import { supabaseAdmin } from '../config/supabase.js';
+import { supabaseAdmin, ensureBucketExists } from '../config/supabase.js';
 import multer from 'multer';
 
 export const proofUpload = multer({
@@ -131,6 +131,9 @@ export const uploadProof = async (req: AuthenticatedRequest, res: Response) => {
     const fileExtension = file.originalname.split('.').pop() || 'png';
     const bucketName = type === 'certificate' ? 'certificates' : 'proofs';
     const filePath = `${hackathonId}-${Date.now()}.${fileExtension}`;
+
+    // Ensure storage bucket exists
+    await ensureBucketExists(bucketName);
 
     // Upload to Storage
     const { error: uploadError } = await supabaseAdmin.storage

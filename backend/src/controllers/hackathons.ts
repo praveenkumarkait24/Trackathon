@@ -1,6 +1,6 @@
 import { Response } from 'express';
 import { AuthenticatedRequest } from '../middleware/auth.js';
-import { supabaseAdmin } from '../config/supabase.js';
+import { supabaseAdmin, ensureBucketExists } from '../config/supabase.js';
 import { syncEventForTeam, deleteEventForTeam } from '../services/calendar.js';
 import multer from 'multer';
 
@@ -304,6 +304,9 @@ export const uploadPoster = async (req: AuthenticatedRequest, res: Response) => 
     const file = req.file;
     const fileExtension = file.originalname.split('.').pop() || 'png';
     const filePath = `posters/${id}-${Date.now()}.${fileExtension}`;
+
+    // Ensure storage bucket exists
+    await ensureBucketExists('posters');
 
     // Upload to Storage
     const { error: uploadError } = await supabaseAdmin.storage

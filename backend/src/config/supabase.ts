@@ -21,3 +21,23 @@ export const supabaseAdmin = createClient(
     },
   }
 );
+
+// Helper to programmatically create storage buckets if they are missing
+export const ensureBucketExists = async (bucketName: string) => {
+  try {
+    const { data: bucket, error: getError } = await supabaseAdmin.storage.getBucket(bucketName);
+    if (getError || !bucket) {
+      console.log(`Bucket "${bucketName}" not found. Initializing public bucket...`);
+      const { error: createError } = await supabaseAdmin.storage.createBucket(bucketName, {
+        public: true
+      });
+      if (createError) {
+        console.error(`Failed to create bucket "${bucketName}":`, createError);
+      } else {
+        console.log(`Successfully created public bucket: "${bucketName}"`);
+      }
+    }
+  } catch (err) {
+    console.error(`Error checking storage bucket "${bucketName}":`, err);
+  }
+};
