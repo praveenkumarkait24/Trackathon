@@ -50,6 +50,7 @@ export const EditHackathon: React.FC = () => {
   const [eligibility, setEligibility] = useState('');
   const [rulesGuidelines, setRulesGuidelines] = useState('');
   const [status, setStatus] = useState<'upcoming' | 'ongoing' | 'completed' | 'cancelled'>('upcoming');
+  const [totalRounds, setTotalRounds] = useState<number>(5);
 
   // Teammates dynamic array
   const [teammates, setTeammates] = useState<TeammateInput[]>([]);
@@ -83,6 +84,7 @@ export const EditHackathon: React.FC = () => {
         setLocation(hackathon.location || '');
         setMeetingLink(hackathon.meeting_link || '');
         setParticipationType(hackathon.participation_type || 'individual');
+        setTotalRounds(hackathon.total_rounds || 5);
         setTeamName(hackathon.team_name || '');
         setTeamSize(hackathon.team_size || 1);
         setDomain(hackathon.domain || '');
@@ -176,6 +178,7 @@ export const EditHackathon: React.FC = () => {
         mode,
         location: location || null,
         meeting_link: meetingLink || null,
+        total_rounds: Number(totalRounds) || 5,
         participation_type: participationType,
         team_name: participationType === 'team' ? teamName || null : null,
         team_size: participationType === 'team' ? Number(teamSize) || null : null,
@@ -428,15 +431,28 @@ export const EditHackathon: React.FC = () => {
             </div>
           </div>
 
-          <div className="space-y-1.5">
-            <label className="text-xs font-bold uppercase tracking-wider text-gray-400">Meeting / Video Link</label>
-            <div className="relative">
-              <LinkIcon className="absolute left-3 top-3 h-4.5 w-4.5 text-gray-500" />
+          <div className="grid sm:grid-cols-2 gap-4">
+            <div className="space-y-1.5">
+              <label className="text-xs font-bold uppercase tracking-wider text-gray-400">Meeting / Video Link</label>
+              <div className="relative">
+                <LinkIcon className="absolute left-3 top-3 h-4.5 w-4.5 text-gray-500" />
+                <input
+                  type="url"
+                  value={meetingLink}
+                  onChange={(e) => setMeetingLink(e.target.value)}
+                  className="w-full bg-[#0d1321]/60 border border-cardBorder focus:border-indigoAccent rounded-xl py-2.5 pl-10 pr-4 text-sm text-gray-200 outline-none"
+                />
+              </div>
+            </div>
+            <div className="space-y-1.5">
+              <label className="text-xs font-bold uppercase tracking-wider text-gray-400">Total Rounds Limit</label>
               <input
-                type="url"
-                value={meetingLink}
-                onChange={(e) => setMeetingLink(e.target.value)}
-                className="w-full bg-[#0d1321]/60 border border-cardBorder focus:border-indigoAccent rounded-xl py-2.5 pl-10 pr-4 text-sm text-gray-200 outline-none"
+                type="number"
+                min={1}
+                max={20}
+                value={totalRounds}
+                onChange={(e) => setTotalRounds(Number(e.target.value))}
+                className="w-full bg-[#0d1321]/60 border border-cardBorder focus:border-indigoAccent rounded-xl p-2.5 text-sm text-gray-200 outline-none"
               />
             </div>
           </div>
@@ -504,14 +520,16 @@ export const EditHackathon: React.FC = () => {
               <div className="space-y-4">
                 <div className="flex justify-between items-center border-t border-cardBorder/30 pt-4">
                   <h4 className="text-sm font-bold text-gray-300">Teammate Details</h4>
-                  <button
-                    type="button"
-                    onClick={handleAddTeammate}
-                    className="flex items-center space-x-1 px-3 py-1.5 bg-white/5 hover:bg-white/10 border border-cardBorder rounded-lg text-xs font-semibold text-gray-300 hover:text-white transition-colors"
-                  >
-                    <Plus size={14} />
-                    <span>Add Teammate</span>
-                  </button>
+                  {teammates.length + 1 < teamSize && (
+                    <button
+                      type="button"
+                      onClick={handleAddTeammate}
+                      className="flex items-center space-x-1 px-3 py-1.5 bg-white/5 hover:bg-white/10 border border-cardBorder rounded-lg text-xs font-semibold text-gray-300 hover:text-white transition-colors"
+                    >
+                      <Plus size={14} />
+                      <span>Add Teammate</span>
+                    </button>
+                  )}
                 </div>
 
                 {teammates.length === 0 ? (

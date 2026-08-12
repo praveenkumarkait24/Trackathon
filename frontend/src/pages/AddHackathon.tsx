@@ -55,6 +55,47 @@ export const AddHackathon: React.FC = () => {
   const [posterFile, setPosterFile] = useState<File | null>(null);
   const [posterPreview, setPosterPreview] = useState<string | null>(null);
 
+  // Rounds dynamic setup
+  const [totalRounds, setTotalRounds] = useState<number>(3);
+  const [rounds, setRounds] = useState<any[]>([
+    { round_name: 'Round #1: Demo Assessment', description: '', date: '', start_time: '', end_time: '', venue: '', meeting_link: '', submission_link: '' },
+    { round_name: 'Round #2: Prototype/MVP Submission', description: '', date: '', start_time: '', end_time: '', venue: '', meeting_link: '', submission_link: '' },
+    { round_name: 'Round #3: Final Presentation & Judging', description: '', date: '', start_time: '', end_time: '', venue: '', meeting_link: '', submission_link: '' }
+  ]);
+
+  const handleTotalRoundsChange = (val: number) => {
+    const cleanVal = Math.max(1, Math.min(20, val));
+    setTotalRounds(cleanVal);
+    setRounds(prev => {
+      const copy = [...prev];
+      if (copy.length < cleanVal) {
+        for (let i = copy.length; i < cleanVal; i++) {
+          copy.push({
+            round_name: `Round #${i + 1}`,
+            description: '',
+            date: '',
+            start_time: '',
+            end_time: '',
+            venue: '',
+            meeting_link: '',
+            submission_link: ''
+          });
+        }
+      } else if (copy.length > cleanVal) {
+        return copy.slice(0, cleanVal);
+      }
+      return copy;
+    });
+  };
+
+  const handleRoundChange = (index: number, field: string, value: string) => {
+    setRounds(prev => {
+      const copy = [...prev];
+      copy[index] = { ...copy[index], [field]: value };
+      return copy;
+    });
+  };
+
   const handlePosterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
@@ -119,6 +160,7 @@ export const AddHackathon: React.FC = () => {
         mode,
         location: location || null,
         meeting_link: meetingLink || null,
+        total_rounds: Number(totalRounds) || 3,
         participation_type: participationType,
         team_name: participationType === 'team' ? teamName || null : null,
         team_size: participationType === 'team' ? Number(teamSize) || null : null,
@@ -126,7 +168,6 @@ export const AddHackathon: React.FC = () => {
         technology: technology || null,
         prize_info: prizeInfo || null,
         eligibility: eligibility || null,
-        rules_guidelines: rulesGuidelines || null
       };
 
       // 1. Create Hackathon
@@ -145,6 +186,27 @@ export const AddHackathon: React.FC = () => {
         const activeTeammates = teammates.filter(t => t.name.trim() !== '');
         if (activeTeammates.length > 0) {
           await api.post(`/hackathons/${hackathon.id}/team`, { members: activeTeammates });
+        }
+      }
+
+      // 4. Create rounds in database
+      if (hackathon.id && rounds.length > 0) {
+        for (let i = 0; i < rounds.length; i++) {
+          const r = rounds[i];
+          if (r.round_name.trim()) {
+            await api.post(`/hackathons/${hackathon.id}/rounds`, {
+              round_number: i + 1,
+              round_name: r.round_name,
+              description: r.description || null,
+              date: r.date ? new Date(r.date).toISOString() : null,
+              start_time: r.start_time || null,
+              end_time: r.end_time || null,
+              venue: r.venue || null,
+              meeting_link: r.meeting_link || null,
+              submission_link: r.submission_link || null,
+              status: 'upcoming'
+            });
+          }
         }
       }
 
@@ -430,14 +492,16 @@ export const AddHackathon: React.FC = () => {
               <div className="space-y-4">
                 <div className="flex justify-between items-center border-t border-cardBorder/30 pt-4">
                   <h4 className="text-sm font-bold text-gray-300">Teammate Details</h4>
-                  <button
-                    type="button"
-                    onClick={handleAddTeammate}
-                    className="flex items-center space-x-1 px-3 py-1.5 bg-white/5 hover:bg-white/10 border border-cardBorder rounded-lg text-xs font-semibold text-gray-300 hover:text-white transition-colors"
-                  >
-                    <Plus size={14} />
-                    <span>Add Teammate</span>
-                  </button>
+                  {teammates.length + 1 < teamSize && (
+                    <button
+                      type="button"
+                      onClick={handleAddTeammate}
+                      className="flex items-center space-x-1 px-3 py-1.5 bg-white/5 hover:bg-white/10 border border-cardBorder rounded-lg text-xs font-semibold text-gray-300 hover:text-white transition-colors"
+                    >
+                      <Plus size={14} />
+                      <span>Add Teammate</span>
+                    </button>
+                  )}
                 </div>
 
                 {teammates.length === 0 ? (
@@ -567,6 +631,127 @@ export const AddHackathon: React.FC = () => {
                 className="w-full bg-[#0d1321]/60 border border-cardBorder focus:border-indigoAccent rounded-xl p-2.5 text-sm text-gray-200 placeholder-gray-600 outline-none resize-none"
               />
             </div>
+          </div>
+        </div>
+
+        {/* Section 5: Rounds Details Setup */}
+        <div className="glass-panel p-6 rounded-2xl border border-cardBorder space-y-6">
+          <h3 className="font-bold text-white border-b border-cardBorder pb-3 flex items-center justify-between">
+            <span className="flex items-center space-x-2">
+              <Trophy size={18} className="text-indigo-400" />
+              <span>Configure Hackathon Rounds</span>
+            </span>
+            <div className="flex items-center space-x-2">
+              <label className="text-xs font-semibold text-gray-400">Total Rounds Limit:</label>
+              <input
+                type="number"
+                min={1}
+                max={20}
+                value={totalRounds}
+                onChange={(e) => handleTotalRoundsChange(Number(e.target.value))}
+                className="w-16 bg-[#0d1321]/60 border border-cardBorder focus:border-indigoAccent rounded-xl p-1.5 text-xs text-center text-gray-200 outline-none"
+              />
+            </div>
+          </h3>
+
+          <div className="space-y-6">
+            {rounds.map((r, index) => (
+              <div 
+                key={index} 
+                className="p-5 bg-[#090d16]/30 border border-cardBorder/80 rounded-xl space-y-4 animate-slide-up"
+              >
+                <div className="flex justify-between items-center border-b border-cardBorder/30 pb-2">
+                  <span className="text-xs font-bold text-indigo-400 uppercase tracking-wider">Round #{index + 1}</span>
+                </div>
+
+                <div className="grid sm:grid-cols-2 gap-4">
+                  <div className="space-y-1.5">
+                    <label className="text-xs font-bold uppercase tracking-wider text-gray-400">Round Name *</label>
+                    <input
+                      type="text"
+                      required
+                      value={r.round_name}
+                      onChange={(e) => handleRoundChange(index, 'round_name', e.target.value)}
+                      placeholder="e.g. Idea Submission, Prototype evaluation"
+                      className="w-full bg-[#0d1321]/60 border border-cardBorder focus:border-indigoAccent rounded-xl p-2.5 text-xs text-gray-200 outline-none"
+                    />
+                  </div>
+                  <div className="space-y-1.5">
+                    <label className="text-xs font-bold uppercase tracking-wider text-gray-400">Description</label>
+                    <input
+                      type="text"
+                      value={r.description}
+                      onChange={(e) => handleRoundChange(index, 'description', e.target.value)}
+                      placeholder="Instructions or guidelines..."
+                      className="w-full bg-[#0d1321]/60 border border-cardBorder focus:border-indigoAccent rounded-xl p-2.5 text-xs text-gray-200 outline-none"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid sm:grid-cols-3 gap-3">
+                  <div className="space-y-1.5">
+                    <label className="text-xs font-bold uppercase tracking-wider text-gray-400">Round Date</label>
+                    <input
+                      type="date"
+                      value={r.date}
+                      onChange={(e) => handleRoundChange(index, 'date', e.target.value)}
+                      className="w-full bg-[#0d1321]/60 border border-cardBorder focus:border-indigoAccent rounded-xl p-2.5 text-xs text-gray-300 outline-none"
+                    />
+                  </div>
+                  <div className="space-y-1.5">
+                    <label className="text-xs font-bold uppercase tracking-wider text-gray-400">Start Time</label>
+                    <input
+                      type="time"
+                      value={r.start_time}
+                      onChange={(e) => handleRoundChange(index, 'start_time', e.target.value)}
+                      className="w-full bg-[#0d1321]/60 border border-cardBorder focus:border-indigoAccent rounded-xl p-2.5 text-xs text-gray-300 outline-none"
+                    />
+                  </div>
+                  <div className="space-y-1.5">
+                    <label className="text-xs font-bold uppercase tracking-wider text-gray-400">End Time</label>
+                    <input
+                      type="time"
+                      value={r.end_time}
+                      onChange={(e) => handleRoundChange(index, 'end_time', e.target.value)}
+                      className="w-full bg-[#0d1321]/60 border border-cardBorder focus:border-indigoAccent rounded-xl p-2.5 text-xs text-gray-300 outline-none"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid sm:grid-cols-3 gap-3">
+                  <div className="space-y-1.5">
+                    <label className="text-xs font-bold uppercase tracking-wider text-gray-400">Venue / Location</label>
+                    <input
+                      type="text"
+                      value={r.venue}
+                      onChange={(e) => handleRoundChange(index, 'venue', e.target.value)}
+                      placeholder="Hall C, or Zoom"
+                      className="w-full bg-[#0d1321]/60 border border-cardBorder focus:border-indigoAccent rounded-xl p-2.5 text-xs text-gray-200 outline-none"
+                    />
+                  </div>
+                  <div className="space-y-1.5">
+                    <label className="text-xs font-bold uppercase tracking-wider text-gray-400">Meeting Link</label>
+                    <input
+                      type="url"
+                      value={r.meeting_link}
+                      onChange={(e) => handleRoundChange(index, 'meeting_link', e.target.value)}
+                      placeholder="https://..."
+                      className="w-full bg-[#0d1321]/60 border border-cardBorder focus:border-indigoAccent rounded-xl p-2.5 text-xs text-gray-200 outline-none"
+                    />
+                  </div>
+                  <div className="space-y-1.5">
+                    <label className="text-xs font-bold uppercase tracking-wider text-gray-400">Submission Link</label>
+                    <input
+                      type="url"
+                      value={r.submission_link}
+                      onChange={(e) => handleRoundChange(index, 'submission_link', e.target.value)}
+                      placeholder="https://..."
+                      className="w-full bg-[#0d1321]/60 border border-cardBorder focus:border-indigoAccent rounded-xl p-2.5 text-xs text-gray-200 outline-none"
+                    />
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
 

@@ -334,9 +334,10 @@ export const HackathonDetails: React.FC = () => {
   // Round progression check helper
   const rounds = hackathon.hackathon_rounds || [];
   const totalRoundsCount = rounds.length;
+  const limit = hackathon.total_rounds || 5;
   
-  // Rule check: Next round can be added ONLY if previous round status is completed or qualified
-  const canAddRound = totalRoundsCount === 0 || ['completed', 'qualified'].includes(rounds[totalRoundsCount - 1]?.status);
+  // Rule check: Next round can be added up to the total rounds limit
+  const canAddRound = totalRoundsCount < limit;
 
   return (
     <div className="space-y-8 animate-slide-up select-none">
@@ -464,7 +465,7 @@ export const HackathonDetails: React.FC = () => {
               <div className="space-y-3">
                 <div className="flex justify-between items-center">
                   <p className="text-xs font-bold text-gray-400 uppercase tracking-wider">Teammates ({hackathon.team_members?.length || 0})</p>
-                  {isOwner && (
+                  {isOwner && !((hackathon.team_members?.length || 0) + 1 >= (hackathon.team_size || 1)) && (
                     <button
                       onClick={() => setTeammateModalOpen(true)}
                       className="text-xs text-indigo-400 hover:text-indigo-300 font-bold flex items-center space-x-1"
@@ -507,7 +508,7 @@ export const HackathonDetails: React.FC = () => {
               </div>
 
               {/* Invite Link section for Team Lead */}
-              {isOwner && (
+              {isOwner && !((hackathon.team_members?.length || 0) + 1 >= (hackathon.team_size || 1)) && (
                 <div className="pt-3 border-t border-cardBorder/30 space-y-3">
                   <div className="space-y-1">
                     <p className="text-[10px] font-bold text-indigo-400 uppercase tracking-wider">Copy Invitation Link</p>
@@ -571,7 +572,7 @@ export const HackathonDetails: React.FC = () => {
                   ? 'bg-indigoAccent hover:bg-indigo-600 text-white shadow-glow'
                   : 'bg-gray-800 text-gray-500 cursor-not-allowed border border-cardBorder'
               }`}
-              title={!canAddRound ? 'Unlocks once previous round is completed/qualified' : ''}
+              title={!canAddRound ? `Reached total rounds limit (${limit} rounds). You can increase this in Edit Details.` : ''}
             >
               <Plus size={14} />
               <span>Add Round</span>

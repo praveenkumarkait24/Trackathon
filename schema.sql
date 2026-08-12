@@ -54,6 +54,7 @@ CREATE TABLE hackathons (
   participation_type TEXT NOT NULL CHECK (participation_type IN ('individual', 'team')),
   team_name TEXT,
   team_size INT,
+  total_rounds INT DEFAULT 5,
   domain TEXT,
   technology TEXT,
   prize_info TEXT,
