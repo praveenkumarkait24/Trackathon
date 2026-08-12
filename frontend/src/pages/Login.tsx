@@ -19,8 +19,8 @@ export const Login: React.FC = () => {
     setLoading(true);
     setError(null);
     try {
-      const redirectUrl = `${window.location.origin}/login?redirectTo=${encodeURIComponent(redirectTo)}`;
-      await signInWithGoogle(redirectUrl);
+      localStorage.setItem('oauth_redirect_to', redirectTo);
+      await signInWithGoogle(window.location.origin);
     } catch (err: any) {
       setError(err.message || 'Failed to authenticate via Google.');
       setLoading(false);

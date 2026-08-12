@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext.js';
 import DashboardLayout from './layouts/DashboardLayout.js';
 
@@ -66,6 +66,17 @@ const GuestRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 // Main Routing Decider for Root `/` Path
 const RootRoute: React.FC = () => {
   const { user, loading } = useAuth();
+  const navigate = useNavigate();
+
+  React.useEffect(() => {
+    if (!loading && user) {
+      const oauthRedirect = localStorage.getItem('oauth_redirect_to');
+      if (oauthRedirect && oauthRedirect !== '/') {
+        localStorage.removeItem('oauth_redirect_to');
+        navigate(oauthRedirect, { replace: true });
+      }
+    }
+  }, [user, loading, navigate]);
 
   if (loading) {
     return (
