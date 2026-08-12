@@ -248,8 +248,8 @@ export const LandingPage: React.FC = () => {
         <div className="max-w-7xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-gray-500">
           <p>&copy; {new Date().getFullYear()} Trackathon. Built by student developers, for student developers.</p>
           <div className="flex space-x-6">
-            <a href="#" className="hover:text-indigo-400 transition-colors">Privacy Policy</a>
-            <a href="#" className="hover:text-indigo-400 transition-colors">Terms of Service</a>
+            <Link to="/privacy" className="hover:text-indigo-400 transition-colors">Privacy Policy</Link>
+            <Link to="/terms" className="hover:text-indigo-400 transition-colors">Terms of Service</Link>
             <a href="#" className="hover:text-indigo-400 transition-colors">Documentation</a>
           </div>
         </div>

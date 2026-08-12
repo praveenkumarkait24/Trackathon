@@ -151,11 +151,18 @@ export const Login: React.FC = () => {
         </div>
 
         {/* Redirect Footer */}
-        <div className="mt-8 text-center text-sm text-gray-500">
-          Don't have an account?{' '}
-          <Link to={`/register${window.location.search}`} className="font-semibold text-indigo-400 hover:text-indigo-300 transition-colors">
-            Register for free
-          </Link>
+        <div className="mt-8 text-center text-sm text-gray-500 space-y-3.5">
+          <div>
+            Don't have an account?{' '}
+            <Link to={`/register${window.location.search}`} className="font-semibold text-indigo-400 hover:text-indigo-300 transition-colors">
+              Register for free
+            </Link>
+          </div>
+          <div className="flex justify-center space-x-4 text-xs text-gray-600 border-t border-cardBorder/30 pt-3">
+            <Link to="/privacy" className="hover:text-indigo-400 transition-colors">Privacy Policy</Link>
+            <span>&bull;</span>
+            <Link to="/terms" className="hover:text-indigo-400 transition-colors">Terms of Service</Link>
+          </div>
         </div>
       </div>
     </div>

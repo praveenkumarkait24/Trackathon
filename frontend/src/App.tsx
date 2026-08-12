@@ -18,6 +18,8 @@ import Calendar from './pages/Calendar.js';
 import Achievements from './pages/Achievements.js';
 import Settings from './pages/Settings.js';
 import Profile from './pages/Profile.js';
+import PrivacyPolicy from './pages/PrivacyPolicy.js';
+import TermsOfService from './pages/TermsOfService.js';
 import JoinTeam from './pages/JoinTeam.js';
 
 // Protected Route Wrapper (for logged-in students only)
@@ -109,6 +111,10 @@ export const App: React.FC = () => {
           <Route path="/register" element={<GuestRoute><Register /></GuestRoute>} />
           <Route path="/forgot-password" element={<GuestRoute><ForgotPassword /></GuestRoute>} />
           <Route path="/reset-password" element={<GuestRoute><ResetPassword /></GuestRoute>} />
+
+          {/* Compliance Pages */}
+          <Route path="/privacy" element={<PrivacyPolicy />} />
+          <Route path="/terms" element={<TermsOfService />} />
 
           {/* Private / Authenticated Routes */}
           <Route path="/hackathons" element={<ProtectedRoute><Hackathons /></ProtectedRoute>} />
