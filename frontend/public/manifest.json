@@ -1,0 +1,17 @@
+{
+  "short_name": "Trackathon",
+  "name": "Trackathon - Student Hackathon Tracker & Portfolio",
+  "icons": [
+    {
+      "src": "/favicon.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "any maskable"
+    }
+  ],
+  "start_url": "/",
+  "background_color": "#070c14",
+  "theme_color": "#4f46e5",
+  "display": "standalone",
+  "orientation": "portrait"
+}
