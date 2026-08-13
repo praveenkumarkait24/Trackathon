@@ -232,7 +232,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) =>
       )}
 
       {/* Main Page Container */}
-      <main className={`flex-1 flex flex-col min-w-0 min-h-screen transition-all duration-300 ${sidebarPinned ? 'md:pl-64' : 'pl-0'}`}>
+      <main className={`flex-1 flex flex-col min-w-0 min-h-screen transition-all duration-300 ${isSidebarOpen ? 'md:pl-64' : 'pl-0'}`}>
         {/* Top Navbar Header - Desktop only */}
         <header className="hidden md:flex items-center justify-between px-8 py-4 bg-[#090d16]/30 border-b border-cardBorder/30">
           <div className="flex items-center space-x-4">
@@ -243,11 +243,6 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) =>
             >
               <Menu size={18} />
             </button>
-            {!sidebarPinned && (
-              <span className="text-xs font-bold text-gray-500 uppercase tracking-wider animate-fade-in select-none">
-                Hover left edge to open menu
-              </span>
-            )}
           </div>
 
           <div className="flex items-center space-x-4">

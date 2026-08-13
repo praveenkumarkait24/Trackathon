@@ -258,8 +258,9 @@ export const Hackathons: React.FC = () => {
               {hackathons.map((hack) => {
                 const hasPoster = !!hack.poster_url;
                 return (
-                  <div 
+                  <Link 
                     key={hack.id}
+                    to={`/hackathons/${hack.id}`}
                     className="glass-panel rounded-2xl border border-cardBorder overflow-hidden flex flex-col group/card hover:border-indigo-500/30 transition-all duration-300"
                   >
                     {/* Poster section */}
@@ -334,23 +335,27 @@ export const Hackathons: React.FC = () => {
 
                       {/* Actions footer */}
                       <div className="flex items-center justify-between border-t border-cardBorder/30 pt-4">
-                        <Link 
-                          to={`/hackathons/${hack.id}`}
-                          className="flex items-center space-x-1 text-xs text-indigo-400 hover:text-indigo-300 font-bold transition-colors group/lnk"
+                        <span 
+                          className="flex items-center space-x-1 text-xs text-indigo-400 group-hover/card:text-indigo-300 font-bold transition-colors"
                         >
                           <Eye size={14} />
                           <span>View Details</span>
-                        </Link>
+                        </span>
                         <button
-                          onClick={() => handleDelete(hack.id)}
-                          className="p-2 text-gray-500 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-all"
+                          type="button"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            handleDelete(hack.id);
+                          }}
+                          className="p-2 text-gray-500 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-all relative z-10"
                           title="Delete Hackathon"
                         >
                           <Trash2 size={15} />
                         </button>
                       </div>
                     </div>
-                  </div>
+                  </Link>
                 );
               })}
             </div>
