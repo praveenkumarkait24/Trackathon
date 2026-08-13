@@ -151,10 +151,7 @@ export const Settings: React.FC = () => {
       // 2. Put settings to backend
       await api.put('/settings/notifications', prefs);
 
-      // 3. Put profile name to backend if changed
-      if (fullName.trim()) {
-        await api.put('/profile', { full_name: fullName.trim() });
-      }
+      // Name is read-only in settings, no PUT update required
 
       // 4. Put profile picture if selected
       if (selectedFile) {
@@ -263,9 +260,9 @@ export const Settings: React.FC = () => {
                     type="text"
                     required
                     value={fullName}
-                    onChange={(e) => setFullName(e.target.value)}
-                    className="w-full bg-[#0d1321]/60 border border-cardBorder focus:border-indigoAccent rounded-xl py-2.5 pl-10 pr-4 text-sm text-slate-800 dark:text-gray-200 outline-none"
-                    placeholder="Enter your name"
+                    disabled={true}
+                    className="w-full bg-[#0d1321]/30 border border-cardBorder rounded-xl py-2.5 pl-10 pr-4 text-sm text-slate-500 dark:text-gray-400 opacity-60 cursor-not-allowed outline-none select-none"
+                    placeholder="Full Name"
                   />
                 </div>
               </div>
