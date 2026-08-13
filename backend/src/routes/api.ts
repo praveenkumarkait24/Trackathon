@@ -58,6 +58,7 @@ router.post('/hackathons/:id/join', teamController.joinTeam);
 router.post('/hackathons/:id/team/member', teamController.addTeamMemberManually);
 router.post('/hackathons/:id/team/invite', teamController.inviteTeamMemberByEmail);
 router.delete('/hackathons/:id/team/member/:memberId', teamController.deleteTeamMember);
+router.delete('/hackathons/:id/team/member/by-email', teamController.deleteTeamMemberByEmail);
 
 // Achievements & Proofs Endpoints
 router.get('/hackathons/:id/achievements', achievementsController.getAchievement);

@@ -425,6 +425,57 @@ export const deleteTeamMember = async (req: AuthenticatedRequest, res: Response)
   }
 };
 
+
+export const deleteTeamMemberByEmail = async (req: AuthenticatedRequest, res: Response) => {
+  try {
+    const userId = req.user?.id;
+    const { id: hackathonId } = req.params;
+    const { email } = req.body;
+
+    if (!userId) return res.status(401).json({ error: 'Unauthorized' });
+    if (!email) return res.status(400).json({ error: 'Email is required.' });
+
+    // 1. Verify ownership
+    const { data: hackathon, error: fetchErr } = await supabaseAdmin
+      .from('hackathons')
+      .select('id')
+      .eq('id', hackathonId)
+      .eq('user_id', userId)
+      .maybeSingle();
+
+    if (fetchErr || !hackathon) {
+      return res.status(404).json({ error: 'Hackathon not found or access denied.' });
+    }
+
+    // 2. Find the member by email (case-insensitive)
+    const { data: member, error: findErr } = await supabaseAdmin
+      .from('team_members')
+      .select('id, email')
+      .eq('hackathon_id', hackathonId)
+      .ilike('email', email.trim())
+      .maybeSingle();
+
+    if (findErr || !member) {
+      return res.status(404).json({ error: 'No team member found with that email address.' });
+    }
+
+    // 3. Delete
+    const { error: deleteErr } = await supabaseAdmin
+      .from('team_members')
+      .delete()
+      .eq('id', member.id)
+      .eq('hackathon_id', hackathonId);
+
+    if (deleteErr) {
+      return res.status(500).json({ error: 'Failed to remove team member: ' + deleteErr.message });
+    }
+
+    res.json({ message: 'Team member removed successfully.', removed_email: email.trim() });
+  } catch (err: any) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
 export default { 
   getTeamMembers, 
   updateTeamMembers, 
@@ -432,5 +483,6 @@ export default {
   joinTeam, 
   addTeamMemberManually, 
   inviteTeamMemberByEmail, 
-  deleteTeamMember 
+  deleteTeamMember,
+  deleteTeamMemberByEmail
 };

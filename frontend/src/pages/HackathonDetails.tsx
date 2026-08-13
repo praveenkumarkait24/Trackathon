@@ -20,7 +20,13 @@ import {
   Award,
   Clock,
   AlertTriangle,
-  Calendar
+  Calendar,
+  Share2,
+  Link2,
+  MessageCircle,
+  Send,
+  UserMinus,
+  Check
 } from 'lucide-react';
 import { LoadingSpinner } from '../components/LoadingSpinner.js';
 
@@ -63,6 +69,15 @@ export const HackathonDetails: React.FC = () => {
   const [tDept, setTDept] = useState('');
   const [tSaving, setTSaving] = useState(false);
   const [tError, setTError] = useState<string | null>(null);
+
+  // Share & Remove States
+  const [sharePanelOpen, setSharePanelOpen] = useState(false);
+  const [linkCopied, setLinkCopied] = useState(false);
+  const [removeEmail, setRemoveEmail] = useState('');
+  const [removePanelOpen, setRemovePanelOpen] = useState(false);
+  const [removing, setRemoving] = useState(false);
+  const [removeError, setRemoveError] = useState<string | null>(null);
+  const [removeSuccess, setRemoveSuccess] = useState<string | null>(null);
 
   const handleSendInviteEmail = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -126,6 +141,60 @@ export const HackathonDetails: React.FC = () => {
       alert(err.message || 'Failed to remove team member.');
     }
   };
+
+  const inviteLink = `${window.location.origin}/hackathons/${hackathon?.id}/join`;
+
+  const handleCopyInviteLink = async () => {
+    try {
+      await navigator.clipboard.writeText(inviteLink);
+      setLinkCopied(true);
+      setTimeout(() => setLinkCopied(false), 2500);
+    } catch {
+      alert('Failed to copy link.');
+    }
+  };
+
+  const handleNativeShare = async () => {
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: `Join my team – ${hackathon?.name}`,
+          text: `Hey! Join my hackathon team for "${hackathon?.name}". Click the link to join:`,
+          url: inviteLink,
+        });
+      } catch (err) {
+        // User cancelled share – do nothing
+      }
+    } else {
+      handleCopyInviteLink();
+    }
+  };
+
+  const handleRemoveByEmail = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!removeEmail.trim()) return;
+    setRemoving(true);
+    setRemoveError(null);
+    setRemoveSuccess(null);
+    try {
+      await api.delete(`/hackathons/${id}/team/member/by-email`, { email: removeEmail.trim() });
+      // Remove from local state
+      setHackathon((prev: any) => ({
+        ...prev,
+        team_members: (prev.team_members || []).filter(
+          (m: any) => m.email?.toLowerCase() !== removeEmail.trim().toLowerCase()
+        )
+      }));
+      setRemoveSuccess(`Successfully removed ${removeEmail.trim()} from the team.`);
+      setRemoveEmail('');
+    } catch (err: any) {
+      setRemoveError(err.message || 'Member not found with that email.');
+    } finally {
+      setRemoving(false);
+    }
+  };
+
+
 
   // Modals state
   const [roundModalOpen, setRoundModalOpen] = useState(false);
@@ -569,32 +638,92 @@ export const HackathonDetails: React.FC = () => {
                 </div>
               </div>
 
-              {/* Invite Link section for Team Lead */}
-              {isOwner && !((hackathon.team_members?.length || 0) + 1 >= (hackathon.team_size || 1)) && (
+              {/* Share Invite & Remove Member — Owner Only */}
+              {isOwner && (
                 <div className="pt-3 border-t border-cardBorder/30 space-y-3">
-                  <div className="space-y-1">
-                    <p className="text-[10px] font-bold text-indigo-400 uppercase tracking-wider">Copy Invitation Link</p>
-                    <div className="flex gap-2">
-                      <input
-                        type="text"
-                        readOnly
-                        value={`${window.location.origin}/hackathons/${hackathon.id}/join`}
-                        className="w-full bg-[#0d1321]/60 border border-cardBorder rounded-xl py-2 px-3 text-xs text-gray-300 select-all outline-none"
-                      />
+
+                  {/* ── Share Invite Link ── */}
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between">
+                      <p className="text-[10px] font-bold text-indigo-500 uppercase tracking-wider flex items-center space-x-1">
+                        <Share2 size={11} />
+                        <span>Share Invite Link</span>
+                      </p>
                       <button
-                        onClick={() => {
-                          navigator.clipboard.writeText(`${window.location.origin}/hackathons/${hackathon.id}/join`);
-                          alert('Teammate invitation link copied to clipboard!');
-                        }}
-                        className="px-3 py-2 bg-indigoAccent hover:bg-indigo-600 text-white rounded-xl text-xs font-bold transition-all shrink-0"
+                        onClick={() => setSharePanelOpen(v => !v)}
+                        className="text-[10px] font-bold text-indigo-400 hover:text-indigo-300 transition-colors"
                       >
-                        Copy
+                        {sharePanelOpen ? 'Hide' : 'Show options'}
                       </button>
                     </div>
+
+                    {/* Link row */}
+                    <div className="flex gap-2">
+                      <div className="flex-1 flex items-center gap-1.5 bg-indigo-50 dark:bg-[#0d1321]/60 border border-indigo-100 dark:border-cardBorder rounded-xl px-3 py-2 overflow-hidden">
+                        <Link2 size={12} className="text-indigo-400 shrink-0" />
+                        <span className="text-xs text-slate-600 dark:text-gray-400 truncate select-all">{inviteLink}</span>
+                      </div>
+                      <button
+                        onClick={handleCopyInviteLink}
+                        className={`px-3 py-2 rounded-xl text-xs font-bold transition-all shrink-0 flex items-center space-x-1 ${
+                          linkCopied
+                            ? 'bg-emerald-500 text-white'
+                            : 'bg-indigoAccent hover:bg-indigo-600 text-white'
+                        }`}
+                      >
+                        {linkCopied ? <><Check size={12} /><span>Copied!</span></> : 'Copy'}
+                      </button>
+                    </div>
+
+                    {/* Share options panel */}
+                    {sharePanelOpen && (
+                      <div className="grid grid-cols-2 gap-2 pt-1 animate-scale-in">
+                        {/* Native Share (mobile/desktop OS share sheet) */}
+                        <button
+                          onClick={handleNativeShare}
+                          className="flex items-center space-x-2 px-3 py-2.5 bg-indigo-50 dark:bg-indigo-500/10 hover:bg-indigo-100 dark:hover:bg-indigo-500/20 border border-indigo-200 dark:border-indigo-500/20 rounded-xl text-xs font-bold text-indigo-600 dark:text-indigo-400 transition-all"
+                        >
+                          <Share2 size={13} />
+                          <span>Share via…</span>
+                        </button>
+
+                        {/* WhatsApp */}
+                        <a
+                          href={`https://wa.me/?text=${encodeURIComponent(`Join my hackathon team for "${hackathon.name}"! Click to join: ${inviteLink}`)}`}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="flex items-center space-x-2 px-3 py-2.5 bg-emerald-50 dark:bg-emerald-500/10 hover:bg-emerald-100 dark:hover:bg-emerald-500/20 border border-emerald-200 dark:border-emerald-500/20 rounded-xl text-xs font-bold text-emerald-600 dark:text-emerald-400 transition-all"
+                        >
+                          <MessageCircle size={13} />
+                          <span>WhatsApp</span>
+                        </a>
+
+                        {/* Telegram */}
+                        <a
+                          href={`https://t.me/share/url?url=${encodeURIComponent(inviteLink)}&text=${encodeURIComponent(`Join my team for "${hackathon.name}"!`)}`}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="flex items-center space-x-2 px-3 py-2.5 bg-sky-50 dark:bg-sky-500/10 hover:bg-sky-100 dark:hover:bg-sky-500/20 border border-sky-200 dark:border-sky-500/20 rounded-xl text-xs font-bold text-sky-600 dark:text-sky-400 transition-all"
+                        >
+                          <Send size={13} />
+                          <span>Telegram</span>
+                        </a>
+
+                        {/* Email */}
+                        <a
+                          href={`mailto:?subject=${encodeURIComponent(`Join my team – ${hackathon.name}`)}&body=${encodeURIComponent(`Hi!\n\nI'd like you to join my hackathon team for "${hackathon.name}".\n\nClick here to join: ${inviteLink}\n\nSee you there!`)}`}
+                          className="flex items-center space-x-2 px-3 py-2.5 bg-amber-50 dark:bg-amber-500/10 hover:bg-amber-100 dark:hover:bg-amber-500/20 border border-amber-200 dark:border-amber-500/20 rounded-xl text-xs font-bold text-amber-600 dark:text-amber-400 transition-all"
+                        >
+                          <Send size={13} className="rotate-45" />
+                          <span>Email</span>
+                        </a>
+                      </div>
+                    )}
                   </div>
 
-                  <form onSubmit={handleSendInviteEmail} className="space-y-1 pt-1">
-                    <p className="text-[10px] font-bold text-indigo-400 uppercase tracking-wider">Invite via Email</p>
+                  {/* Invite via email form */}
+                  <form onSubmit={handleSendInviteEmail} className="space-y-1">
+                    <p className="text-[10px] font-bold text-indigo-500 uppercase tracking-wider">Invite via Email</p>
                     <div className="flex gap-2">
                       <input
                         type="email"
@@ -602,19 +731,70 @@ export const HackathonDetails: React.FC = () => {
                         placeholder="teammate@email.com"
                         value={inviteEmail}
                         onChange={(e) => setInviteEmail(e.target.value)}
-                        className="w-full bg-[#0d1321]/60 border border-cardBorder rounded-xl py-2 px-3 text-xs text-gray-300 outline-none"
+                        className="w-full bg-indigo-50/50 dark:bg-[#0d1321]/60 border border-indigo-100 dark:border-cardBorder rounded-xl py-2 px-3 text-xs text-slate-800 dark:text-gray-300 outline-none focus:border-indigo-400"
                       />
                       <button
                         type="submit"
                         disabled={sendingInvite || !inviteEmail.trim()}
                         className="px-3 py-2 bg-indigoAccent hover:bg-indigo-600 text-white rounded-xl text-xs font-bold transition-all shrink-0 disabled:opacity-50"
                       >
-                        {sendingInvite ? 'Sending...' : 'Invite'}
+                        {sendingInvite ? 'Sending…' : 'Invite'}
                       </button>
                     </div>
                   </form>
+
+                  {/* ── Remove Member by Email ── */}
+                  <div className="pt-2 border-t border-rose-100 dark:border-rose-500/10 space-y-2">
+                    <div className="flex items-center justify-between">
+                      <p className="text-[10px] font-bold text-rose-500 uppercase tracking-wider flex items-center space-x-1">
+                        <UserMinus size={11} />
+                        <span>Remove Member by Email</span>
+                      </p>
+                      <button
+                        onClick={() => { setRemovePanelOpen(v => !v); setRemoveError(null); setRemoveSuccess(null); }}
+                        className="text-[10px] font-bold text-rose-400 hover:text-rose-300 transition-colors"
+                      >
+                        {removePanelOpen ? 'Hide' : 'Open'}
+                      </button>
+                    </div>
+
+                    {removePanelOpen && (
+                      <form onSubmit={handleRemoveByEmail} className="space-y-2 animate-scale-in">
+                        <div className="flex gap-2">
+                          <input
+                            type="email"
+                            required
+                            placeholder="member@email.com"
+                            value={removeEmail}
+                            onChange={(e) => setRemoveEmail(e.target.value)}
+                            className="w-full bg-rose-50/50 dark:bg-red-950/20 border border-rose-200 dark:border-rose-500/20 rounded-xl py-2 px-3 text-xs text-slate-800 dark:text-gray-300 outline-none focus:border-rose-400"
+                          />
+                          <button
+                            type="submit"
+                            disabled={removing || !removeEmail.trim()}
+                            className="px-3 py-2 bg-rose-500 hover:bg-rose-600 text-white rounded-xl text-xs font-bold transition-all shrink-0 disabled:opacity-50 flex items-center space-x-1"
+                          >
+                            {removing ? 'Removing…' : <><UserMinus size={12} /><span>Remove</span></>}
+                          </button>
+                        </div>
+                        {removeError && (
+                          <p className="text-xs text-rose-500 flex items-center space-x-1">
+                            <AlertTriangle size={11} />
+                            <span>{removeError}</span>
+                          </p>
+                        )}
+                        {removeSuccess && (
+                          <p className="text-xs text-emerald-500 flex items-center space-x-1">
+                            <Check size={11} />
+                            <span>{removeSuccess}</span>
+                          </p>
+                        )}
+                      </form>
+                    )}
+                  </div>
                 </div>
               )}
+
             </div>
           )}
         </div>

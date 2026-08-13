@@ -104,11 +104,12 @@ export const api = {
     return res.json();
   },
 
-  async delete(endpoint: string) {
+  async delete(endpoint: string, body?: Record<string, any>) {
     const headers = await getHeaders();
     const res = await fetch(`${API_URL}${endpoint}`, {
       method: 'DELETE',
-      headers
+      headers,
+      ...(body ? { body: JSON.stringify(body) } : {})
     });
 
     if (!res.ok) {
@@ -121,5 +122,6 @@ export const api = {
 
     return res.json();
   }
+
 };
 export default api;
