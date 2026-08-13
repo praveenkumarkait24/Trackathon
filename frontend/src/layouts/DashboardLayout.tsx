@@ -33,7 +33,6 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) =>
     { name: 'Hackathons', path: '/hackathons', icon: Trophy },
     { name: 'Calendar', path: '/calendar', icon: Calendar },
     { name: 'Achievements', path: '/achievements', icon: Award },
-    { name: 'Profile', path: '/profile', icon: User },
     { name: 'Settings', path: '/settings', icon: Settings },
   ];
 
@@ -230,7 +229,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) =>
               {theme === 'dark' ? <Sun size={18} className="text-amber-400" /> : <Moon size={18} />}
             </button>
             <div className="h-6 w-px bg-cardBorder"></div>
-            <Link to="/profile" className="flex items-center space-x-2.5 text-sm text-gray-300 hover:text-white transition-colors">
+            <div className="flex items-center space-x-2.5 text-sm text-gray-300">
               <div className="w-8 h-8 rounded-full bg-gradient-to-br from-indigo-500 to-cyan-400 flex items-center justify-center font-bold text-white text-xs overflow-hidden">
                 {user?.user_metadata?.avatar_url || user?.user_metadata?.picture ? (
                   <img 
@@ -242,8 +241,8 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) =>
                   user?.email?.charAt(0).toUpperCase() || 'S'
                 )}
               </div>
-              <span className="font-semibold">{user?.user_metadata?.full_name || 'Student'}</span>
-            </Link>
+              <span className="font-semibold text-slate-800 dark:text-gray-300">{user?.user_metadata?.full_name || 'Student'}</span>
+            </div>
           </div>
         </header>
 

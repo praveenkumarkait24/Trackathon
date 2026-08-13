@@ -17,7 +17,6 @@ import EditHackathon from './pages/EditHackathon.js';
 import Calendar from './pages/Calendar.js';
 import Achievements from './pages/Achievements.js';
 import Settings from './pages/Settings.js';
-import Profile from './pages/Profile.js';
 import PrivacyPolicy from './pages/PrivacyPolicy.js';
 import TermsOfService from './pages/TermsOfService.js';
 import JoinTeam from './pages/JoinTeam.js';
@@ -127,7 +126,6 @@ export const App: React.FC = () => {
             <Route path="/calendar" element={<ProtectedRoute><Calendar /></ProtectedRoute>} />
             <Route path="/achievements" element={<ProtectedRoute><Achievements /></ProtectedRoute>} />
             <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
-            <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
 
             {/* Catch-all Redirect */}
             <Route path="*" element={<Navigate to="/" replace />} />
