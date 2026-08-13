@@ -112,7 +112,7 @@ export const Hackathons: React.FC = () => {
       </div>
 
       {/* Filter and Search Bar */}
-      <div className="glass-panel p-4 rounded-2xl border border-cardBorder space-y-4">
+      <div className="glass-panel p-4 rounded-2xl border border-cardBorder space-y-4 max-w-2xl">
         <form onSubmit={handleSearchSubmit} className="flex gap-2">
           <div className="relative flex-1">
             <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-500" />
