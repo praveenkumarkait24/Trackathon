@@ -23,7 +23,6 @@ interface DashboardLayoutProps {
 
 export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
   const { user, signOut } = useAuth();
-  const { theme, toggleTheme } = useTheme();
   const location = useLocation();
   const navigate = useNavigate();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -164,13 +163,6 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) =>
                 Navigation
               </span>
               <div className="flex items-center space-x-2">
-                <button
-                  onClick={toggleTheme}
-                  className="p-1.5 bg-white/5 hover:bg-white/10 rounded-xl text-gray-400 hover:text-white transition-colors"
-                  title={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
-                >
-                  {theme === 'dark' ? <Sun size={16} /> : <Moon size={16} />}
-                </button>
                 <button onClick={() => setMobileMenuOpen(false)} className="p-1 text-gray-400">
                   <X size={20} />
                 </button>
@@ -246,14 +238,6 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) =>
           </div>
 
           <div className="flex items-center space-x-4">
-            <button
-              onClick={toggleTheme}
-              className="p-2 bg-white/5 hover:bg-white/10 rounded-xl text-gray-400 hover:text-white transition-colors flex items-center justify-center"
-              title={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
-            >
-              {theme === 'dark' ? <Sun size={18} className="text-amber-400" /> : <Moon size={18} />}
-            </button>
-            <div className="h-6 w-px bg-cardBorder"></div>
             <div className="flex items-center space-x-2.5 text-sm text-gray-300">
               <div className="w-8 h-8 rounded-full bg-gradient-to-br from-indigo-500 to-cyan-400 flex items-center justify-center font-bold text-white text-xs overflow-hidden">
                 {user?.user_metadata?.avatar_url || user?.user_metadata?.picture ? (
