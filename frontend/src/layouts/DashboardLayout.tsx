@@ -27,6 +27,9 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) =>
   const location = useLocation();
   const navigate = useNavigate();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [sidebarPinned, setSidebarPinned] = useState(false);
+  const [sidebarHovered, setSidebarHovered] = useState(false);
+  const isSidebarOpen = sidebarPinned || sidebarHovered;
 
   const menuItems = [
     { name: 'Dashboard', path: '/', icon: LayoutDashboard },
@@ -54,6 +57,12 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) =>
 
   return (
     <div className="min-h-screen bg-darkBg text-gray-100 flex flex-col md:flex-row antialiased">
+      {/* Invisible Hover Zone for Desktop Sidebar */}
+      <div 
+        className="hidden md:block fixed left-0 top-0 w-3.5 h-screen z-40 bg-transparent"
+        onMouseEnter={() => setSidebarHovered(true)}
+      />
+
       {/* Mobile Header */}
       <header className="md:hidden flex items-center justify-between p-4 glass-panel border-b border-cardBorder sticky top-0 z-40">
         <Link to="/" className="flex items-center space-x-2">
@@ -73,7 +82,13 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) =>
       </header>
 
       {/* Sidebar - Desktop */}
-      <aside className="hidden md:flex flex-col w-64 glass-panel border-r border-cardBorder min-h-screen sticky top-0 z-30">
+      <aside 
+        className={`hidden md:flex flex-col w-64 glass-panel border-r border-cardBorder h-screen fixed top-0 left-0 z-50 transition-transform duration-300 ${
+          isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
+        }`}
+        onMouseEnter={() => setSidebarHovered(true)}
+        onMouseLeave={() => setSidebarHovered(false)}
+      >
         {/* Logo */}
         <div className="p-6 border-b border-cardBorder">
           <Link to="/" className="flex items-center space-x-2.5">
@@ -217,9 +232,24 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) =>
       )}
 
       {/* Main Page Container */}
-      <main className="flex-1 flex flex-col min-w-0 min-h-screen">
+      <main className={`flex-1 flex flex-col min-w-0 min-h-screen transition-all duration-300 ${sidebarPinned ? 'md:pl-64' : 'pl-0'}`}>
         {/* Top Navbar Header - Desktop only */}
-        <header className="hidden md:flex items-center justify-end px-8 py-4 bg-[#090d16]/30 border-b border-cardBorder/30">
+        <header className="hidden md:flex items-center justify-between px-8 py-4 bg-[#090d16]/30 border-b border-cardBorder/30">
+          <div className="flex items-center space-x-4">
+            <button
+              onClick={() => setSidebarPinned(!sidebarPinned)}
+              className="p-2 bg-white/5 hover:bg-white/10 rounded-xl text-gray-400 hover:text-white transition-colors flex items-center justify-center shadow-sm"
+              title={sidebarPinned ? 'Collapse Sidebar' : 'Pin Sidebar'}
+            >
+              <Menu size={18} />
+            </button>
+            {!sidebarPinned && (
+              <span className="text-xs font-bold text-gray-500 uppercase tracking-wider animate-fade-in select-none">
+                Hover left edge to open menu
+              </span>
+            )}
+          </div>
+
           <div className="flex items-center space-x-4">
             <button
               onClick={toggleTheme}

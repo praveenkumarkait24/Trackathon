@@ -30,6 +30,7 @@ export const Hackathons: React.FC = () => {
   const [mode, setMode] = useState('');
   const [participation, setParticipation] = useState('');
   const [result, setResult] = useState('');
+  const [showFilterSidebar, setShowFilterSidebar] = useState(false);
 
   const fetchHackathons = async (showLoader = false) => {
     if (showLoader) setLoading(true);
@@ -114,208 +115,248 @@ export const Hackathons: React.FC = () => {
       <div className="glass-panel p-4 rounded-2xl border border-cardBorder space-y-4">
         <form onSubmit={handleSearchSubmit} className="flex gap-2">
           <div className="relative flex-1">
-            <Search className="absolute left-3.5 top-3 h-5 w-5 text-gray-500" />
+            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-500" />
             <input
               type="text"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search hackathons by name, organizer, domain..."
-              className="w-full bg-[#0d1321]/60 border border-cardBorder focus:border-indigoAccent rounded-xl py-2.5 pl-11 pr-4 text-sm text-gray-200 placeholder-gray-600 outline-none transition-all"
+              className="w-full bg-[#0d1321]/60 border border-cardBorder focus:border-indigoAccent rounded-xl py-2.5 pl-11 pr-4 text-sm text-slate-800 dark:text-gray-200 placeholder-gray-600 outline-none transition-all"
             />
           </div>
           <button
+            type="button"
+            onClick={() => setShowFilterSidebar(!showFilterSidebar)}
+            className={`px-4 py-2.5 border rounded-xl flex items-center space-x-2 text-sm font-bold transition-all shrink-0 ${
+              showFilterSidebar 
+                ? 'bg-indigoAccent/15 border-indigoAccent text-indigo-400' 
+                : 'bg-white/5 border-cardBorder text-gray-400 hover:bg-white/10 hover:text-white'
+            }`}
+          >
+            <SlidersHorizontal size={16} />
+            <span className="hidden sm:inline">Filters</span>
+          </button>
+          <button
             type="submit"
-            className="px-6 py-2.5 bg-indigoAccent hover:bg-indigo-600 text-white rounded-xl font-bold text-sm shadow-md transition-colors"
+            className="px-6 py-2.5 bg-indigoAccent hover:bg-indigo-600 text-white rounded-xl font-bold text-sm shadow-md transition-colors shrink-0"
           >
             Search
           </button>
         </form>
-
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3.5">
-          {/* Status Filter */}
-          <div className="space-y-1.5">
-            <label className="text-[10px] font-bold uppercase tracking-wider text-gray-500">Status</label>
-            <select
-              value={status}
-              onChange={(e) => setStatus(e.target.value)}
-              className="w-full bg-[#0d1321]/80 border border-cardBorder rounded-xl p-2.5 text-xs text-gray-300 outline-none focus:border-indigoAccent"
-            >
-              <option value="">All Statuses</option>
-              <option value="upcoming">Upcoming</option>
-              <option value="ongoing">Ongoing</option>
-              <option value="completed">Completed</option>
-              <option value="cancelled">Cancelled</option>
-            </select>
-          </div>
-
-          {/* Mode Filter */}
-          <div className="space-y-1.5">
-            <label className="text-[10px] font-bold uppercase tracking-wider text-gray-500">Mode</label>
-            <select
-              value={mode}
-              onChange={(e) => setMode(e.target.value)}
-              className="w-full bg-[#0d1321]/80 border border-cardBorder rounded-xl p-2.5 text-xs text-gray-300 outline-none focus:border-indigoAccent"
-            >
-              <option value="">All Modes</option>
-              <option value="online">Online</option>
-              <option value="offline">Offline</option>
-              <option value="hybrid">Hybrid</option>
-            </select>
-          </div>
-
-          {/* Participation Filter */}
-          <div className="space-y-1.5">
-            <label className="text-[10px] font-bold uppercase tracking-wider text-gray-500">Participation</label>
-            <select
-              value={participation}
-              onChange={(e) => setParticipation(e.target.value)}
-              className="w-full bg-[#0d1321]/80 border border-cardBorder rounded-xl p-2.5 text-xs text-gray-300 outline-none focus:border-indigoAccent"
-            >
-              <option value="">All Types</option>
-              <option value="individual">Individual</option>
-              <option value="team">Team</option>
-            </select>
-          </div>
-
-          {/* Achievement Filter */}
-          <div className="space-y-1.5">
-            <label className="text-[10px] font-bold uppercase tracking-wider text-gray-500">Achievements</label>
-            <select
-              value={result}
-              onChange={(e) => setResult(e.target.value)}
-              className="w-full bg-[#0d1321]/80 border border-cardBorder rounded-xl p-2.5 text-xs text-gray-300 outline-none focus:border-indigoAccent"
-            >
-              <option value="">All Results</option>
-              <option value="winner">Winner</option>
-              <option value="runner_up">Runner-up</option>
-              <option value="finalist">Finalist</option>
-              <option value="participant">Participant</option>
-            </select>
-          </div>
-        </div>
       </div>
 
-      {/* Grid List */}
-      {loading ? (
-        <div className="flex flex-col items-center justify-center py-20 space-y-4">
-          <div className="w-10 h-10 border-4 border-indigoAccent border-t-transparent rounded-full animate-spin"></div>
-          <p className="text-gray-400 text-xs animate-pulse">Searching matching records...</p>
-        </div>
-      ) : error ? (
-        <div className="p-8 text-center glass-panel rounded-2xl border border-red-500/20 max-w-md mx-auto space-y-3">
-          <AlertCircle className="h-10 w-10 text-red-400 mx-auto" />
-          <p className="text-sm font-medium text-red-300">{error}</p>
-        </div>
-      ) : hackathons.length === 0 ? (
-        <div className="text-center py-20 glass-panel rounded-2xl border border-cardBorder max-w-xl mx-auto space-y-4">
-          <Trophy className="h-12 w-12 text-gray-600 mx-auto" />
-          <h3 className="text-lg font-bold text-white font-outfit">No hackathons match criteria</h3>
-          <p className="text-sm text-gray-400 max-w-xs mx-auto leading-relaxed">
-            Try adjusting your search criteria or register a new hackathon.
-          </p>
-        </div>
-      ) : (
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {hackathons.map((hack) => {
-            const hasPoster = !!hack.poster_url;
-            const startD = hack.start_date ? new Date(hack.start_date) : null;
-            const endD = hack.end_date ? new Date(hack.end_date) : null;
-            const hackResult = hack.achievements?.result;
-
-            return (
-              <div 
-                key={hack.id} 
-                className="glass-panel rounded-2xl border border-cardBorder overflow-hidden flex flex-col group hover:border-indigo-500/20 transition-all duration-300"
+      {/* Main layout container with conditional left filter sidebar */}
+      <div className="flex flex-col md:flex-row gap-6 items-start">
+        {showFilterSidebar && (
+          <div className="w-full md:w-64 shrink-0 glass-panel p-5 rounded-2xl border border-cardBorder space-y-5 animate-slide-right select-none">
+            <div className="flex items-center justify-between border-b border-cardBorder/30 pb-2.5">
+              <span className="text-xs font-bold text-gray-200 flex items-center space-x-1.5 uppercase tracking-wider">
+                <SlidersHorizontal size={13} className="text-indigo-400 animate-pulse" />
+                <span>Filters</span>
+              </span>
+              <button 
+                type="button"
+                onClick={() => {
+                  setStatus('');
+                  setMode('');
+                  setParticipation('');
+                  setResult('');
+                }}
+                className="text-[10px] font-bold text-indigo-400 hover:text-indigo-300 hover:underline transition-colors"
               >
-                {/* Poster image area */}
-                <div className="aspect-[16/8] w-full bg-[#070c14] relative overflow-hidden border-b border-cardBorder/50">
-                  {hasPoster ? (
-                    <img 
-                      src={hack.poster_url} 
-                      alt={hack.name} 
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    />
-                  ) : (
-                    <div className="w-full h-full flex flex-col items-center justify-center text-gray-700 bg-gradient-to-br from-[#0c1220] to-[#070c14]">
-                      <Trophy size={40} className="stroke-[1.5]" />
-                    </div>
-                  )}
+                Clear All
+              </button>
+            </div>
 
-                  {/* Absolute Badge Layouts */}
-                  <div className="absolute top-3.5 left-3.5 flex flex-wrap gap-1.5">
-                    <span className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-lg backdrop-blur-md ${getStatusBadgeClass(hack.status)}`}>
-                      {hack.status}
-                    </span>
-                    <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-lg bg-black/40 backdrop-blur-md text-cyan-300 border border-cyan-500/10">
-                      {hack.mode}
-                    </span>
-                  </div>
-
-                  {hackResult && (
-                    <div className="absolute bottom-3.5 left-3.5">
-                      <span className={`text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-lg backdrop-blur-md ${getResultBadgeClass(hackResult)}`}>
-                        🏆 {hackResult.replace('_', ' ')}
-                      </span>
-                    </div>
-                  )}
-                </div>
-
-                {/* Card Info */}
-                <div className="p-5 flex-1 flex flex-col justify-between space-y-4">
-                  <div className="space-y-2">
-                    <h3 className="text-base font-bold text-gray-100 group-hover:text-white truncate font-outfit">
-                      {hack.name}
-                    </h3>
-                    <p className="text-xs text-gray-500 font-medium truncate">
-                      Organized by <span className="text-gray-400 font-semibold">{hack.organizer}</span>
-                    </p>
-
-                    <div className="flex items-center space-x-2 text-xs text-gray-400 pt-2">
-                      <Calendar size={14} className="text-indigo-400" />
-                      <span>
-                        {startD ? startD.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' }) : 'No date set'}
-                        {endD && ` - ${endD.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}`}
-                      </span>
-                    </div>
-
-                    <div className="flex items-center space-x-2 text-xs text-gray-400">
-                      {hack.participation_type === 'team' ? (
-                        <>
-                          <Users size={14} className="text-cyan-400" />
-                          <span>Team: {hack.team_name || 'Unnamed'} ({hack.team_size || 'N/A'} members)</span>
-                        </>
-                      ) : (
-                        <>
-                          <User size={14} className="text-indigo-400" />
-                          <span>Individual Participation</span>
-                        </>
-                      )}
-                    </div>
-                  </div>
-
-                  {/* Actions footer */}
-                  <div className="flex items-center justify-between border-t border-cardBorder/30 pt-4">
-                    <Link 
-                      to={`/hackathons/${hack.id}`}
-                      className="flex items-center space-x-1 text-xs text-indigo-400 hover:text-indigo-300 font-bold transition-colors group/lnk"
-                    >
-                      <Eye size={14} />
-                      <span>View Details</span>
-                    </Link>
-                    <button
-                      onClick={() => handleDelete(hack.id)}
-                      className="p-2 text-gray-500 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-all"
-                      title="Delete Hackathon"
-                    >
-                      <Trash2 size={15} />
-                    </button>
-                  </div>
-                </div>
+            <div className="space-y-4">
+              {/* Status Filter */}
+              <div className="space-y-1.5">
+                <label className="text-[10px] font-bold uppercase tracking-wider text-gray-500">Status</label>
+                <select
+                  value={status}
+                  onChange={(e) => setStatus(e.target.value)}
+                  className="w-full bg-[#0d1321]/80 border border-cardBorder rounded-xl p-2.5 text-xs text-slate-800 dark:text-gray-300 outline-none focus:border-indigoAccent transition-colors"
+                >
+                  <option value="">All Statuses</option>
+                  <option value="upcoming">Upcoming</option>
+                  <option value="ongoing">Ongoing</option>
+                  <option value="completed">Completed</option>
+                  <option value="cancelled">Cancelled</option>
+                </select>
               </div>
-            );
-          })}
+
+              {/* Mode Filter */}
+              <div className="space-y-1.5">
+                <label className="text-[10px] font-bold uppercase tracking-wider text-gray-500">Mode</label>
+                <select
+                  value={mode}
+                  onChange={(e) => setMode(e.target.value)}
+                  className="w-full bg-[#0d1321]/80 border border-cardBorder rounded-xl p-2.5 text-xs text-slate-800 dark:text-gray-300 outline-none focus:border-indigoAccent transition-colors"
+                >
+                  <option value="">All Modes</option>
+                  <option value="online">Online</option>
+                  <option value="offline">Offline</option>
+                  <option value="hybrid">Hybrid</option>
+                </select>
+              </div>
+
+              {/* Participation Filter */}
+              <div className="space-y-1.5">
+                <label className="text-[10px] font-bold uppercase tracking-wider text-gray-500">Participation</label>
+                <select
+                  value={participation}
+                  onChange={(e) => setParticipation(e.target.value)}
+                  className="w-full bg-[#0d1321]/80 border border-cardBorder rounded-xl p-2.5 text-xs text-slate-800 dark:text-gray-300 outline-none focus:border-indigoAccent transition-colors"
+                >
+                  <option value="">All Types</option>
+                  <option value="individual">Individual</option>
+                  <option value="team">Team</option>
+                </select>
+              </div>
+
+              {/* Achievement Filter */}
+              <div className="space-y-1.5">
+                <label className="text-[10px] font-bold uppercase tracking-wider text-gray-500">Achievements</label>
+                <select
+                  value={result}
+                  onChange={(e) => setResult(e.target.value)}
+                  className="w-full bg-[#0d1321]/80 border border-cardBorder rounded-xl p-2.5 text-xs text-slate-800 dark:text-gray-300 outline-none focus:border-indigoAccent transition-colors"
+                >
+                  <option value="">All Results</option>
+                  <option value="winner">Winner</option>
+                  <option value="runner_up">Runner-up</option>
+                  <option value="finalist">Finalist</option>
+                  <option value="participant">Participant</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Main Grid Content */}
+        <div className="flex-1 w-full">
+          {loading ? (
+            <div className="flex flex-col items-center justify-center py-20 space-y-4">
+              <div className="w-10 h-10 border-4 border-indigoAccent border-t-transparent rounded-full animate-spin"></div>
+              <p className="text-gray-400 text-xs animate-pulse">Searching matching records...</p>
+            </div>
+          ) : error ? (
+            <div className="p-8 text-center glass-panel rounded-2xl border border-red-500/20 max-w-md mx-auto space-y-3">
+              <AlertCircle className="h-10 w-10 text-red-400 mx-auto" />
+              <p className="text-sm font-medium text-red-300">{error}</p>
+            </div>
+          ) : hackathons.length === 0 ? (
+            <div className="text-center py-20 glass-panel rounded-2xl border border-cardBorder max-w-xl mx-auto space-y-4">
+              <Trophy className="h-12 w-12 text-gray-600 mx-auto" />
+              <h3 className="text-lg font-bold text-white font-outfit">No hackathons match criteria</h3>
+              <p className="text-sm text-gray-400 max-w-xs mx-auto leading-relaxed">
+                Try adjusting your search criteria or register a new hackathon.
+              </p>
+            </div>
+          ) : (
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {hackathons.map((hack) => {
+                const hasPoster = !!hack.poster_url;
+                return (
+                  <div 
+                    key={hack.id}
+                    className="glass-panel rounded-2xl border border-cardBorder overflow-hidden flex flex-col group/card hover:border-indigo-500/30 transition-all duration-300"
+                  >
+                    {/* Poster section */}
+                    <div className="h-40 bg-[#090d16] relative overflow-hidden shrink-0 border-b border-cardBorder/30">
+                      {hasPoster ? (
+                        <img 
+                          src={hack.poster_url} 
+                          alt={hack.name} 
+                          className="w-full h-full object-cover group-hover/card:scale-105 transition-transform duration-500" 
+                        />
+                      ) : (
+                        <div className="w-full h-full flex flex-col items-center justify-center text-gray-600 space-y-2">
+                          <Trophy size={36} className="text-gray-700" />
+                        </div>
+                      )}
+                      
+                      {/* Badges container */}
+                      <div className="absolute top-3 left-3 flex flex-wrap gap-1.5">
+                        <span className={`px-2 py-0.5 rounded text-[10px] font-extrabold uppercase tracking-wider ${getStatusBadgeClass(hack.status)}`}>
+                          {hack.status}
+                        </span>
+                        {hack.mode && (
+                          <span className="px-2 py-0.5 rounded text-[10px] font-extrabold uppercase tracking-wider bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">
+                            {hack.mode}
+                          </span>
+                        )}
+                        {hack.achievements && hack.achievements.length > 0 && (
+                          <span className={`px-2 py-0.5 rounded text-[10px] font-extrabold uppercase tracking-wider ${getResultBadgeClass(hack.achievements[0].result)}`}>
+                            {hack.achievements[0].result.replace('_', ' ')}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Body content */}
+                    <div className="p-5 flex-1 flex flex-col justify-between space-y-4">
+                      <div className="space-y-2">
+                        <h3 className="font-bold text-white text-base leading-snug group-hover/card:text-indigo-400 transition-colors font-outfit line-clamp-1">
+                          {hack.name}
+                        </h3>
+                        <p className="text-xs text-gray-400 line-clamp-1">
+                          Organized by <span className="font-semibold text-gray-300">{hack.organizer}</span>
+                        </p>
+
+                        <div className="space-y-1.5 pt-2 text-[11px] text-gray-500">
+                          {hack.start_date && (
+                            <div className="flex items-center space-x-2">
+                              <Calendar size={13} className="text-indigoAccent shrink-0" />
+                              <span className="truncate">
+                                {new Date(hack.start_date).toLocaleDateString(undefined, { dateStyle: 'medium' })}
+                                {hack.end_date && ` - ${new Date(hack.end_date).toLocaleDateString(undefined, { dateStyle: 'medium' })}`}
+                              </span>
+                            </div>
+                          )}
+                          <div className="flex items-center space-x-2">
+                            {hack.participation_type === 'team' ? (
+                              <>
+                                <Users size={13} className="text-indigoAccent shrink-0" />
+                                <span className="truncate">
+                                  Team: {hack.team_name || 'Unnamed Team'} ({hack.team_members?.length || 0} members)
+                                </span>
+                              </>
+                            ) : (
+                              <>
+                                <User size={13} className="text-indigoAccent shrink-0" />
+                                <span>Individual Participation</span>
+                              </>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Actions footer */}
+                      <div className="flex items-center justify-between border-t border-cardBorder/30 pt-4">
+                        <Link 
+                          to={`/hackathons/${hack.id}`}
+                          className="flex items-center space-x-1 text-xs text-indigo-400 hover:text-indigo-300 font-bold transition-colors group/lnk"
+                        >
+                          <Eye size={14} />
+                          <span>View Details</span>
+                        </Link>
+                        <button
+                          onClick={() => handleDelete(hack.id)}
+                          className="p-2 text-gray-500 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-all"
+                          title="Delete Hackathon"
+                        >
+                          <Trash2 size={15} />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
         </div>
-      )}
+      </div>
     </div>
   );
 };
