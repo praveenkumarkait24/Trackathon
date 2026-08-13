@@ -88,7 +88,7 @@ export const getHackathonById = async (req: AuthenticatedRequest, res: Response)
 
     const { data: hackathon, error } = await supabaseAdmin
       .from('hackathons')
-      .select('*, achievements(*), hackathon_rounds(*), team_members(*), profiles:user_id(full_name)')
+      .select('*, achievements(*), hackathon_rounds(*), team_members(*)')
       .eq('id', id)
       .maybeSingle();
 
@@ -113,7 +113,19 @@ export const getHackathonById = async (req: AuthenticatedRequest, res: Response)
       hackathon.hackathon_rounds.sort((a: any, b: any) => a.round_number - b.round_number);
     }
 
-    res.json(hackathon);
+    // Fetch the creator's profile details separately to bypass schema cache issue
+    const { data: profile } = await supabaseAdmin
+      .from('profiles')
+      .select('full_name')
+      .eq('id', hackathon.user_id)
+      .maybeSingle();
+
+    const hackathonWithProfile = {
+      ...hackathon,
+      profiles: profile || null
+    };
+
+    res.json(hackathonWithProfile);
   } catch (err: any) {
     res.status(500).json({ error: err.message });
   }
