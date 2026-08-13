@@ -26,9 +26,20 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) =>
   const location = useLocation();
   const navigate = useNavigate();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [sidebarPinned, setSidebarPinned] = useState(false);
+  const [sidebarPinned, setSidebarPinned] = useState(() => {
+    const saved = localStorage.getItem('trackathon_sidebar_pinned');
+    return saved !== 'false'; // Default to true (open)
+  });
   const [sidebarHovered, setSidebarHovered] = useState(false);
   const isSidebarOpen = sidebarPinned || sidebarHovered;
+
+  const toggleSidebar = () => {
+    setSidebarPinned(prev => {
+      const next = !prev;
+      localStorage.setItem('trackathon_sidebar_pinned', String(next));
+      return next;
+    });
+  };
 
   const menuItems = [
     { name: 'Dashboard', path: '/', icon: LayoutDashboard },
@@ -229,7 +240,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) =>
         <header className="hidden md:flex items-center justify-between px-8 py-4 bg-[#090d16]/30 border-b border-cardBorder/30">
           <div className="flex items-center space-x-4">
             <button
-              onClick={() => setSidebarPinned(!sidebarPinned)}
+              onClick={toggleSidebar}
               className="p-2 bg-white/5 hover:bg-white/10 rounded-xl text-gray-400 hover:text-white transition-colors flex items-center justify-center shadow-sm"
               title={sidebarPinned ? 'Collapse Sidebar' : 'Pin Sidebar'}
             >
