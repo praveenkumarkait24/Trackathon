@@ -152,7 +152,7 @@ export const Profile: React.FC = () => {
   }
 
   return (
-    <div className="max-w-4xl mx-auto space-y-6 md:space-y-8 animate-slide-up select-none">
+    <div className="max-w-6xl mx-auto space-y-6 md:space-y-8 animate-slide-up select-none">
       {/* Header */}
       <div>
         <h1 className="text-3xl font-extrabold text-white font-outfit tracking-wide">Hacker Profile</h1>
@@ -217,17 +217,17 @@ export const Profile: React.FC = () => {
           <div className="glass-panel p-6 rounded-2xl border border-cardBorder space-y-4">
             <h3 className="font-bold text-white font-outfit text-sm border-b border-cardBorder/30 pb-3">Hacker Skills</h3>
             
-            <form onSubmit={handleAddSkill} className="flex gap-2">
+            <form onSubmit={handleAddSkill} className="flex gap-2 items-stretch">
               <input
                 type="text"
                 value={skillInput}
                 onChange={(e) => setSkillInput(e.target.value)}
                 placeholder="React, ML, Solidity..."
-                className="flex-1 bg-[#0d1321]/60 border border-cardBorder focus:border-indigoAccent rounded-xl px-3 py-2 text-xs text-gray-200 placeholder-gray-600 outline-none"
+                className="flex-1 bg-[#0d1321]/60 border border-cardBorder focus:border-indigoAccent rounded-xl px-3 py-2 text-xs text-slate-800 dark:text-gray-200 outline-none"
               />
               <button 
                 type="submit"
-                className="p-2 bg-indigoAccent hover:bg-indigo-600 text-white rounded-xl transition-colors shrink-0"
+                className="px-3 bg-indigoAccent hover:bg-indigo-600 text-white rounded-xl transition-colors shrink-0 flex items-center justify-center"
               >
                 <Plus size={16} />
               </button>
@@ -265,28 +265,28 @@ export const Profile: React.FC = () => {
             <div className="grid sm:grid-cols-2 gap-4">
               <div className="space-y-1.5">
                 <label className="text-xs font-bold uppercase tracking-wider text-gray-400">Full Name *</label>
-                <div className="relative">
-                  <User className="absolute left-3 top-3.5 h-4.5 w-4.5 text-gray-500" />
+                <div className="relative flex items-center">
+                  <User className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-500" />
                   <input
                     type="text"
                     required
                     value={fullName}
                     onChange={(e) => setFullName(e.target.value)}
-                    className="w-full bg-[#0d1321]/60 border border-cardBorder focus:border-indigoAccent rounded-xl py-2.5 pl-10 pr-4 text-sm text-gray-200 outline-none"
+                    className="w-full bg-[#0d1321]/60 border border-cardBorder focus:border-indigoAccent rounded-xl py-2.5 pl-10 pr-4 text-sm text-slate-800 dark:text-gray-200 outline-none"
                   />
                 </div>
               </div>
 
               <div className="space-y-1.5">
                 <label className="text-xs font-bold uppercase tracking-wider text-gray-400">Phone Number</label>
-                <div className="relative">
-                  <Phone className="absolute left-3 top-3.5 h-4.5 w-4.5 text-gray-500" />
+                <div className="relative flex items-center">
+                  <Phone className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-500" />
                   <input
                     type="tel"
                     value={phoneNumber}
                     onChange={(e) => setPhoneNumber(e.target.value)}
                     placeholder="+91 XXXXX XXXXX"
-                    className="w-full bg-[#0d1321]/60 border border-cardBorder focus:border-indigoAccent rounded-xl py-2.5 pl-10 pr-4 text-sm text-gray-200 outline-none"
+                    className="w-full bg-[#0d1321]/60 border border-cardBorder focus:border-indigoAccent rounded-xl py-2.5 pl-10 pr-4 text-sm text-slate-800 dark:text-gray-200 outline-none"
                   />
                 </div>
               </div>
@@ -295,14 +295,14 @@ export const Profile: React.FC = () => {
             <div className="grid sm:grid-cols-2 gap-4">
               <div className="space-y-1.5">
                 <label className="text-xs font-bold uppercase tracking-wider text-gray-400">College / Institution</label>
-                <div className="relative">
-                  <BookOpen className="absolute left-3 top-3.5 h-4.5 w-4.5 text-gray-500" />
+                <div className="relative flex items-center">
+                  <BookOpen className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-500" />
                   <input
                     type="text"
                     value={college}
                     onChange={(e) => setCollege(e.target.value)}
                     placeholder="IIT Madras"
-                    className="w-full bg-[#0d1321]/60 border border-cardBorder focus:border-indigoAccent rounded-xl py-2.5 pl-10 pr-4 text-sm text-gray-200 outline-none"
+                    className="w-full bg-[#0d1321]/60 border border-cardBorder focus:border-indigoAccent rounded-xl py-2.5 pl-10 pr-4 text-sm text-slate-800 dark:text-gray-200 outline-none"
                   />
                 </div>
               </div>
@@ -315,7 +315,7 @@ export const Profile: React.FC = () => {
                     value={department}
                     onChange={(e) => setDepartment(e.target.value)}
                     placeholder="CSE"
-                    className="w-full bg-[#0d1321]/60 border border-cardBorder focus:border-indigoAccent rounded-xl p-2.5 text-sm text-gray-200 outline-none"
+                    className="w-full bg-[#0d1321]/60 border border-cardBorder focus:border-indigoAccent rounded-xl p-2.5 text-sm text-slate-800 dark:text-gray-200 outline-none"
                   />
                 </div>
                 <div className="space-y-1.5">
@@ -325,7 +325,7 @@ export const Profile: React.FC = () => {
                     value={academicYear}
                     onChange={(e) => setAcademicYear(e.target.value)}
                     placeholder="3rd Year"
-                    className="w-full bg-[#0d1321]/60 border border-cardBorder focus:border-indigoAccent rounded-xl p-2.5 text-sm text-gray-200 outline-none"
+                    className="w-full bg-[#0d1321]/60 border border-cardBorder focus:border-indigoAccent rounded-xl p-2.5 text-sm text-slate-800 dark:text-gray-200 outline-none"
                   />
                 </div>
               </div>
@@ -336,28 +336,28 @@ export const Profile: React.FC = () => {
             <div className="grid sm:grid-cols-2 gap-4">
               <div className="space-y-1.5">
                 <label className="text-xs font-bold uppercase tracking-wider text-gray-400">GitHub Profile URL</label>
-                <div className="relative">
-                  <Github className="absolute left-3 top-3.5 h-4.5 w-4.5 text-gray-500" />
+                <div className="relative flex items-center">
+                  <Github className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-500" />
                   <input
                     type="url"
                     value={githubProfile}
                     onChange={(e) => setGithubProfile(e.target.value)}
                     placeholder="https://github.com/username"
-                    className="w-full bg-[#0d1321]/60 border border-cardBorder focus:border-indigoAccent rounded-xl py-2.5 pl-10 pr-4 text-sm text-gray-200 outline-none"
+                    className="w-full bg-[#0d1321]/60 border border-cardBorder focus:border-indigoAccent rounded-xl py-2.5 pl-10 pr-4 text-sm text-slate-800 dark:text-gray-200 outline-none"
                   />
                 </div>
               </div>
 
               <div className="space-y-1.5">
                 <label className="text-xs font-bold uppercase tracking-wider text-gray-400">LinkedIn Profile URL</label>
-                <div className="relative">
-                  <Linkedin className="absolute left-3 top-3.5 h-4.5 w-4.5 text-gray-500" />
+                <div className="relative flex items-center">
+                  <Linkedin className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-500" />
                   <input
                     type="url"
                     value={linkedinProfile}
                     onChange={(e) => setLinkedinProfile(e.target.value)}
                     placeholder="https://linkedin.com/in/username"
-                    className="w-full bg-[#0d1321]/60 border border-cardBorder focus:border-indigoAccent rounded-xl py-2.5 pl-10 pr-4 text-sm text-gray-200 outline-none"
+                    className="w-full bg-[#0d1321]/60 border border-cardBorder focus:border-indigoAccent rounded-xl py-2.5 pl-10 pr-4 text-sm text-slate-800 dark:text-gray-200 outline-none"
                   />
                 </div>
               </div>

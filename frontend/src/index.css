@@ -16,6 +16,20 @@
   --color-card-border: rgba(255, 255, 255, 0.08);
 }
 
+:root input::placeholder,
+:root select::placeholder,
+:root textarea::placeholder {
+  color: #64748b !important;
+  opacity: 1 !important;
+}
+
+.dark input::placeholder,
+.dark select::placeholder,
+.dark textarea::placeholder {
+  color: #4b5563 !important;
+  opacity: 1 !important;
+}
+
 @layer base {
   body {
     @apply bg-darkBg text-slate-800 dark:text-gray-200 font-sans antialiased selection:bg-indigoAccent selection:text-white;
