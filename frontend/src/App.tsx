@@ -21,6 +21,7 @@ import Profile from './pages/Profile.js';
 import PrivacyPolicy from './pages/PrivacyPolicy.js';
 import TermsOfService from './pages/TermsOfService.js';
 import JoinTeam from './pages/JoinTeam.js';
+import { ThemeProvider } from './context/ThemeContext.js';
 
 // Protected Route Wrapper (for logged-in students only)
 const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -100,38 +101,40 @@ const RootRoute: React.FC = () => {
 
 export const App: React.FC = () => {
   return (
-    <AuthProvider>
-      <BrowserRouter>
-        <Routes>
-          {/* Root Decider */}
-          <Route path="/" element={<RootRoute />} />
+    <ThemeProvider>
+      <AuthProvider>
+        <BrowserRouter>
+          <Routes>
+            {/* Root Decider */}
+            <Route path="/" element={<RootRoute />} />
 
-          {/* Guest / Public Auth Routes */}
-          <Route path="/login" element={<GuestRoute><Login /></GuestRoute>} />
-          <Route path="/register" element={<GuestRoute><Register /></GuestRoute>} />
-          <Route path="/forgot-password" element={<GuestRoute><ForgotPassword /></GuestRoute>} />
-          <Route path="/reset-password" element={<GuestRoute><ResetPassword /></GuestRoute>} />
+            {/* Guest / Public Auth Routes */}
+            <Route path="/login" element={<GuestRoute><Login /></GuestRoute>} />
+            <Route path="/register" element={<GuestRoute><Register /></GuestRoute>} />
+            <Route path="/forgot-password" element={<GuestRoute><ForgotPassword /></GuestRoute>} />
+            <Route path="/reset-password" element={<GuestRoute><ResetPassword /></GuestRoute>} />
 
-          {/* Compliance Pages */}
-          <Route path="/privacy" element={<PrivacyPolicy />} />
-          <Route path="/terms" element={<TermsOfService />} />
+            {/* Compliance Pages */}
+            <Route path="/privacy" element={<PrivacyPolicy />} />
+            <Route path="/terms" element={<TermsOfService />} />
 
-          {/* Private / Authenticated Routes */}
-          <Route path="/hackathons" element={<ProtectedRoute><Hackathons /></ProtectedRoute>} />
-          <Route path="/hackathons/add" element={<ProtectedRoute><AddHackathon /></ProtectedRoute>} />
-          <Route path="/hackathons/:id" element={<ProtectedRoute><HackathonDetails /></ProtectedRoute>} />
-          <Route path="/hackathons/:id/join" element={<ProtectedRoute><JoinTeam /></ProtectedRoute>} />
-          <Route path="/hackathons/:id/edit" element={<ProtectedRoute><EditHackathon /></ProtectedRoute>} />
-          <Route path="/calendar" element={<ProtectedRoute><Calendar /></ProtectedRoute>} />
-          <Route path="/achievements" element={<ProtectedRoute><Achievements /></ProtectedRoute>} />
-          <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
-          <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+            {/* Private / Authenticated Routes */}
+            <Route path="/hackathons" element={<ProtectedRoute><Hackathons /></ProtectedRoute>} />
+            <Route path="/hackathons/add" element={<ProtectedRoute><AddHackathon /></ProtectedRoute>} />
+            <Route path="/hackathons/:id" element={<ProtectedRoute><HackathonDetails /></ProtectedRoute>} />
+            <Route path="/hackathons/:id/join" element={<ProtectedRoute><JoinTeam /></ProtectedRoute>} />
+            <Route path="/hackathons/:id/edit" element={<ProtectedRoute><EditHackathon /></ProtectedRoute>} />
+            <Route path="/calendar" element={<ProtectedRoute><Calendar /></ProtectedRoute>} />
+            <Route path="/achievements" element={<ProtectedRoute><Achievements /></ProtectedRoute>} />
+            <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
+            <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
 
-          {/* Catch-all Redirect */}
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
-      </BrowserRouter>
-    </AuthProvider>
+            {/* Catch-all Redirect */}
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </BrowserRouter>
+      </AuthProvider>
+    </ThemeProvider>
   );
 };
 export default App;

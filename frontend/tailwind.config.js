@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 export default {
+  darkMode: 'class',
   content: [
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
@@ -7,9 +8,9 @@ export default {
   theme: {
     extend: {
       colors: {
-        darkBg: '#090d16',      // Obsidian dark background
-        cardBg: 'rgba(17, 25, 40, 0.75)', // Glassmorphic card background
-        cardBorder: 'rgba(255, 255, 255, 0.08)',
+        darkBg: 'var(--bg-primary)',      // Dynamic background
+        cardBg: 'var(--bg-card)',         // Dynamic card background
+        cardBorder: 'var(--color-card-border)', // Dynamic card border
         indigoAccent: '#6366f1', // Indigo primary glow
         emeraldAccent: '#10b981', // Success/ongoing
         roseAccent: '#f43f5e',    // Deadlines/cancel

@@ -11,8 +11,11 @@ import {
   LogOut, 
   Menu, 
   X,
-  Bell
+  Bell,
+  Sun,
+  Moon
 } from 'lucide-react';
+import { useTheme } from '../context/ThemeContext.js';
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
@@ -20,6 +23,7 @@ interface DashboardLayoutProps {
 
 export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
   const { user, signOut } = useAuth();
+  const { theme, toggleTheme } = useTheme();
   const location = useLocation();
   const navigate = useNavigate();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -145,9 +149,18 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) =>
               <span className="text-xl font-bold bg-gradient-to-r from-indigo-500 to-cyan-400 bg-clip-text text-transparent font-outfit">
                 Navigation
               </span>
-              <button onClick={() => setMobileMenuOpen(false)} className="p-1 text-gray-400">
-                <X size={20} />
-              </button>
+              <div className="flex items-center space-x-2">
+                <button
+                  onClick={toggleTheme}
+                  className="p-1.5 bg-white/5 hover:bg-white/10 rounded-xl text-gray-400 hover:text-white transition-colors"
+                  title={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+                >
+                  {theme === 'dark' ? <Sun size={16} /> : <Moon size={16} />}
+                </button>
+                <button onClick={() => setMobileMenuOpen(false)} className="p-1 text-gray-400">
+                  <X size={20} />
+                </button>
+              </div>
             </div>
 
             <nav className="flex-1 space-y-2">
@@ -209,6 +222,14 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) =>
         {/* Top Navbar Header - Desktop only */}
         <header className="hidden md:flex items-center justify-end px-8 py-4 bg-[#090d16]/30 border-b border-cardBorder/30">
           <div className="flex items-center space-x-4">
+            <button
+              onClick={toggleTheme}
+              className="p-2 bg-white/5 hover:bg-white/10 rounded-xl text-gray-400 hover:text-white transition-colors flex items-center justify-center"
+              title={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+            >
+              {theme === 'dark' ? <Sun size={18} className="text-amber-400" /> : <Moon size={18} />}
+            </button>
+            <div className="h-6 w-px bg-cardBorder"></div>
             <Link to="/profile" className="flex items-center space-x-2.5 text-sm text-gray-300 hover:text-white transition-colors">
               <div className="w-8 h-8 rounded-full bg-gradient-to-br from-indigo-500 to-cyan-400 flex items-center justify-center font-bold text-white text-xs overflow-hidden">
                 {user?.user_metadata?.avatar_url || user?.user_metadata?.picture ? (
