@@ -373,10 +373,10 @@ export const HackathonDetails: React.FC = () => {
       {/* Main Hackathon Intro Card */}
       <div className="grid lg:grid-cols-3 gap-6">
         {/* Left Side: Metadata and Description */}
-        <div className="lg:col-span-2 glass-panel rounded-2xl border border-cardBorder overflow-hidden flex flex-col md:flex-row">
+        <div className="lg:col-span-2 glass-panel rounded-2xl border border-cardBorder overflow-hidden flex flex-col">
           {hackathon.poster_url && (
-            <div className="w-full md:w-64 bg-[#070c14] border-r border-cardBorder flex items-center justify-center shrink-0">
-              <img src={hackathon.poster_url} alt="Poster" className="w-full h-48 md:h-full object-cover" />
+            <div className="w-full h-64 md:h-80 bg-[#070c14] border-b border-cardBorder flex items-center justify-center overflow-hidden shrink-0">
+              <img src={hackathon.poster_url} alt="Poster" className="w-full h-full object-cover" />
             </div>
           )}
           <div className="p-6 flex-1 space-y-4">
