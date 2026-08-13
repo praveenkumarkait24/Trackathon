@@ -16,8 +16,12 @@ import {
 } from 'lucide-react';
 
 export const Hackathons: React.FC = () => {
-  const [hackathons, setHackathons] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [hackathons, setHackathons] = useState<any[]>(() => {
+    return api.getCached('/hackathons') || [];
+  });
+  const [loading, setLoading] = useState(() => {
+    return !api.getCached('/hackathons');
+  });
   const [error, setError] = useState<string | null>(null);
 
   // Search & Filter State
@@ -27,8 +31,8 @@ export const Hackathons: React.FC = () => {
   const [participation, setParticipation] = useState('');
   const [result, setResult] = useState('');
 
-  const fetchHackathons = async () => {
-    setLoading(true);
+  const fetchHackathons = async (showLoader = false) => {
+    if (showLoader) setLoading(true);
     try {
       const queryParams = new URLSearchParams();
       if (search) queryParams.append('search', search);
@@ -47,13 +51,13 @@ export const Hackathons: React.FC = () => {
   };
 
   useEffect(() => {
-    // Initial fetch
-    fetchHackathons();
+    // Initial fetch (only show loader if cache is empty)
+    fetchHackathons(hackathons.length === 0);
   }, [status, mode, participation, result]);
 
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    fetchHackathons();
+    fetchHackathons(true);
   };
 
   const handleDelete = async (id: string) => {

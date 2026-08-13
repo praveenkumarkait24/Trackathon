@@ -17,22 +17,25 @@ import {
 } from 'lucide-react';
 
 export const Profile: React.FC = () => {
-  const [loading, setLoading] = useState(true);
+  const cachedProfile = api.getCached('/profile');
+  const [loading, setLoading] = useState(() => {
+    return !cachedProfile;
+  });
   const [saving, setSaving] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   // Form Fields
-  const [fullName, setFullName] = useState('');
+  const [fullName, setFullName] = useState(cachedProfile?.full_name || '');
   const [email, setEmail] = useState('');
-  const [college, setCollege] = useState('');
-  const [department, setDepartment] = useState('');
-  const [academicYear, setAcademicYear] = useState('');
-  const [phoneNumber, setPhoneNumber] = useState('');
-  const [githubProfile, setGithubProfile] = useState('');
-  const [linkedinProfile, setLinkedinProfile] = useState('');
-  const [skills, setSkills] = useState<string[]>([]);
-  const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
+  const [college, setCollege] = useState(cachedProfile?.college || '');
+  const [department, setDepartment] = useState(cachedProfile?.department || '');
+  const [academicYear, setAcademicYear] = useState(cachedProfile?.academic_year || '');
+  const [phoneNumber, setPhoneNumber] = useState(cachedProfile?.phone_number || '');
+  const [githubProfile, setGithubProfile] = useState(cachedProfile?.github_profile || '');
+  const [linkedinProfile, setLinkedinProfile] = useState(cachedProfile?.linkedin_profile || '');
+  const [skills, setSkills] = useState<string[]>(cachedProfile?.skills || []);
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(cachedProfile?.avatar_url || null);
 
   // Skills tag input state
   const [skillInput, setSkillInput] = useState('');

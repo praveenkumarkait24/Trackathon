@@ -19,6 +19,29 @@ async function getHeaders(isMultipart = false): Promise<HeadersInit> {
 }
 
 export const api = {
+  // Helper to read local cached responses
+  getCached(endpoint: string) {
+    try {
+      const cached = localStorage.getItem(`trackathon_cache_${endpoint}`);
+      return cached ? JSON.parse(cached) : null;
+    } catch (e) {
+      return null;
+    }
+  },
+
+  // Helper to clear local cache when data is modified
+  clearCache() {
+    try {
+      Object.keys(localStorage).forEach(key => {
+        if (key.startsWith('trackathon_cache_')) {
+          localStorage.removeItem(key);
+        }
+      });
+    } catch (e) {
+      console.error('Failed to clear cache:', e);
+    }
+  },
+
   async get(endpoint: string) {
     const headers = await getHeaders();
     const res = await fetch(`${API_URL}${endpoint}`, {
@@ -30,7 +53,17 @@ export const api = {
       const err = await res.json().catch(() => ({}));
       throw new Error(err.error || `Request failed with status ${res.status}`);
     }
-    return res.json();
+    
+    const data = await res.json();
+    
+    // Save to cache on successful fetch
+    try {
+      localStorage.setItem(`trackathon_cache_${endpoint}`, JSON.stringify(data));
+    } catch (e) {
+      console.error('Failed to save to localStorage cache:', e);
+    }
+    
+    return data;
   },
 
   async post(endpoint: string, body: any, isMultipart = false) {
@@ -45,6 +78,10 @@ export const api = {
       const err = await res.json().catch(() => ({}));
       throw new Error(err.error || `Request failed with status ${res.status}`);
     }
+
+    // Clear cache on data mutation
+    this.clearCache();
+
     return res.json();
   },
 
@@ -60,6 +97,10 @@ export const api = {
       const err = await res.json().catch(() => ({}));
       throw new Error(err.error || `Request failed with status ${res.status}`);
     }
+
+    // Clear cache on data mutation
+    this.clearCache();
+
     return res.json();
   },
 
@@ -74,6 +115,10 @@ export const api = {
       const err = await res.json().catch(() => ({}));
       throw new Error(err.error || `Request failed with status ${res.status}`);
     }
+
+    // Clear cache on data mutation
+    this.clearCache();
+
     return res.json();
   }
 };

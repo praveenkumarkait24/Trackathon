@@ -29,8 +29,12 @@ import {
 } from 'recharts';
 
 export const Dashboard: React.FC = () => {
-  const [hackathons, setHackathons] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [hackathons, setHackathons] = useState<any[]>(() => {
+    return api.getCached('/hackathons') || [];
+  });
+  const [loading, setLoading] = useState(() => {
+    return !api.getCached('/hackathons');
+  });
   const [error, setError] = useState<string | null>(null);
 
 
@@ -40,7 +44,9 @@ export const Dashboard: React.FC = () => {
         const data = await api.get('/hackathons');
         setHackathons(data);
       } catch (err: any) {
-        setError(err.message || 'Failed to fetch dashboard data.');
+        if (!api.getCached('/hackathons')) {
+          setError(err.message || 'Failed to fetch dashboard data.');
+        }
       } finally {
         setLoading(false);
       }

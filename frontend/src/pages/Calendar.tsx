@@ -21,8 +21,12 @@ interface EventItem {
 
 export const Calendar: React.FC = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
-  const [hackathons, setHackathons] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [hackathons, setHackathons] = useState<any[]>(() => {
+    return api.getCached('/hackathons') || [];
+  });
+  const [loading, setLoading] = useState(() => {
+    return !api.getCached('/hackathons');
+  });
 
   useEffect(() => {
     const fetchEvents = async () => {

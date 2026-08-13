@@ -15,8 +15,12 @@ import {
 } from 'lucide-react';
 
 export const Achievements: React.FC = () => {
-  const [hackathons, setHackathons] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [hackathons, setHackathons] = useState<any[]>(() => {
+    return api.getCached('/hackathons') || [];
+  });
+  const [loading, setLoading] = useState(() => {
+    return !api.getCached('/hackathons');
+  });
 
   useEffect(() => {
     const fetchAchievements = async () => {
