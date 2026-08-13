@@ -10,7 +10,9 @@ import {
   CalendarCheck, 
   Check, 
   AlertTriangle,
-  ArrowRight
+  ArrowRight,
+  User,
+  Upload
 } from 'lucide-react';
 
 interface Preferences {
@@ -33,6 +35,11 @@ export const Settings: React.FC = () => {
   const [success, setSuccess] = useState(false);
   const [googleConnected, setGoogleConnected] = useState(false);
 
+  // Profile fields state
+  const [fullName, setFullName] = useState('');
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
+  const [uploadingAvatar, setUploadingAvatar] = useState(false);
+
   // Offset options mapped to minutes
   const offsetOptions = [
     { label: '7 days before', value: 10080 },
@@ -53,6 +60,29 @@ export const Settings: React.FC = () => {
     }
   }, []);
 
+  const handleAvatarChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      if (file.size > 2 * 1024 * 1024) {
+        alert('File size exceeds 2MB limit.');
+        return;
+      }
+      setUploadingAvatar(true);
+      const formData = new FormData();
+      formData.append('file', file);
+      try {
+        const res = await api.post('/profile/avatar', formData, true);
+        setAvatarUrl(res.avatar_url);
+        // Force refresh in top header avatar
+        window.location.reload();
+      } catch (err: any) {
+        alert(err.message || 'Avatar upload failed.');
+      } finally {
+        setUploadingAvatar(false);
+      }
+    }
+  };
+
   useEffect(() => {
     const fetchSettings = async () => {
       try {
@@ -64,10 +94,11 @@ export const Settings: React.FC = () => {
           reminder_offsets: preferences.reminder_offsets || [1440]
         });
 
-        // Check if google connection exists
-        const { data: googleConn } = await api.get('/profile'); // We can fetch connection or check directly
-        // Query google_connections table directly from DB or check
-        setGoogleConnected(!!preferences.user_id); // Simplified placeholder check, check if preference is linked
+        // Check if google connection exists (returns profile object directly)
+        const googleConn = await api.get('/profile'); 
+        setFullName(googleConn.full_name || '');
+        setAvatarUrl(googleConn.avatar_url || null);
+        setGoogleConnected(!!preferences.user_id);
       } catch (err) {
         console.error('Failed to load settings:', err);
       } finally {
@@ -128,6 +159,12 @@ export const Settings: React.FC = () => {
 
       // 2. Put settings to backend
       await api.put('/settings/notifications', prefs);
+
+      // 3. Put profile name to backend if changed
+      if (fullName.trim()) {
+        await api.put('/profile', { full_name: fullName.trim() });
+      }
+
       setSuccess(true);
       setTimeout(() => setSuccess(false), 3000);
     } catch (err) {
@@ -167,6 +204,66 @@ export const Settings: React.FC = () => {
       {/* Main Settings Card */}
       <div className="space-y-6">
 
+        {/* Section 1: Profile Settings */}
+        <div className="glass-panel p-6 rounded-2xl border border-cardBorder space-y-6">
+          <h3 className="font-bold text-white border-b border-cardBorder/30 pb-3 flex items-center space-x-2">
+            <User size={18} className="text-indigo-400" />
+            <span>Profile Settings</span>
+          </h3>
+
+          <div className="flex flex-col md:flex-row items-center md:items-start gap-6">
+            {/* Avatar block */}
+            <div className="flex flex-col items-center space-y-3 shrink-0">
+              <div className="w-20 h-20 rounded-full bg-gradient-to-br from-indigo-500 to-cyan-400 relative overflow-hidden flex items-center justify-center font-bold text-white text-2xl shadow-glow">
+                {avatarUrl ? (
+                  <img src={avatarUrl} alt="Avatar" className="w-full h-full object-cover" />
+                ) : (
+                  <span>{fullName.charAt(0).toUpperCase() || 'S'}</span>
+                )}
+                {uploadingAvatar && (
+                  <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
+                    <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                  </div>
+                )}
+              </div>
+              <div>
+                <input
+                  type="file"
+                  id="settings-avatar-input"
+                  accept="image/jpeg,image/png,image/webp"
+                  onChange={handleAvatarChange}
+                  className="hidden"
+                  disabled={uploadingAvatar}
+                />
+                <label 
+                  htmlFor="settings-avatar-input"
+                  className="flex items-center space-x-1.5 px-3 py-1.5 bg-white/5 hover:bg-white/10 border border-cardBorder hover:border-gray-600 rounded-xl text-[10px] font-bold cursor-pointer transition-colors"
+                >
+                  <Upload size={11} />
+                  <span>Change Photo</span>
+                </label>
+              </div>
+            </div>
+
+            {/* Form Fields block */}
+            <div className="flex-1 w-full space-y-4">
+              <div className="space-y-1.5">
+                <label className="text-xs font-bold uppercase tracking-wider text-gray-400">Full Name</label>
+                <div className="relative flex items-center">
+                  <User className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-500" />
+                  <input
+                    type="text"
+                    required
+                    value={fullName}
+                    onChange={(e) => setFullName(e.target.value)}
+                    className="w-full bg-[#0d1321]/60 border border-cardBorder focus:border-indigoAccent rounded-xl py-2.5 pl-10 pr-4 text-sm text-slate-800 dark:text-gray-200 outline-none"
+                    placeholder="Enter your name"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
 
         {/* Section 2: Notification Toggles */}
         <div className="glass-panel p-6 rounded-2xl border border-cardBorder space-y-6">
