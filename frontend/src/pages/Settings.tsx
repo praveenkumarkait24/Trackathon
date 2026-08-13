@@ -39,6 +39,8 @@ export const Settings: React.FC = () => {
   const [fullName, setFullName] = useState('');
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
   const [uploadingAvatar, setUploadingAvatar] = useState(false);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
 
   // Offset options mapped to minutes
   const offsetOptions = [
@@ -60,26 +62,15 @@ export const Settings: React.FC = () => {
     }
   }, []);
 
-  const handleAvatarChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
       if (file.size > 2 * 1024 * 1024) {
         alert('File size exceeds 2MB limit.');
         return;
       }
-      setUploadingAvatar(true);
-      const formData = new FormData();
-      formData.append('file', file);
-      try {
-        const res = await api.post('/profile/avatar', formData, true);
-        setAvatarUrl(res.avatar_url);
-        // Force refresh in top header avatar
-        window.location.reload();
-      } catch (err: any) {
-        alert(err.message || 'Avatar upload failed.');
-      } finally {
-        setUploadingAvatar(false);
-      }
+      setSelectedFile(file);
+      setAvatarPreview(URL.createObjectURL(file));
     }
   };
 
@@ -165,13 +156,30 @@ export const Settings: React.FC = () => {
         await api.put('/profile', { full_name: fullName.trim() });
       }
 
+      // 4. Put profile picture if selected
+      if (selectedFile) {
+        setUploadingAvatar(true);
+        const formData = new FormData();
+        formData.append('file', selectedFile);
+        const res = await api.post('/profile/avatar', formData, true);
+        setAvatarUrl(res.avatar_url);
+        setSelectedFile(null);
+        setAvatarPreview(null);
+      }
+
       setSuccess(true);
       setTimeout(() => setSuccess(false), 3000);
+      
+      // Reload layout to reflect avatar and name in top header
+      setTimeout(() => {
+        window.location.reload();
+      }, 500);
     } catch (err) {
       console.error('Failed to save settings:', err);
       alert('Failed to save preferences.');
     } finally {
       setSaving(false);
+      setUploadingAvatar(false);
     }
   };
 
@@ -215,8 +223,8 @@ export const Settings: React.FC = () => {
             {/* Avatar block */}
             <div className="flex flex-col items-center space-y-3 shrink-0">
               <div className="w-20 h-20 rounded-full bg-gradient-to-br from-indigo-500 to-cyan-400 relative overflow-hidden flex items-center justify-center font-bold text-white text-2xl shadow-glow">
-                {avatarUrl ? (
-                  <img src={avatarUrl} alt="Avatar" className="w-full h-full object-cover" />
+                {avatarPreview || avatarUrl ? (
+                  <img src={avatarPreview || avatarUrl || undefined} alt="Avatar" className="w-full h-full object-cover" />
                 ) : (
                   <span>{fullName.charAt(0).toUpperCase() || 'S'}</span>
                 )}

@@ -361,3 +361,48 @@
 .dark [class*="border-cardBorder"] {
   border-color: rgba(255, 255, 255, 0.08) !important;
 }
+
+/* ==========================================
+   GLOBAL LIGHT MODE TEXT CONTRAST OVERRIDES
+   ========================================== */
+:root .glass-panel h1,
+:root .glass-panel h2,
+:root .glass-panel h3,
+:root .glass-panel h4,
+:root .glass-panel h5,
+:root .glass-panel h6,
+:root .glass-panel .text-white,
+:root .glass-panel [class*="text-white"],
+:root .glass-panel [class*="text-gray-100"],
+:root .glass-panel [class*="text-gray-200"],
+:root .glass-panel [class*="text-gray-300"],
+:root [class*="bg-[#0d1321]"] h3,
+:root [class*="bg-[#0c1220]"] h3,
+:root [class*="bg-[#0d1321]"] span,
+:root [class*="bg-[#0c1220]"] span {
+  color: #0f172a !important; /* slate-900 */
+}
+
+:root .glass-panel p,
+:root .glass-panel span,
+:root .glass-panel [class*="text-gray-400"],
+:root [class*="bg-[#0d1321]"] p,
+:root [class*="bg-[#0c1220]"] p {
+  color: #334155 !important; /* slate-700 */
+}
+
+:root .glass-panel [class*="text-gray-500"] {
+  color: #64748b !important; /* slate-500 */
+}
+
+:root [class*="text-gray-500"] {
+  color: #64748b !important;
+}
+
+:root [class*="text-gray-400"] {
+  color: #334155 !important;
+}
+
+:root [class*="text-gray-300"] {
+  color: #1e293b !important;
+}
