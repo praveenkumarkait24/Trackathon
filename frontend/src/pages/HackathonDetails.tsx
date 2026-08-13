@@ -19,7 +19,8 @@ import {
   Video,
   Award,
   Clock,
-  AlertTriangle
+  AlertTriangle,
+  Calendar
 } from 'lucide-react';
 
 interface Round {
@@ -392,13 +393,86 @@ export const HackathonDetails: React.FC = () => {
                   {hackathon.participation_type}
                 </span>
               </div>
-              <h2 className="text-2xl font-extrabold text-white font-outfit">{hackathon.name}</h2>
+              <h2 className="text-3xl md:text-4xl font-extrabold text-transparent bg-gradient-to-r from-indigo-600 to-cyan-500 bg-clip-text font-outfit tracking-wide">{hackathon.name}</h2>
               <p className="text-sm text-gray-400">Organized by <span className="font-semibold text-gray-300">{hackathon.organizer}</span></p>
             </div>
 
             <p className="text-sm text-gray-400 leading-relaxed">{hackathon.description || 'No description provided.'}</p>
 
-            <div className="grid grid-cols-2 gap-4 border-t border-cardBorder/30 pt-4 text-xs text-gray-400">
+            {/* Highlights Grid: Registration & Schedule Timelines */}
+            <div className="grid sm:grid-cols-2 gap-4 border-t border-cardBorder/30 pt-6">
+              {/* Registration Highlight Card */}
+              <div className="p-4 bg-indigo-500/5 border border-indigo-500/15 rounded-2xl flex flex-col justify-between space-y-3">
+                <div>
+                  <span className="text-[10px] font-extrabold text-indigo-400 uppercase tracking-widest block">Registration Status</span>
+                  <div className="mt-1 flex items-center space-x-2">
+                    <Calendar size={16} className="text-indigoAccent shrink-0" />
+                    <span className="text-sm font-bold text-slate-800 dark:text-white">
+                      {hackathon.registration_deadline ? (
+                        <>Deadline: {new Date(hackathon.registration_deadline).toLocaleDateString(undefined, { dateStyle: 'medium' })}</>
+                      ) : (
+                        'No Deadline Set'
+                      )}
+                    </span>
+                  </div>
+                </div>
+                {hackathon.registration_link ? (
+                  <a 
+                    href={hackathon.registration_link} 
+                    target="_blank" 
+                    rel="noreferrer" 
+                    className="w-full py-2.5 bg-indigoAccent hover:bg-indigo-600 text-white rounded-xl text-xs font-bold transition-all shadow-glow hover:shadow-indigo-500/20 text-center block"
+                  >
+                    Register / Apply Now
+                  </a>
+                ) : (
+                  <span className="w-full py-2.5 bg-gray-500/10 text-gray-500 rounded-xl text-xs font-bold text-center block">
+                    No Direct Registration Link
+                  </span>
+                )}
+              </div>
+
+              {/* Event Dates & Timeline Card */}
+              <div className="p-4 bg-cyan-500/5 border border-cyan-500/15 rounded-2xl flex flex-col justify-between space-y-3">
+                <div>
+                  <span className="text-[10px] font-extrabold text-cyan-400 uppercase tracking-widest block">Event Schedule</span>
+                  <div className="mt-1.5 space-y-2 text-xs text-slate-700 dark:text-gray-300">
+                    {hackathon.start_date && (
+                      <div className="flex items-center space-x-2">
+                        <span className="w-1.5 h-1.5 bg-cyan-400 rounded-full"></span>
+                        <span>Starts: <strong>{new Date(hackathon.start_date).toLocaleDateString(undefined, { dateStyle: 'medium' })}</strong></span>
+                      </div>
+                    )}
+                    {hackathon.end_date && (
+                      <div className="flex items-center space-x-2">
+                        <span className="w-1.5 h-1.5 bg-indigo-400 rounded-full"></span>
+                        <span>Ends: <strong>{new Date(hackathon.end_date).toLocaleDateString(undefined, { dateStyle: 'medium' })}</strong></span>
+                      </div>
+                    )}
+                    {!hackathon.start_date && !hackathon.end_date && (
+                      <p className="text-gray-500 italic">No timeline schedule announced.</p>
+                    )}
+                  </div>
+                </div>
+                {hackathon.website_url ? (
+                  <a 
+                    href={hackathon.website_url} 
+                    target="_blank" 
+                    rel="noreferrer" 
+                    className="w-full py-2 bg-white/5 hover:bg-white/10 border border-cardBorder text-slate-800 dark:text-gray-300 rounded-xl text-xs font-bold transition-all text-center block"
+                  >
+                    Visit Event Website
+                  </a>
+                ) : (
+                  <span className="w-full py-2 bg-gray-500/10 text-gray-500 rounded-xl text-xs font-bold text-center block">
+                    No Website Configured
+                  </span>
+                )}
+              </div>
+            </div>
+
+            {/* Event Meta Info grid */}
+            <div className="grid grid-cols-3 gap-4 border-t border-cardBorder/30 pt-4 text-xs text-gray-400">
               {hackathon.domain && (
                 <div>
                   <span className="font-bold text-gray-500 uppercase tracking-wider block">Domain</span>
@@ -417,25 +491,6 @@ export const HackathonDetails: React.FC = () => {
                   <span className="text-gray-300 font-semibold mt-0.5 block flex items-center space-x-1">
                     <MapPin size={12} className="text-cyan-400" />
                     <span>{hackathon.location}</span>
-                  </span>
-                </div>
-              )}
-              {(hackathon.website_url || hackathon.registration_link) && (
-                <div>
-                  <span className="font-bold text-gray-500 uppercase tracking-wider block">Links</span>
-                  <span className="mt-1 flex gap-2">
-                    {hackathon.website_url && (
-                      <a href={hackathon.website_url} target="_blank" rel="noreferrer" className="text-indigo-400 hover:underline flex items-center space-x-0.5 font-bold">
-                        <span>Website</span>
-                        <ExternalLink size={10} />
-                      </a>
-                    )}
-                    {hackathon.registration_link && (
-                      <a href={hackathon.registration_link} target="_blank" rel="noreferrer" className="text-indigo-400 hover:underline flex items-center space-x-0.5 font-bold">
-                        <span>Registration</span>
-                        <ExternalLink size={10} />
-                      </a>
-                    )}
                   </span>
                 </div>
               )}
