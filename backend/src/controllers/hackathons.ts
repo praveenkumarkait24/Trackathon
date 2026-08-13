@@ -88,7 +88,7 @@ export const getHackathonById = async (req: AuthenticatedRequest, res: Response)
 
     const { data: hackathon, error } = await supabaseAdmin
       .from('hackathons')
-      .select('*, achievements(*), hackathon_rounds(*), team_members(*)')
+      .select('*, achievements(*), hackathon_rounds(*), team_members(*), profiles:user_id(full_name)')
       .eq('id', id)
       .maybeSingle();
 

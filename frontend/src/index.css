@@ -133,14 +133,16 @@
   color: #0f172a !important; /* slate-900 */
 }
 
-:root p {
+:root p,
+:root label {
   color: #475569 !important; /* slate-600 */
 }
 
 :root .glass-panel .text-gray-200,
 :root .glass-panel .text-gray-300,
 :root .glass-panel .text-gray-400,
-:root .glass-panel .text-gray-500 {
+:root .glass-panel .text-gray-500,
+:root .glass-panel label {
   color: #475569 !important; /* slate-600 */
 }
 
@@ -219,13 +221,15 @@
   color: #ffffff !important;
 }
 
-.dark p {
+.dark p,
+.dark label {
   color: #94a3b8 !important;
 }
 
 .dark .glass-panel .text-gray-200,
 .dark .glass-panel .text-gray-300,
-.dark .glass-panel .text-gray-400 {
+.dark .glass-panel .text-gray-400,
+.dark .glass-panel label {
   color: #94a3b8 !important;
 }
 

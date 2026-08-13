@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { api } from '../services/api.js';
+import { useAuth } from '../context/AuthContext.js';
 import { 
   Trophy, 
   ArrowLeft, 
@@ -25,6 +26,7 @@ interface TeammateInput {
 export const EditHackathon: React.FC = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { user } = useAuth();
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -72,6 +74,12 @@ export const EditHackathon: React.FC = () => {
       try {
         const hackathon = await api.get(`/hackathons/${id}`);
         
+        if (user && hackathon.user_id !== user.id) {
+          setError('Access denied: Only the team lead (creator) can edit this hackathon.');
+          setLoading(false);
+          return;
+        }
+
         setName(hackathon.name);
         setOrganizer(hackathon.organizer);
         setDescription(hackathon.description || '');

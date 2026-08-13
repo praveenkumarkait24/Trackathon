@@ -152,7 +152,7 @@ export const Profile: React.FC = () => {
   }
 
   return (
-    <div className="max-w-4xl mx-auto space-y-6 md:space-y-8 animate-slide-up select-none">
+    <div className="max-w-6xl mx-auto space-y-6 md:space-y-8 animate-slide-up select-none">
       {/* Header */}
       <div>
         <h1 className="text-3xl font-extrabold text-white font-outfit tracking-wide">Hacker Profile</h1>
@@ -266,7 +266,7 @@ export const Profile: React.FC = () => {
               <div className="space-y-1.5">
                 <label className="text-xs font-bold uppercase tracking-wider text-gray-400">Full Name *</label>
                 <div className="relative">
-                  <User className="absolute left-3 top-3.5 h-4.5 w-4.5 text-gray-500" />
+                  <User className="absolute left-3 top-1/2 -translate-y-1/2 h-4.5 w-4.5 text-gray-500 pointer-events-none" />
                   <input
                     type="text"
                     required
@@ -280,7 +280,7 @@ export const Profile: React.FC = () => {
               <div className="space-y-1.5">
                 <label className="text-xs font-bold uppercase tracking-wider text-gray-400">Phone Number</label>
                 <div className="relative">
-                  <Phone className="absolute left-3 top-3.5 h-4.5 w-4.5 text-gray-500" />
+                  <Phone className="absolute left-3 top-1/2 -translate-y-1/2 h-4.5 w-4.5 text-gray-500 pointer-events-none" />
                   <input
                     type="tel"
                     value={phoneNumber}
@@ -296,7 +296,7 @@ export const Profile: React.FC = () => {
               <div className="space-y-1.5">
                 <label className="text-xs font-bold uppercase tracking-wider text-gray-400">College / Institution</label>
                 <div className="relative">
-                  <BookOpen className="absolute left-3 top-3.5 h-4.5 w-4.5 text-gray-500" />
+                  <BookOpen className="absolute left-3 top-1/2 -translate-y-1/2 h-4.5 w-4.5 text-gray-500 pointer-events-none" />
                   <input
                     type="text"
                     value={college}
@@ -337,7 +337,7 @@ export const Profile: React.FC = () => {
               <div className="space-y-1.5">
                 <label className="text-xs font-bold uppercase tracking-wider text-gray-400">GitHub Profile URL</label>
                 <div className="relative">
-                  <Github className="absolute left-3 top-3.5 h-4.5 w-4.5 text-gray-500" />
+                  <Github className="absolute left-3 top-1/2 -translate-y-1/2 h-4.5 w-4.5 text-gray-500 pointer-events-none" />
                   <input
                     type="url"
                     value={githubProfile}
@@ -351,7 +351,7 @@ export const Profile: React.FC = () => {
               <div className="space-y-1.5">
                 <label className="text-xs font-bold uppercase tracking-wider text-gray-400">LinkedIn Profile URL</label>
                 <div className="relative">
-                  <Linkedin className="absolute left-3 top-3.5 h-4.5 w-4.5 text-gray-500" />
+                  <Linkedin className="absolute left-3 top-1/2 -translate-y-1/2 h-4.5 w-4.5 text-gray-500 pointer-events-none" />
                   <input
                     type="url"
                     value={linkedinProfile}

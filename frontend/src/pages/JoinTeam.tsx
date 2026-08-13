@@ -138,7 +138,7 @@ export const JoinTeam: React.FC = () => {
             <div className="space-y-2">
               <label className="text-xs font-bold uppercase tracking-wider text-gray-400">Select Your Role</label>
               <div className="relative">
-                <Briefcase className="absolute left-3 top-3.5 h-5 w-5 text-gray-500" />
+                <Briefcase className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-500 pointer-events-none" />
                 <select
                   value={role}
                   onChange={(e) => setRole(e.target.value)}
@@ -151,7 +151,7 @@ export const JoinTeam: React.FC = () => {
                     </option>
                   ))}
                 </select>
-                <div className="absolute right-3 top-4 pointer-events-none w-0 h-0 border-l-[5px] border-l-transparent border-r-[5px] border-r-transparent border-t-[5px] border-t-gray-500"></div>
+                <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none w-0 h-0 border-l-[5px] border-l-transparent border-r-[5px] border-r-transparent border-t-[5px] border-t-gray-500"></div>
               </div>
             </div>
 

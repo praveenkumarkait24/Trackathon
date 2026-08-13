@@ -350,23 +350,24 @@ export const HackathonDetails: React.FC = () => {
           <ArrowLeft size={18} className="group-hover:-translate-x-1 transition-transform" />
           <span>Back to Hackathons</span>
         </button>
-        <div className="flex flex-wrap gap-2.5">
-
-          <Link
-            to={`/hackathons/${id}/edit`}
-            className="flex items-center space-x-2 px-4 py-2.5 bg-indigoAccent/10 hover:bg-indigoAccent/20 text-indigo-300 hover:text-indigo-200 border border-indigoAccent/30 rounded-xl text-xs font-bold transition-all"
-          >
-            <Edit size={15} />
-            <span>Edit Details</span>
-          </Link>
-          <button
-            onClick={handleDelete}
-            className="flex items-center space-x-2 px-4 py-2.5 bg-red-500/10 hover:bg-red-500/20 text-red-400 rounded-xl text-xs font-bold transition-all"
-          >
-            <Trash2 size={15} />
-            <span>Delete</span>
-          </button>
-        </div>
+        {isOwner && (
+          <div className="flex flex-wrap gap-2.5">
+            <Link
+              to={`/hackathons/${id}/edit`}
+              className="flex items-center space-x-2 px-4 py-2.5 bg-indigoAccent/10 hover:bg-indigoAccent/20 text-indigo-300 hover:text-indigo-200 border border-indigoAccent/30 rounded-xl text-xs font-bold transition-all"
+            >
+              <Edit size={15} />
+              <span>Edit Details</span>
+            </Link>
+            <button
+              onClick={handleDelete}
+              className="flex items-center space-x-2 px-4 py-2.5 bg-red-500/10 hover:bg-red-500/20 text-red-400 rounded-xl text-xs font-bold transition-all"
+            >
+              <Trash2 size={15} />
+              <span>Delete</span>
+            </button>
+          </div>
+        )}
       </div>
 
       {/* Main Hackathon Intro Card */}
@@ -464,7 +465,9 @@ export const HackathonDetails: React.FC = () => {
 
               <div className="space-y-3">
                 <div className="flex justify-between items-center">
-                  <p className="text-xs font-bold text-gray-400 uppercase tracking-wider">Teammates ({hackathon.team_members?.length || 0})</p>
+                  <p className="text-xs font-bold text-gray-400 uppercase tracking-wider">
+                    Team Members ({(hackathon.team_members?.length || 0) + 1} / {hackathon.team_size || 1})
+                  </p>
                   {isOwner && !((hackathon.team_members?.length || 0) + 1 >= (hackathon.team_size || 1)) && (
                     <button
                       onClick={() => setTeammateModalOpen(true)}
@@ -475,36 +478,44 @@ export const HackathonDetails: React.FC = () => {
                     </button>
                   )}
                 </div>
-                {hackathon.team_members && hackathon.team_members.length > 0 ? (
-                  <div className="space-y-2 max-h-48 overflow-y-auto pr-1">
-                    {hackathon.team_members.map((mate: any, idx: number) => (
-                      <div key={idx} className="p-2.5 bg-white/5 border border-cardBorder rounded-xl flex items-start justify-between text-xs">
-                        <div>
-                          <p className="font-semibold text-gray-200">{mate.name}</p>
-                          <p className="text-[10px] text-gray-500 mt-0.5">{mate.email || 'No email'}</p>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                          {mate.role && (
-                            <span className="px-1.5 py-0.5 bg-cyan-500/10 text-cyan-400 rounded text-[9px] font-bold uppercase tracking-wider">
-                              {mate.role}
-                            </span>
-                          )}
-                          {isOwner && (
-                            <button
-                              onClick={() => handleDeleteTeammate(mate.id)}
-                              className="text-gray-500 hover:text-red-400 transition-colors p-0.5 shrink-0"
-                              title="Remove Teammate"
-                            >
-                              <Trash2 size={12} />
-                            </button>
-                          )}
-                        </div>
-                      </div>
-                    ))}
+                <div className="space-y-2 max-h-64 overflow-y-auto pr-1">
+                  {/* Team Lead (Creator) */}
+                  <div className="p-2.5 bg-indigo-500/5 border border-indigo-500/25 rounded-xl flex items-start justify-between text-xs animate-fade-in">
+                    <div>
+                      <p className="font-semibold text-gray-200">{hackathon.profiles?.full_name || 'Team Lead'}</p>
+                      <p className="text-[10px] text-gray-500 mt-0.5">Project Creator</p>
+                    </div>
+                    <span className="px-1.5 py-0.5 bg-indigoAccent text-white rounded text-[9px] font-bold uppercase tracking-wider">
+                      Team Lead
+                    </span>
                   </div>
-                ) : (
-                  <p className="text-xs text-gray-500 italic py-2">No teammates registered. Add or invite members to join.</p>
-                )}
+
+                  {/* Teammates List */}
+                  {hackathon.team_members && hackathon.team_members.map((mate: any, idx: number) => (
+                    <div key={idx} className="p-2.5 bg-white/5 border border-cardBorder rounded-xl flex items-start justify-between text-xs">
+                      <div>
+                        <p className="font-semibold text-gray-200">{mate.name}</p>
+                        <p className="text-[10px] text-gray-500 mt-0.5">{mate.email || 'No email'}</p>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        {mate.role && (
+                          <span className="px-1.5 py-0.5 bg-cyan-500/10 text-cyan-400 rounded text-[9px] font-bold uppercase tracking-wider">
+                            {mate.role}
+                          </span>
+                        )}
+                        {isOwner && (
+                          <button
+                            onClick={() => handleDeleteTeammate(mate.id)}
+                            className="text-gray-500 hover:text-red-400 transition-colors p-0.5 shrink-0"
+                            title="Remove Teammate"
+                          >
+                            <Trash2 size={12} />
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
 
               {/* Invite Link section for Team Lead */}
@@ -637,20 +648,26 @@ export const HackathonDetails: React.FC = () => {
                       </div>
 
                       {/* Dropdown to change Round status */}
-                      <select
-                        value={round.status}
-                        onChange={(e) => handleUpdateRoundStatus(round, e.target.value)}
-                        disabled={isUpdating}
-                        className="bg-[#0d1321] border border-cardBorder rounded-lg p-1 text-[10px] font-bold text-gray-300 focus:border-indigoAccent outline-none"
-                      >
-                        <option value="upcoming">Upcoming</option>
-                        <option value="ongoing">Ongoing</option>
-                        <option value="completed">Completed</option>
-                        <option value="qualified">Qualified</option>
-                        <option value="not_qualified">Not Qualified</option>
-                        <option value="skipped">Skipped</option>
-                        <option value="cancelled">Cancelled</option>
-                      </select>
+                      {isOwner ? (
+                        <select
+                          value={round.status}
+                          onChange={(e) => handleUpdateRoundStatus(round, e.target.value)}
+                          disabled={isUpdating}
+                          className="bg-[#0d1321] border border-cardBorder rounded-lg p-1 text-[10px] font-bold text-gray-300 focus:border-indigoAccent outline-none"
+                        >
+                          <option value="upcoming">Upcoming</option>
+                          <option value="ongoing">Ongoing</option>
+                          <option value="completed">Completed</option>
+                          <option value="qualified">Qualified</option>
+                          <option value="not_qualified">Not Qualified</option>
+                          <option value="skipped">Skipped</option>
+                          <option value="cancelled">Cancelled</option>
+                        </select>
+                      ) : (
+                        <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-white/5 border border-cardBorder text-gray-300">
+                          {round.status}
+                        </span>
+                      )}
                     </div>
 
                     {round.description && <p className="text-xs text-gray-400">{round.description}</p>}
@@ -678,7 +695,7 @@ export const HackathonDetails: React.FC = () => {
                     </div>
 
                     {/* Delete Round Node (allowed only for the last round) */}
-                    {isLastRound && (
+                    {isLastRound && isOwner && (
                       <div className="flex justify-end pt-2 border-t border-cardBorder/20">
                         <button
                           onClick={() => handleDeleteRound(round.id)}
