@@ -27,6 +27,7 @@ import {
   Cell, 
   Legend 
 } from 'recharts';
+import { LoadingSpinner } from '../components/LoadingSpinner.js';
 
 export const Dashboard: React.FC = () => {
   const [hackathons, setHackathons] = useState<any[]>(() => {
@@ -58,12 +59,7 @@ export const Dashboard: React.FC = () => {
 
 
   if (loading) {
-    return (
-      <div className="flex flex-col items-center justify-center min-h-[60vh] space-y-4">
-        <div className="w-12 h-12 border-4 border-indigoAccent border-t-transparent rounded-full animate-spin"></div>
-        <p className="text-gray-400 text-sm animate-pulse">Assembling dashboard data...</p>
-      </div>
-    );
+    return <LoadingSpinner />;
   }
 
   if (error) {

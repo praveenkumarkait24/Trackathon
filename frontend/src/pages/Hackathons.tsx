@@ -14,6 +14,7 @@ import {
   AlertCircle,
   Plus
 } from 'lucide-react';
+import { LoadingSpinner } from '../components/LoadingSpinner.js';
 
 export const Hackathons: React.FC = () => {
   const [hackathons, setHackathons] = useState<any[]>(() => {
@@ -236,10 +237,7 @@ export const Hackathons: React.FC = () => {
         {/* Main Grid Content */}
         <div className="flex-1 w-full">
           {loading ? (
-            <div className="flex flex-col items-center justify-center py-20 space-y-4">
-              <div className="w-10 h-10 border-4 border-indigoAccent border-t-transparent rounded-full animate-spin"></div>
-              <p className="text-gray-400 text-xs animate-pulse">Searching matching records...</p>
-            </div>
+            <LoadingSpinner />
           ) : error ? (
             <div className="p-8 text-center glass-panel rounded-2xl border border-red-500/20 max-w-md mx-auto space-y-3">
               <AlertCircle className="h-10 w-10 text-red-400 mx-auto" />

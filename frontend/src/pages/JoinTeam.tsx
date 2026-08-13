@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { api } from '../services/api.js';
 import { useAuth } from '../context/AuthContext.js';
 import { Trophy, AlertTriangle, Users, Briefcase, ArrowRight, Home } from 'lucide-react';
+import { LoadingSpinner } from '../components/LoadingSpinner.js';
 
 export const JoinTeam: React.FC = () => {
   const { id } = useParams();
@@ -64,12 +65,7 @@ export const JoinTeam: React.FC = () => {
   };
 
   if (loading) {
-    return (
-      <div className="min-h-screen bg-darkBg flex flex-col items-center justify-center space-y-4 select-none">
-        <div className="w-10 h-10 border-4 border-indigoAccent border-t-transparent rounded-full animate-spin"></div>
-        <p className="text-gray-500 text-xs">Fetching team invitation details...</p>
-      </div>
-    );
+    return <LoadingSpinner />;
   }
 
   return (

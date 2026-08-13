@@ -10,6 +10,7 @@ import {
   MapPin,
   HelpCircle
 } from 'lucide-react';
+import { LoadingSpinner } from '../components/LoadingSpinner.js';
 
 interface EventItem {
   hackathonId: string;
@@ -151,12 +152,7 @@ export const Calendar: React.FC = () => {
   const monthName = currentDate.toLocaleString('default', { month: 'long' });
 
   if (loading) {
-    return (
-      <div className="flex flex-col items-center justify-center min-h-[60vh] space-y-4">
-        <div className="w-12 h-12 border-4 border-indigoAccent border-t-transparent rounded-full animate-spin"></div>
-        <p className="text-gray-400 text-sm">Building calendar cells...</p>
-      </div>
-    );
+    return <LoadingSpinner />;
   }
 
   return (

@@ -11,9 +11,9 @@ import {
   Check, 
   AlertTriangle,
   ArrowRight,
-  User,
-  Upload
+  User
 } from 'lucide-react';
+import { LoadingSpinner } from '../components/LoadingSpinner.js';
 
 interface Preferences {
   push_enabled: boolean;
@@ -38,9 +38,6 @@ export const Settings: React.FC = () => {
   // Profile fields state
   const [fullName, setFullName] = useState('');
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
-  const [uploadingAvatar, setUploadingAvatar] = useState(false);
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
 
   // Offset options mapped to minutes
   const offsetOptions = [
@@ -62,17 +59,7 @@ export const Settings: React.FC = () => {
     }
   }, []);
 
-  const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      const file = e.target.files[0];
-      if (file.size > 2 * 1024 * 1024) {
-        alert('File size exceeds 2MB limit.');
-        return;
-      }
-      setSelectedFile(file);
-      setAvatarPreview(URL.createObjectURL(file));
-    }
-  };
+
 
   useEffect(() => {
     const fetchSettings = async () => {
@@ -153,42 +140,20 @@ export const Settings: React.FC = () => {
 
       // Name is read-only in settings, no PUT update required
 
-      // 4. Put profile picture if selected
-      if (selectedFile) {
-        setUploadingAvatar(true);
-        const formData = new FormData();
-        formData.append('file', selectedFile);
-        const res = await api.post('/profile/avatar', formData, true);
-        setAvatarUrl(res.avatar_url);
-        setSelectedFile(null);
-        setAvatarPreview(null);
-      }
-
       setSuccess(true);
       setTimeout(() => setSuccess(false), 3000);
-      
-      // Reload layout to reflect avatar and name in top header
-      setTimeout(() => {
-        window.location.reload();
-      }, 500);
     } catch (err) {
       console.error('Failed to save settings:', err);
       alert('Failed to save preferences.');
     } finally {
       setSaving(false);
-      setUploadingAvatar(false);
     }
   };
 
 
 
   if (loading) {
-    return (
-      <div className="flex flex-col items-center justify-center min-h-[60vh] space-y-4">
-        <div className="w-12 h-12 border-4 border-indigoAccent border-t-transparent rounded-full animate-spin"></div>
-        <p className="text-gray-400 text-sm">Loading configuration...</p>
-      </div>
-    );
+    return <LoadingSpinner />;
   }
 
   return (
@@ -220,33 +185,11 @@ export const Settings: React.FC = () => {
             {/* Avatar block */}
             <div className="flex flex-col items-center space-y-3 shrink-0">
               <div className="w-20 h-20 rounded-full bg-gradient-to-br from-indigo-500 to-cyan-400 relative overflow-hidden flex items-center justify-center font-bold text-white text-2xl shadow-glow">
-                {avatarPreview || avatarUrl ? (
-                  <img src={avatarPreview || avatarUrl || undefined} alt="Avatar" className="w-full h-full object-cover" />
+                {avatarUrl ? (
+                  <img src={avatarUrl} alt="Avatar" className="w-full h-full object-cover" />
                 ) : (
                   <span>{fullName.charAt(0).toUpperCase() || 'S'}</span>
                 )}
-                {uploadingAvatar && (
-                  <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
-                    <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                  </div>
-                )}
-              </div>
-              <div>
-                <input
-                  type="file"
-                  id="settings-avatar-input"
-                  accept="image/jpeg,image/png,image/webp"
-                  onChange={handleAvatarChange}
-                  className="hidden"
-                  disabled={uploadingAvatar}
-                />
-                <label 
-                  htmlFor="settings-avatar-input"
-                  className="flex items-center space-x-1.5 px-3 py-1.5 bg-white/5 hover:bg-white/10 border border-cardBorder hover:border-gray-600 rounded-xl text-[10px] font-bold cursor-pointer transition-colors"
-                >
-                  <Upload size={11} />
-                  <span>Change Photo</span>
-                </label>
               </div>
             </div>
 
