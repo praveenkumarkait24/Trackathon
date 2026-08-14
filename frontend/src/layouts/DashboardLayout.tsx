@@ -252,13 +252,6 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) =>
             >
               <Menu size={18} />
             </button>
-            {/* Breadcrumb-style page indicator */}
-            <div className="hidden lg:flex items-center space-x-2 text-sm">
-              <span className="text-indigo-400">✦</span>
-              <span className="font-semibold text-slate-700 dark:text-gray-300 capitalize">
-                {location.pathname === '/' ? 'Dashboard' : location.pathname.replace('/','').split('/')[0].charAt(0).toUpperCase() + location.pathname.replace('/','').split('/')[0].slice(1)}
-              </span>
-            </div>
           </div>
 
           <div className="flex items-center space-x-3">
