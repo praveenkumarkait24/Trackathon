@@ -138,26 +138,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) =>
         </nav>
 
         {/* User profile section & logout */}
-        <div className="p-4 border-t border-cardBorder space-y-3">
-          <div className="flex items-center space-x-3 px-2 py-2 rounded-xl bg-indigo-50/60 dark:bg-white/5">
-            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-indigo-500 to-cyan-400 flex items-center justify-center font-bold text-white shadow-glow overflow-hidden ring-2 ring-indigo-200 dark:ring-indigo-900">
-              {user?.user_metadata?.avatar_url || user?.user_metadata?.picture ? (
-                <img 
-                  src={user.user_metadata.avatar_url || user.user_metadata.picture} 
-                  alt="Avatar" 
-                  className="w-full h-full object-cover" 
-                />
-              ) : (
-                user?.email?.charAt(0).toUpperCase() || 'S'
-              )}
-            </div>
-            <div className="flex-1 min-w-0">
-              <p className="text-sm font-bold truncate text-slate-800 dark:text-gray-100">
-                {user?.user_metadata?.full_name || 'Student'}
-              </p>
-              <p className="text-xs text-slate-500 dark:text-gray-500 truncate">{user?.email}</p>
-            </div>
-          </div>
+        <div className="p-4 border-t border-cardBorder">
           <button
             onClick={handleLogout}
             className="w-full flex items-center space-x-3 px-4 py-2.5 text-rose-500 hover:bg-rose-50 dark:hover:bg-red-500/10 rounded-xl transition-all duration-200 font-semibold text-sm border border-transparent hover:border-rose-200 dark:hover:border-red-500/20 group"
@@ -208,26 +189,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) =>
               })}
             </nav>
 
-            <div className="border-t border-cardBorder pt-4 space-y-4">
-              <div className="flex items-center space-x-3">
-                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-indigo-500 to-cyan-400 flex items-center justify-center font-bold text-white shadow-glow overflow-hidden">
-                  {user?.user_metadata?.avatar_url || user?.user_metadata?.picture ? (
-                    <img 
-                      src={user.user_metadata.avatar_url || user.user_metadata.picture} 
-                      alt="Avatar" 
-                      className="w-full h-full object-cover" 
-                    />
-                  ) : (
-                    user?.email?.charAt(0).toUpperCase() || 'S'
-                  )}
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-semibold truncate text-gray-200">
-                    {user?.user_metadata?.full_name || 'Student'}
-                  </p>
-                  <p className="text-xs text-gray-500 truncate">{user?.email}</p>
-                </div>
-              </div>
+            <div className="border-t border-cardBorder pt-4">
               <button
                 onClick={handleLogout}
                 className="w-full flex items-center space-x-3 px-4 py-3 text-red-400 hover:bg-red-500/10 rounded-xl transition-colors font-medium border border-transparent"
@@ -252,23 +214,6 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) =>
             >
               <Menu size={18} />
             </button>
-          </div>
-
-          <div className="flex items-center space-x-3">
-            <div className="flex items-center space-x-2.5 bg-indigo-50/80 dark:bg-white/5 rounded-xl px-3 py-1.5">
-              <div className="w-7 h-7 rounded-full bg-gradient-to-br from-indigo-500 to-cyan-400 flex items-center justify-center font-bold text-white text-xs overflow-hidden ring-2 ring-white dark:ring-indigo-900 shadow-sm">
-                {user?.user_metadata?.avatar_url || user?.user_metadata?.picture ? (
-                  <img 
-                    src={user.user_metadata.avatar_url || user.user_metadata.picture} 
-                    alt="Avatar" 
-                    className="w-full h-full object-cover" 
-                  />
-                ) : (
-                  user?.email?.charAt(0).toUpperCase() || 'S'
-                )}
-              </div>
-              <span className="font-semibold text-sm text-slate-700 dark:text-gray-300">{user?.user_metadata?.full_name || 'Student'}</span>
-            </div>
           </div>
         </header>
 
