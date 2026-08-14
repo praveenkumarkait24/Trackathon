@@ -113,33 +113,6 @@ export const Hackathons: React.FC = () => {
         </Link>
       </div>
 
-      {/* Colorful Status Tabs */}
-      <div className="flex flex-wrap gap-2 items-center">
-        {[
-          { label: 'All Events', value: '', activeBg: 'bg-indigo-500/20 text-indigo-300 border-indigo-500/40 shadow-indigo-500/10' },
-          { label: '⚡ Ongoing', value: 'ongoing', activeBg: 'bg-emerald-500/25 text-emerald-300 border-emerald-500/50 shadow-emerald-500/20 animate-pulse' },
-          { label: '🚀 Upcoming / Registered', value: 'upcoming', activeBg: 'bg-cyan-500/25 text-cyan-300 border-cyan-500/50 shadow-cyan-500/20' },
-          { label: '✅ Completed', value: 'completed', activeBg: 'bg-violet-500/25 text-violet-300 border-violet-500/50 shadow-violet-500/20' },
-          { label: '❌ Cancelled', value: 'cancelled', activeBg: 'bg-rose-500/25 text-rose-300 border-rose-500/50 shadow-rose-500/20' },
-        ].map((tab) => {
-          const isActive = status === tab.value;
-          return (
-            <button
-              key={tab.label}
-              type="button"
-              onClick={() => setStatus(tab.value)}
-              className={`px-4 py-2 rounded-xl text-xs font-extrabold border transition-all duration-200 shadow-sm ${
-                isActive
-                  ? `${tab.activeBg} scale-[1.03] ring-2 ring-indigo-500/40 shadow-glow`
-                  : 'bg-white/5 border-cardBorder text-gray-400 hover:text-gray-200 hover:bg-white/10'
-              }`}
-            >
-              {tab.label}
-            </button>
-          );
-        })}
-      </div>
-
       {/* Filter and Search Bar */}
       <div className="glass-panel p-4 rounded-2xl border border-cardBorder space-y-4 max-w-2xl">
         <form onSubmit={handleSearchSubmit} className="flex gap-2">
