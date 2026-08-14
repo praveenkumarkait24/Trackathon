@@ -802,14 +802,14 @@ export const HackathonDetails: React.FC = () => {
             <button
               onClick={() => setRoundModalOpen(true)}
               disabled={!canAddRound}
-              className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+              className={`flex items-center space-x-1.5 px-3.5 py-2 rounded-xl text-xs font-extrabold transition-all shadow-md ${
                 canAddRound
-                  ? 'bg-indigoAccent hover:bg-indigo-600 text-white shadow-glow'
+                  ? 'bg-emerald-600 hover:bg-emerald-500 text-white shadow-emerald-500/20 hover:scale-[1.02]'
                   : 'bg-gray-800 text-gray-500 cursor-not-allowed border border-cardBorder'
               }`}
               title={!canAddRound ? `Reached total rounds limit (${limit} rounds). You can increase this in Edit Details.` : ''}
             >
-              <Plus size={14} />
+              <Plus size={15} />
               <span>Add Round</span>
             </button>
           </div>
@@ -818,7 +818,7 @@ export const HackathonDetails: React.FC = () => {
           <div className="space-y-8 relative pl-6 before:absolute before:left-[11px] before:top-2 before:bottom-2 before:w-[2px] before:bg-cardBorder">
             {/* Registration Deadline node */}
             <div className="relative animate-fade-in">
-              <div className="absolute -left-[20px] top-1 w-3.5 h-3.5 rounded-full bg-indigo-500 border-2 border-darkBg shadow-glow"></div>
+              <div className="absolute -left-[20px] top-1 w-3.5 h-3.5 rounded-full bg-emerald-500 border-2 border-darkBg shadow-glow"></div>
               <div className="p-4 bg-white/5 border border-cardBorder rounded-xl flex justify-between items-center">
                 <div>
                   <h4 className="text-xs font-bold text-gray-400 uppercase tracking-wider">Registration Deadline</h4>
@@ -828,10 +828,10 @@ export const HackathonDetails: React.FC = () => {
                       : 'No deadline set'}
                   </p>
                 </div>
-                <span className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded ${
+                <span className={`text-[10px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-lg border shadow-sm ${
                   hackathon.registration_deadline && new Date(hackathon.registration_deadline) < new Date()
-                    ? 'bg-gray-500/10 text-gray-400'
-                    : 'bg-indigo-500/10 text-indigo-400'
+                    ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40'
+                    : 'bg-cyan-500/20 text-cyan-300 border-cyan-500/40'
                 }`}>
                   {hackathon.registration_deadline && new Date(hackathon.registration_deadline) < new Date() ? 'Completed' : 'Upcoming'}
                 </span>
@@ -877,18 +877,30 @@ export const HackathonDetails: React.FC = () => {
                           value={round.status}
                           onChange={(e) => handleUpdateRoundStatus(round, e.target.value)}
                           disabled={isUpdating}
-                          className="bg-[#0d1321] border border-cardBorder rounded-lg p-1 text-[10px] font-bold text-gray-300 focus:border-indigoAccent outline-none"
+                          className={`border rounded-xl px-3 py-1.5 text-xs font-black outline-none transition-all cursor-pointer ${
+                            round.status === 'ongoing' || round.status === 'completed' || round.status === 'qualified'
+                              ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/50 shadow-emerald-500/10'
+                              : round.status === 'not_qualified' || round.status === 'cancelled'
+                              ? 'bg-rose-500/20 text-rose-300 border-rose-500/50 shadow-rose-500/10'
+                              : 'bg-cyan-500/20 text-cyan-300 border-cyan-500/50 shadow-cyan-500/10'
+                          }`}
                         >
-                          <option value="upcoming">Upcoming</option>
-                          <option value="ongoing">Ongoing</option>
-                          <option value="completed">Completed</option>
-                          <option value="qualified">Qualified</option>
-                          <option value="not_qualified">Not Qualified</option>
-                          <option value="skipped">Skipped</option>
-                          <option value="cancelled">Cancelled</option>
+                          <option value="upcoming" className="bg-[#0d1321] text-cyan-300 font-bold">Upcoming</option>
+                          <option value="ongoing" className="bg-[#0d1321] text-emerald-300 font-bold">Ongoing</option>
+                          <option value="completed" className="bg-[#0d1321] text-emerald-300 font-bold">Completed</option>
+                          <option value="qualified" className="bg-[#0d1321] text-emerald-300 font-bold">Qualified</option>
+                          <option value="not_qualified" className="bg-[#0d1321] text-rose-300 font-bold">Not Qualified</option>
+                          <option value="skipped" className="bg-[#0d1321] text-gray-400 font-bold">Skipped</option>
+                          <option value="cancelled" className="bg-[#0d1321] text-rose-300 font-bold">Cancelled</option>
                         </select>
                       ) : (
-                        <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-white/5 border border-cardBorder text-gray-300">
+                        <span className={`px-2.5 py-1 rounded-lg text-xs font-black uppercase tracking-wider border ${
+                          round.status === 'ongoing' || round.status === 'completed' || round.status === 'qualified'
+                            ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40'
+                            : round.status === 'not_qualified' || round.status === 'cancelled'
+                            ? 'bg-rose-500/20 text-rose-300 border-rose-500/40'
+                            : 'bg-cyan-500/20 text-cyan-300 border-cyan-500/40'
+                        }`}>
                           {round.status}
                         </span>
                       )}
@@ -947,9 +959,10 @@ export const HackathonDetails: React.FC = () => {
                       <div className="flex justify-end pt-2 border-t border-cardBorder/20">
                         <button
                           onClick={() => handleDeleteRound(round.id)}
-                          className="text-[10px] text-red-400 hover:text-red-300 font-bold transition-colors"
+                          className="px-3 py-1 bg-rose-500/15 hover:bg-rose-500/25 text-rose-400 border border-rose-500/30 rounded-lg text-xs font-bold transition-all flex items-center space-x-1 hover:scale-105"
                         >
-                          Delete Round
+                          <Trash2 size={12} />
+                          <span>Delete Round</span>
                         </button>
                       </div>
                     )}
@@ -969,7 +982,7 @@ export const HackathonDetails: React.FC = () => {
             </h3>
             <button
               onClick={() => setAchievementModalOpen(true)}
-              className="text-xs text-indigo-400 hover:text-indigo-300 font-bold transition-colors"
+              className="px-3 py-1 bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/40 rounded-lg text-xs font-extrabold transition-all shadow-sm"
             >
               {hackathon.achievements ? 'Edit' : 'Record'}
             </button>
@@ -1048,11 +1061,11 @@ export const HackathonDetails: React.FC = () => {
             </div>
           ) : (
             <div className="flex flex-col items-center justify-center py-10 text-center text-gray-500 space-y-3">
-              <Award size={32} className="text-amber-500/10" />
-              <p className="text-xs">This hackathon result has not been recorded yet.</p>
+              <Award size={32} className="text-amber-500/20" />
+              <p className="text-xs text-gray-400 font-medium">This hackathon result has not been recorded yet.</p>
               <button 
                 onClick={() => setAchievementModalOpen(true)}
-                className="px-4 py-2 bg-indigoAccent/10 text-indigo-300 border border-indigoAccent/20 hover:bg-indigoAccent/20 rounded-xl text-xs font-bold transition-all"
+                className="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-extrabold transition-all shadow-md shadow-emerald-500/20 hover:scale-[1.02]"
               >
                 Record Achievement Result
               </button>
