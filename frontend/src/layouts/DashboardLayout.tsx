@@ -102,8 +102,8 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) =>
         {/* Logo */}
         <div className="px-6 py-5 border-b border-cardBorder">
           <Link to="/" className="flex items-center space-x-2.5 group">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-500 to-cyan-400 flex items-center justify-center shadow-glow group-hover:shadow-glow-lg transition-all duration-300">
-              <img src="/favicon.png" alt="Trackathon Logo" className="h-5 w-5 object-contain" />
+            <div className="w-9 h-9 rounded-full overflow-hidden flex items-center justify-center shadow-glow group-hover:shadow-glow-lg transition-all duration-300 ring-2 ring-indigo-500/30">
+              <img src="/favicon.png" alt="Trackathon Logo" className="w-full h-full object-cover" />
             </div>
             <span className="text-2xl font-extrabold bg-gradient-to-r from-indigo-500 via-violet-500 to-cyan-400 bg-clip-text text-transparent font-outfit tracking-wide">
               Trackathon

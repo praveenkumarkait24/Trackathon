@@ -104,7 +104,9 @@ export const Register: React.FC = () => {
       <div className="w-full max-w-md glass-panel p-8 rounded-2xl border border-cardBorder shadow-2xl relative z-10 animate-slide-up">
         {/* Header Branding */}
         <div className="flex flex-col items-center mb-6">
-          <img src="/favicon.png" alt="Trackathon Logo" className="w-14 h-14 object-contain mb-4 filter drop-shadow-[0_0_10px_rgba(79,70,229,0.3)]" />
+          <div className="w-16 h-16 rounded-full overflow-hidden flex items-center justify-center shadow-glow-lg mb-4 ring-2 ring-indigo-500/30">
+            <img src="/favicon.png" alt="Trackathon Logo" className="w-full h-full object-cover" />
+          </div>
           <h1 className="text-3xl font-extrabold text-white font-outfit tracking-wide text-center">
             Create Account
           </h1>

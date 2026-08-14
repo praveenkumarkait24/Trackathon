@@ -64,8 +64,8 @@ export const Login: React.FC = () => {
       <div className="w-full max-w-md glass-panel p-8 rounded-3xl border border-indigo-100 dark:border-cardBorder shadow-card-hover relative z-10 animate-slide-up">
         {/* Header Branding */}
         <div className="flex flex-col items-center mb-8">
-          <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-indigo-500 to-cyan-400 flex items-center justify-center shadow-glow-lg mb-4 animate-float">
-            <img src="/favicon.png" alt="Trackathon Logo" className="w-9 h-9 object-contain" />
+          <div className="w-16 h-16 rounded-full overflow-hidden flex items-center justify-center shadow-glow-lg mb-4 ring-2 ring-indigo-500/30 animate-float">
+            <img src="/favicon.png" alt="Trackathon Logo" className="w-full h-full object-cover" />
           </div>
           <h1 className="text-3xl font-extrabold font-outfit tracking-wide text-center bg-gradient-to-r from-indigo-600 via-violet-500 to-cyan-500 bg-clip-text text-transparent">
             Welcome Back
