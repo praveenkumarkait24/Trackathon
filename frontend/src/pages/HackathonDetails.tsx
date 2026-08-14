@@ -750,77 +750,7 @@ export const HackathonDetails: React.FC = () => {
                     </div>
                   </div>
 
-                  {/* Invite via email form */}
-                  <form onSubmit={handleSendInviteEmail} className="space-y-1">
-                    <p className="text-[10px] font-bold text-indigo-500 uppercase tracking-wider">Invite via Email</p>
-                    <div className="flex gap-2">
-                      <input
-                        type="email"
-                        required
-                        placeholder="teammate@email.com"
-                        value={inviteEmail}
-                        onChange={(e) => setInviteEmail(e.target.value)}
-                        className="w-full bg-indigo-50/50 dark:bg-[#0d1321]/60 border border-indigo-100 dark:border-cardBorder rounded-xl py-2 px-3 text-xs text-slate-800 dark:text-gray-300 outline-none focus:border-indigo-400"
-                      />
-                      <button
-                        type="submit"
-                        disabled={sendingInvite || !inviteEmail.trim()}
-                        className="px-3 py-2 bg-indigoAccent hover:bg-indigo-600 text-white rounded-xl text-xs font-bold transition-all shrink-0 disabled:opacity-50"
-                      >
-                        {sendingInvite ? 'Sending…' : 'Invite'}
-                      </button>
-                    </div>
-                  </form>
 
-                  {/* ── Remove Member by Email ── */}
-                  <div className="pt-2 border-t border-rose-100 dark:border-rose-500/10 space-y-2">
-                    <div className="flex items-center justify-between">
-                      <p className="text-[10px] font-bold text-rose-500 uppercase tracking-wider flex items-center space-x-1">
-                        <UserMinus size={11} />
-                        <span>Remove Member by Email</span>
-                      </p>
-                      <button
-                        onClick={() => { setRemovePanelOpen(v => !v); setRemoveError(null); setRemoveSuccess(null); }}
-                        className="text-[10px] font-bold text-rose-400 hover:text-rose-300 transition-colors"
-                      >
-                        {removePanelOpen ? 'Hide' : 'Open'}
-                      </button>
-                    </div>
-
-                    {removePanelOpen && (
-                      <form onSubmit={handleRemoveByEmail} className="space-y-2 animate-scale-in">
-                        <div className="flex gap-2">
-                          <input
-                            type="email"
-                            required
-                            placeholder="member@email.com"
-                            value={removeEmail}
-                            onChange={(e) => setRemoveEmail(e.target.value)}
-                            className="w-full bg-rose-50/50 dark:bg-red-950/20 border border-rose-200 dark:border-rose-500/20 rounded-xl py-2 px-3 text-xs text-slate-800 dark:text-gray-300 outline-none focus:border-rose-400"
-                          />
-                          <button
-                            type="submit"
-                            disabled={removing || !removeEmail.trim()}
-                            className="px-3 py-2 bg-rose-500 hover:bg-rose-600 text-white rounded-xl text-xs font-bold transition-all shrink-0 disabled:opacity-50 flex items-center space-x-1"
-                          >
-                            {removing ? 'Removing…' : <><UserMinus size={12} /><span>Remove</span></>}
-                          </button>
-                        </div>
-                        {removeError && (
-                          <p className="text-xs text-rose-500 flex items-center space-x-1">
-                            <AlertTriangle size={11} />
-                            <span>{removeError}</span>
-                          </p>
-                        )}
-                        {removeSuccess && (
-                          <p className="text-xs text-emerald-500 flex items-center space-x-1">
-                            <Check size={11} />
-                            <span>{removeSuccess}</span>
-                          </p>
-                        )}
-                      </form>
-                    )}
-                  </div>
                 </div>
               )}
 
