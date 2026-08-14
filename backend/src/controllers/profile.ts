@@ -23,6 +23,13 @@ export const getProfile = async (req: AuthenticatedRequest, res: Response) => {
       return res.status(401).json({ error: 'Unauthorized: Session missing' });
     }
 
+    const userMetadata = req.user?.user_metadata || {};
+    const fallbackName =
+      userMetadata.full_name ||
+      userMetadata.name ||
+      (req.user?.email ? req.user.email.split('@')[0] : 'User');
+    const fallbackAvatar = userMetadata.avatar_url || userMetadata.picture || null;
+
     const { data, error } = await supabaseAdmin
       .from('profiles')
       .select('*')
@@ -34,10 +41,45 @@ export const getProfile = async (req: AuthenticatedRequest, res: Response) => {
     }
 
     if (!data) {
-      return res.status(404).json({ error: 'Profile not found' });
+      // Auto-create initial profile row from auth user metadata
+      const { data: newProfile, error: createError } = await supabaseAdmin
+        .from('profiles')
+        .upsert({
+          id: userId,
+          full_name: fallbackName,
+          avatar_url: fallbackAvatar,
+          updated_at: new Date().toISOString()
+        })
+        .select()
+        .maybeSingle();
+
+      if (!createError && newProfile) {
+        return res.json(newProfile);
+      }
+
+      // If DB upsert failed or is constrained, return fallback object
+      return res.json({
+        id: userId,
+        full_name: fallbackName,
+        avatar_url: fallbackAvatar,
+        college: null,
+        department: null,
+        academic_year: null,
+        phone_number: null,
+        github_profile: null,
+        linkedin_profile: null,
+        skills: []
+      });
     }
 
-    res.json(data);
+    // Ensure full_name and avatar_url fall back to auth metadata if missing in DB
+    const resultProfile = {
+      ...data,
+      full_name: data.full_name || fallbackName,
+      avatar_url: data.avatar_url || fallbackAvatar
+    };
+
+    res.json(resultProfile);
   } catch (err: any) {
     res.status(500).json({ error: err.message });
   }
@@ -54,11 +96,11 @@ export const updateProfile = async (req: AuthenticatedRequest, res: Response) =>
 
     const { data, error } = await supabaseAdmin
       .from('profiles')
-      .update({
+      .upsert({
+        id: userId,
         ...profileData,
         updated_at: new Date().toISOString()
       })
-      .eq('id', userId)
       .select()
       .single();
 

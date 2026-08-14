@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { api } from '../services/api.js';
+import { useAuth } from '../context/AuthContext.js';
 import { subscribeUserToPush } from '../utils/pushHelper.js';
 import { 
   Bell, 
@@ -23,6 +24,14 @@ interface Preferences {
 }
 
 export const Settings: React.FC = () => {
+  const { user } = useAuth();
+  const authName =
+    user?.user_metadata?.full_name ||
+    user?.user_metadata?.name ||
+    (user?.email ? user.email.split('@')[0] : '');
+  const authAvatar = user?.user_metadata?.avatar_url || user?.user_metadata?.picture || null;
+  const userEmail = user?.email || '';
+
   const [prefs, setPrefs] = useState<Preferences>({
     push_enabled: true,
     email_enabled: true,
@@ -33,11 +42,10 @@ export const Settings: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [success, setSuccess] = useState(false);
-  const [googleConnected, setGoogleConnected] = useState(false);
 
   // Profile fields state
-  const [fullName, setFullName] = useState('');
-  const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
+  const [fullName, setFullName] = useState(authName);
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(authAvatar);
 
   // Offset options mapped to minutes
   const offsetOptions = [
@@ -59,33 +67,41 @@ export const Settings: React.FC = () => {
     }
   }, []);
 
-
-
   useEffect(() => {
     const fetchSettings = async () => {
       try {
-        const preferences = await api.get('/settings/notifications');
-        setPrefs({
-          push_enabled: preferences.push_enabled,
-          email_enabled: preferences.email_enabled,
-          calendar_sync_enabled: preferences.calendar_sync_enabled,
-          reminder_offsets: preferences.reminder_offsets || [1440]
-        });
+        try {
+          const preferences = await api.get('/settings/notifications');
+          if (preferences) {
+            setPrefs({
+              push_enabled: preferences.push_enabled ?? true,
+              email_enabled: preferences.email_enabled ?? true,
+              calendar_sync_enabled: preferences.calendar_sync_enabled ?? true,
+              reminder_offsets: preferences.reminder_offsets || [1440]
+            });
+          }
+        } catch (err) {
+          console.error('Failed to load notification settings:', err);
+        }
 
-        // Check if google connection exists (returns profile object directly)
-        const googleConn = await api.get('/profile'); 
-        setFullName(googleConn.full_name || '');
-        setAvatarUrl(googleConn.avatar_url || null);
-        setGoogleConnected(!!preferences.user_id);
-      } catch (err) {
-        console.error('Failed to load settings:', err);
+        try {
+          const profile = await api.get('/profile');
+          if (profile) {
+            setFullName(profile.full_name || authName);
+            setAvatarUrl(profile.avatar_url || authAvatar);
+          }
+        } catch (err) {
+          console.error('Failed to load user profile details:', err);
+          setFullName(authName);
+          setAvatarUrl(authAvatar);
+        }
       } finally {
         setLoading(false);
       }
     };
 
     fetchSettings();
-  }, []);
+  }, [user]);
 
   const handleTogglePref = (field: keyof Preferences) => {
     setPrefs(prev => ({
@@ -185,28 +201,44 @@ export const Settings: React.FC = () => {
             {/* Avatar block */}
             <div className="flex flex-col items-center space-y-3 shrink-0">
               <div className="w-20 h-20 rounded-full bg-gradient-to-br from-indigo-500 to-cyan-400 relative overflow-hidden flex items-center justify-center font-bold text-white text-2xl shadow-glow">
-                {avatarUrl ? (
-                  <img src={avatarUrl} alt="Avatar" className="w-full h-full object-cover" />
+                {avatarUrl || authAvatar ? (
+                  <img src={avatarUrl || authAvatar || ''} alt="Avatar" className="w-full h-full object-cover" />
                 ) : (
-                  <span>{fullName.charAt(0).toUpperCase() || 'S'}</span>
+                  <span>{(fullName || authName || 'U').charAt(0).toUpperCase()}</span>
                 )}
               </div>
             </div>
 
             {/* Form Fields block */}
             <div className="flex-1 w-full space-y-4">
-              <div className="space-y-1.5">
-                <label className="text-xs font-bold uppercase tracking-wider text-gray-400">Full Name</label>
-                <div className="relative flex items-center">
-                  <User className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-500" />
-                  <input
-                    type="text"
-                    required
-                    value={fullName}
-                    disabled={true}
-                    className="w-full bg-[#0d1321]/30 border border-cardBorder rounded-xl py-2.5 pl-10 pr-4 text-sm text-slate-500 dark:text-gray-400 opacity-60 cursor-not-allowed outline-none select-none"
-                    placeholder="Full Name"
-                  />
+              <div className="grid sm:grid-cols-2 gap-4">
+                <div className="space-y-1.5">
+                  <label className="text-xs font-bold uppercase tracking-wider text-gray-400">Full Name</label>
+                  <div className="relative flex items-center">
+                    <User className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-500" />
+                    <input
+                      type="text"
+                      required
+                      value={fullName || authName}
+                      disabled={true}
+                      className="w-full bg-[#0d1321]/50 border border-cardBorder rounded-xl py-2.5 pl-10 pr-4 text-sm text-slate-800 dark:text-gray-200 opacity-90 cursor-not-allowed outline-none select-none"
+                      placeholder="Full Name"
+                    />
+                  </div>
+                </div>
+
+                <div className="space-y-1.5">
+                  <label className="text-xs font-bold uppercase tracking-wider text-gray-400">Email Address</label>
+                  <div className="relative flex items-center">
+                    <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-500" />
+                    <input
+                      type="email"
+                      value={userEmail}
+                      disabled={true}
+                      className="w-full bg-[#0d1321]/50 border border-cardBorder rounded-xl py-2.5 pl-10 pr-4 text-sm text-slate-800 dark:text-gray-200 opacity-90 cursor-not-allowed outline-none select-none"
+                      placeholder="Email Address"
+                    />
+                  </div>
                 </div>
               </div>
             </div>
