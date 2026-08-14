@@ -116,7 +116,7 @@ export const getHackathonById = async (req: AuthenticatedRequest, res: Response)
     // Fetch the creator's profile details separately to bypass schema cache issue
     const { data: profile } = await supabaseAdmin
       .from('profiles')
-      .select('full_name')
+      .select('full_name, avatar_url, email')
       .eq('id', hackathon.user_id)
       .maybeSingle();
 

@@ -600,41 +600,72 @@ export const HackathonDetails: React.FC = () => {
                 </div>
                 <div className="space-y-2 max-h-64 overflow-y-auto pr-1">
                   {/* Team Lead (Creator) */}
-                  <div className="p-2.5 bg-indigo-500/5 border border-indigo-500/25 rounded-xl flex items-start justify-between text-xs animate-fade-in">
-                    <div>
-                      <p className="font-semibold text-gray-200">{hackathon.profiles?.full_name || 'Team Lead'}</p>
-                      <p className="text-[10px] text-gray-500 mt-0.5">Project Creator</p>
-                    </div>
-                    <span className="px-1.5 py-0.5 bg-indigoAccent text-white rounded text-[9px] font-bold uppercase tracking-wider">
-                      Team Lead
-                    </span>
-                  </div>
+                  {(() => {
+                    const leadName = hackathon.profiles?.full_name || 'Team Lead';
+                    const initials = leadName.split(' ').map((w: string) => w[0]).join('').slice(0, 2).toUpperCase();
+                    const colors = ['bg-indigo-500', 'bg-purple-500', 'bg-cyan-500', 'bg-emerald-500', 'bg-pink-500', 'bg-amber-500'];
+                    const colorClass = colors[leadName.charCodeAt(0) % colors.length];
+                    return (
+                      <div className="p-3 bg-indigo-500/5 border border-indigo-500/20 rounded-2xl flex items-center gap-3 animate-fade-in">
+                        <div className={`w-10 h-10 rounded-full ${colorClass} flex items-center justify-center text-white text-sm font-bold shrink-0 shadow-md`}>
+                          {hackathon.profiles?.avatar_url
+                            ? <img src={hackathon.profiles.avatar_url} alt={leadName} className="w-full h-full rounded-full object-cover" />
+                            : initials
+                          }
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="font-bold text-sm text-white truncate">{leadName}</p>
+                          <p className="text-[11px] text-gray-400 truncate">{hackathon.profiles?.email || 'Project Creator'}</p>
+                        </div>
+                        <span className="px-2 py-0.5 bg-indigoAccent text-white rounded-lg text-[9px] font-bold uppercase tracking-wider shrink-0">
+                          Lead
+                        </span>
+                      </div>
+                    );
+                  })()}
 
                   {/* Teammates List */}
-                  {hackathon.team_members && hackathon.team_members.map((mate: any, idx: number) => (
-                    <div key={idx} className="p-2.5 bg-white/5 border border-cardBorder rounded-xl flex items-start justify-between text-xs">
-                      <div>
-                        <p className="font-semibold text-gray-200">{mate.name}</p>
-                        <p className="text-[10px] text-gray-500 mt-0.5">{mate.email || 'No email'}</p>
-                      </div>
-                      <div className="flex items-center space-x-2">
+                  {hackathon.team_members && hackathon.team_members.map((mate: any, idx: number) => {
+                    const mateName = mate.name || 'Member';
+                    const mateInitials = mateName.split(' ').map((w: string) => w[0]).join('').slice(0, 2).toUpperCase();
+                    const colors = ['bg-indigo-500', 'bg-purple-500', 'bg-cyan-500', 'bg-emerald-500', 'bg-pink-500', 'bg-amber-500'];
+                    const mateColor = colors[(mateName.charCodeAt(0) + idx) % colors.length];
+                    return (
+                      <div key={idx} className="p-3 bg-white/[0.03] border border-cardBorder rounded-2xl space-y-2.5">
+                        <div className="flex items-center gap-3">
+                          <div className={`w-10 h-10 rounded-full ${mateColor} flex items-center justify-center text-white text-sm font-bold shrink-0 shadow-md`}>
+                            {mate.avatar_url
+                              ? <img src={mate.avatar_url} alt={mateName} className="w-full h-full rounded-full object-cover" />
+                              : mateInitials
+                            }
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <p className="font-bold text-sm text-white truncate">{mateName}</p>
+                            <p className="text-[11px] text-gray-400 truncate">{mate.email || 'No email'}</p>
+                          </div>
+                          {isOwner && (
+                            <button
+                              onClick={() => handleDeleteTeammate(mate.id)}
+                              className="text-gray-600 hover:text-red-400 transition-colors p-1 shrink-0 rounded-lg hover:bg-red-500/10"
+                              title="Remove Teammate"
+                            >
+                              <Trash2 size={13} />
+                            </button>
+                          )}
+                        </div>
                         {mate.role && (
-                          <span className="px-1.5 py-0.5 bg-cyan-500/10 text-cyan-400 rounded text-[9px] font-bold uppercase tracking-wider">
-                            {mate.role}
-                          </span>
-                        )}
-                        {isOwner && (
                           <button
-                            onClick={() => handleDeleteTeammate(mate.id)}
-                            className="text-gray-500 hover:text-red-400 transition-colors p-0.5 shrink-0"
-                            title="Remove Teammate"
+                            className="w-full flex items-center justify-center gap-2 py-2 bg-emerald-600 hover:bg-emerald-500 active:bg-emerald-700 text-white rounded-xl text-xs font-bold transition-all shadow-sm"
+                            onClick={() => {}}
                           >
-                            <Trash2 size={12} />
+                            <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+                            <span>View Details</span>
+                            <span className="text-emerald-200 text-[10px]">(Check Team Status)</span>
                           </button>
                         )}
                       </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               </div>
 
@@ -643,82 +674,80 @@ export const HackathonDetails: React.FC = () => {
                 <div className="pt-3 border-t border-cardBorder/30 space-y-3">
 
                   {/* ── Share Invite Link ── */}
-                  <div className="space-y-2">
-                    <div className="flex items-center justify-between">
-                      <p className="text-[10px] font-bold text-indigo-500 uppercase tracking-wider flex items-center space-x-1">
-                        <Share2 size={11} />
-                        <span>Share Invite Link</span>
-                      </p>
-                      <button
-                        onClick={() => setSharePanelOpen(v => !v)}
-                        className="text-[10px] font-bold text-indigo-400 hover:text-indigo-300 transition-colors"
-                      >
-                        {sharePanelOpen ? 'Hide' : 'Show options'}
-                      </button>
-                    </div>
+                  <div className="space-y-2.5">
+                    <p className="text-[10px] font-bold text-indigo-500 uppercase tracking-wider flex items-center gap-1.5">
+                      <Share2 size={11} />
+                      <span>Share Invite Link</span>
+                    </p>
 
-                    {/* Link row */}
+                    {/* URL pill row */}
                     <div className="flex gap-2">
-                      <div className="flex-1 flex items-center gap-1.5 bg-indigo-50 dark:bg-[#0d1321]/60 border border-indigo-100 dark:border-cardBorder rounded-xl px-3 py-2 overflow-hidden">
+                      <div className="flex-1 flex items-center gap-1.5 bg-[#0d1321]/60 border border-cardBorder rounded-xl px-3 py-2 overflow-hidden">
                         <Link2 size={12} className="text-indigo-400 shrink-0" />
-                        <span className="text-xs text-slate-600 dark:text-gray-400 truncate select-all">{inviteLink}</span>
+                        <span className="text-xs text-gray-400 truncate select-all">{inviteLink}</span>
                       </div>
-                      <button
-                        onClick={handleCopyInviteLink}
-                        className={`px-3 py-2 rounded-xl text-xs font-bold transition-all shrink-0 flex items-center space-x-1 ${
-                          linkCopied
-                            ? 'bg-emerald-500 text-white'
-                            : 'bg-indigoAccent hover:bg-indigo-600 text-white'
-                        }`}
-                      >
-                        {linkCopied ? <><Check size={12} /><span>Copied!</span></> : 'Copy'}
-                      </button>
                     </div>
 
-                    {/* Share options panel */}
-                    {sharePanelOpen && (
-                      <div className="grid grid-cols-2 gap-2 pt-1 animate-scale-in">
-                        {/* Native Share (mobile/desktop OS share sheet) */}
-                        <button
-                          onClick={handleNativeShare}
-                          className="flex items-center space-x-2 px-3 py-2.5 bg-indigo-50 dark:bg-indigo-500/10 hover:bg-indigo-100 dark:hover:bg-indigo-500/20 border border-indigo-200 dark:border-indigo-500/20 rounded-xl text-xs font-bold text-indigo-600 dark:text-indigo-400 transition-all"
+                    {/* Social icon row — always visible */}
+                    <div className="flex items-center justify-between">
+                      <p className="text-[10px] text-gray-500">Share with</p>
+                      <div className="flex items-center gap-2">
+                        {/* X / Twitter */}
+                        <a
+                          href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(`Join my hackathon team for "${hackathon.name}"! ${inviteLink}`)}`}
+                          target="_blank" rel="noreferrer"
+                          title="Share on X"
+                          className="w-9 h-9 rounded-full bg-[#0f0f0f] hover:bg-[#1a1a1a] flex items-center justify-center transition-all shadow-md hover:scale-110 active:scale-95"
                         >
-                          <Share2 size={13} />
-                          <span>Share via…</span>
-                        </button>
+                          <svg width="15" height="15" viewBox="0 0 24 24" fill="white"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.742l7.736-8.834L1.254 2.25H8.08l4.262 5.634 5.903-5.634Zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                        </a>
 
                         {/* WhatsApp */}
                         <a
                           href={`https://wa.me/?text=${encodeURIComponent(`Join my hackathon team for "${hackathon.name}"! Click to join: ${inviteLink}`)}`}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="flex items-center space-x-2 px-3 py-2.5 bg-emerald-50 dark:bg-emerald-500/10 hover:bg-emerald-100 dark:hover:bg-emerald-500/20 border border-emerald-200 dark:border-emerald-500/20 rounded-xl text-xs font-bold text-emerald-600 dark:text-emerald-400 transition-all"
+                          target="_blank" rel="noreferrer"
+                          title="Share on WhatsApp"
+                          className="w-9 h-9 rounded-full bg-[#25D366] hover:bg-[#20bd59] flex items-center justify-center transition-all shadow-md hover:scale-110 active:scale-95"
                         >
-                          <MessageCircle size={13} />
-                          <span>WhatsApp</span>
+                          <svg width="15" height="15" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
                         </a>
 
-                        {/* Telegram */}
+                        {/* LinkedIn */}
                         <a
-                          href={`https://t.me/share/url?url=${encodeURIComponent(inviteLink)}&text=${encodeURIComponent(`Join my team for "${hackathon.name}"!`)}`}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="flex items-center space-x-2 px-3 py-2.5 bg-sky-50 dark:bg-sky-500/10 hover:bg-sky-100 dark:hover:bg-sky-500/20 border border-sky-200 dark:border-sky-500/20 rounded-xl text-xs font-bold text-sky-600 dark:text-sky-400 transition-all"
+                          href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(inviteLink)}`}
+                          target="_blank" rel="noreferrer"
+                          title="Share on LinkedIn"
+                          className="w-9 h-9 rounded-full bg-[#0A66C2] hover:bg-[#0958a8] flex items-center justify-center transition-all shadow-md hover:scale-110 active:scale-95"
                         >
-                          <Send size={13} />
-                          <span>Telegram</span>
+                          <svg width="15" height="15" viewBox="0 0 24 24" fill="white"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
                         </a>
 
                         {/* Email */}
                         <a
                           href={`mailto:?subject=${encodeURIComponent(`Join my team – ${hackathon.name}`)}&body=${encodeURIComponent(`Hi!\n\nI'd like you to join my hackathon team for "${hackathon.name}".\n\nClick here to join: ${inviteLink}\n\nSee you there!`)}`}
-                          className="flex items-center space-x-2 px-3 py-2.5 bg-amber-50 dark:bg-amber-500/10 hover:bg-amber-100 dark:hover:bg-amber-500/20 border border-amber-200 dark:border-amber-500/20 rounded-xl text-xs font-bold text-amber-600 dark:text-amber-400 transition-all"
+                          title="Share via Email"
+                          className="w-9 h-9 rounded-full bg-[#EA4335] hover:bg-[#d33828] flex items-center justify-center transition-all shadow-md hover:scale-110 active:scale-95"
                         >
-                          <Send size={13} className="rotate-45" />
-                          <span>Email</span>
+                          <svg width="15" height="15" viewBox="0 0 24 24" fill="white"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg>
                         </a>
+
+                        {/* Copy URL */}
+                        <button
+                          onClick={handleCopyInviteLink}
+                          title={linkCopied ? 'Copied!' : 'Copy link'}
+                          className={`w-9 h-9 rounded-full border-2 flex items-center justify-center transition-all shadow-md hover:scale-110 active:scale-95 relative ${
+                            linkCopied
+                              ? 'border-emerald-500 bg-emerald-500/20 text-emerald-400'
+                              : 'border-gray-600 bg-white/5 hover:bg-white/10 text-gray-300'
+                          }`}
+                        >
+                          {linkCopied ? <Check size={14} /> : <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>}
+                          {linkCopied && (
+                            <span className="absolute -bottom-7 left-1/2 -translate-x-1/2 text-[10px] text-emerald-400 font-bold whitespace-nowrap">Copied!</span>
+                          )}
+                        </button>
                       </div>
-                    )}
+                    </div>
                   </div>
 
                   {/* Invite via email form */}

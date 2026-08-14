@@ -267,7 +267,7 @@ CREATE POLICY "Sent reminders are manageable by owner" ON sent_reminders
 
 
 -- Postgres Trigger to Enforce Round Progression Business Rule
--- "Round N can only be added/unlocked if Round N-1 exists and is completed or qualified."
+-- "Round N can only be added if Round N-1 exists (any status)."
 CREATE OR REPLACE FUNCTION verify_round_progression()
 RETURNS TRIGGER AS $$
 BEGIN
@@ -276,19 +276,13 @@ BEGIN
     RETURN NEW;
   END IF;
 
-  -- Only enforce progression if the new status is active (ongoing, completed, qualified, not_qualified)
-  IF NEW.status IN ('upcoming', 'skipped', 'cancelled') THEN
-    RETURN NEW;
-  END IF;
-
-  -- Verify previous round exists and is completed/qualified
+  -- Verify previous round exists (any status is acceptable)
   IF NOT EXISTS (
     SELECT 1 FROM hackathon_rounds
     WHERE hackathon_id = NEW.hackathon_id
       AND round_number = NEW.round_number - 1
-      AND status IN ('completed', 'qualified')
   ) THEN
-    RAISE EXCEPTION 'Round progression restriction: Round % can only be unlocked/completed if Round % is completed or qualified.', NEW.round_number, NEW.round_number - 1;
+    RAISE EXCEPTION 'Round progression restriction: Round % can only be added if Round % exists.', NEW.round_number, NEW.round_number - 1;
   END IF;
 
   RETURN NEW;

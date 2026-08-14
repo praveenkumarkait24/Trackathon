@@ -132,7 +132,6 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) =>
                   className={`transition-all duration-200 ${Active ? item.activeColor : 'text-slate-400 group-hover:text-indigo-500 dark:group-hover:text-white'}`} 
                 />
                 <span className={Active ? `${item.activeColor} dark:text-white` : 'text-slate-600 dark:text-gray-400 group-hover:text-indigo-600 dark:group-hover:text-white'}>{item.name}</span>
-                {Active && <span className={`ml-auto w-1.5 h-1.5 rounded-full ${item.activeColor.replace('text-','bg-')}`} />}
               </Link>
             );
           })}
