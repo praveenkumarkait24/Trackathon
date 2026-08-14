@@ -78,20 +78,20 @@ export const Hackathons: React.FC = () => {
 
   const getStatusBadgeClass = (s: string) => {
     switch (s) {
-      case 'ongoing': return 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20';
-      case 'upcoming': return 'bg-indigo-500/10 text-indigo-400 border border-indigo-500/20';
-      case 'completed': return 'bg-gray-500/10 text-gray-400 border border-gray-500/20';
-      case 'cancelled': return 'bg-red-500/10 text-red-400 border border-red-500/20';
-      default: return 'bg-white/5 text-gray-400';
+      case 'ongoing': return 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 shadow-sm font-black animate-pulse';
+      case 'upcoming': return 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 shadow-sm font-black';
+      case 'completed': return 'bg-violet-500/20 text-violet-300 border border-violet-500/40 shadow-sm font-black';
+      case 'cancelled': return 'bg-rose-500/20 text-rose-300 border border-rose-500/40 shadow-sm font-black';
+      default: return 'bg-white/10 text-gray-300 border border-gray-500/30';
     }
   };
 
   const getResultBadgeClass = (res: string) => {
     switch (res) {
-      case 'winner': return 'bg-amber-500/15 text-amber-400 border border-amber-500/30';
-      case 'runner_up': return 'bg-yellow-600/15 text-yellow-400 border border-yellow-500/30';
-      case 'finalist': return 'bg-cyan-500/15 text-cyan-400 border border-cyan-500/30';
-      case 'participant': return 'bg-blue-500/15 text-blue-400 border border-blue-500/30';
+      case 'winner': return 'bg-amber-500/25 text-amber-300 border border-amber-500/50 shadow-glowAmber font-black';
+      case 'runner_up': return 'bg-slate-400/20 text-cyan-300 border border-cyan-400/40 font-black';
+      case 'finalist': return 'bg-purple-500/20 text-purple-300 border border-purple-500/40 font-black';
+      case 'participant': return 'bg-blue-500/20 text-blue-300 border border-blue-500/40 font-black';
       default: return '';
     }
   };
@@ -111,6 +111,33 @@ export const Hackathons: React.FC = () => {
           <Plus size={16} />
           <span>Add Hackathon</span>
         </Link>
+      </div>
+
+      {/* Colorful Status Tabs */}
+      <div className="flex flex-wrap gap-2 items-center">
+        {[
+          { label: 'All Events', value: '', activeBg: 'bg-indigo-500/20 text-indigo-300 border-indigo-500/40 shadow-indigo-500/10' },
+          { label: '⚡ Ongoing', value: 'ongoing', activeBg: 'bg-emerald-500/25 text-emerald-300 border-emerald-500/50 shadow-emerald-500/20 animate-pulse' },
+          { label: '🚀 Upcoming / Registered', value: 'upcoming', activeBg: 'bg-cyan-500/25 text-cyan-300 border-cyan-500/50 shadow-cyan-500/20' },
+          { label: '✅ Completed', value: 'completed', activeBg: 'bg-violet-500/25 text-violet-300 border-violet-500/50 shadow-violet-500/20' },
+          { label: '❌ Cancelled', value: 'cancelled', activeBg: 'bg-rose-500/25 text-rose-300 border-rose-500/50 shadow-rose-500/20' },
+        ].map((tab) => {
+          const isActive = status === tab.value;
+          return (
+            <button
+              key={tab.label}
+              type="button"
+              onClick={() => setStatus(tab.value)}
+              className={`px-4 py-2 rounded-xl text-xs font-extrabold border transition-all duration-200 shadow-sm ${
+                isActive
+                  ? `${tab.activeBg} scale-[1.03] ring-2 ring-indigo-500/40 shadow-glow`
+                  : 'bg-white/5 border-cardBorder text-gray-400 hover:text-gray-200 hover:bg-white/10'
+              }`}
+            >
+              {tab.label}
+            </button>
+          );
+        })}
       </div>
 
       {/* Filter and Search Bar */}

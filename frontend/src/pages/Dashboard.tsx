@@ -123,7 +123,7 @@ export const Dashboard: React.FC = () => {
     }
   });
 
-  const COLORS = ['#6366f1', '#06b6d4', '#10b981', '#f59e0b', '#ec4899'];
+  const COLORS = ['#10b981', '#06b6d4', '#8b5cf6', '#f59e0b', '#ec4899'];
 
   // Upcoming deadlines listing
   const upcomingDeadlines = hackathons
@@ -417,12 +417,14 @@ export const Dashboard: React.FC = () => {
                 className="block p-4 bg-white/5 hover:bg-white/10 border border-cardBorder hover:border-gray-800 rounded-xl transition-all"
               >
                 <div className="flex justify-between items-start mb-2">
-                  <span className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded ${
+                  <span className={`text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded border shadow-sm ${
                     item.status === 'ongoing' 
-                      ? 'bg-emerald-500/10 text-emerald-400' 
+                      ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40 animate-pulse' 
                       : item.status === 'upcoming'
-                      ? 'bg-indigo-500/10 text-indigo-400'
-                      : 'bg-gray-500/10 text-gray-400'
+                      ? 'bg-cyan-500/20 text-cyan-300 border-cyan-500/40'
+                      : item.status === 'completed'
+                      ? 'bg-violet-500/20 text-violet-300 border-violet-500/40'
+                      : 'bg-rose-500/20 text-rose-300 border-rose-500/40'
                   }`}>
                     {item.status}
                   </span>

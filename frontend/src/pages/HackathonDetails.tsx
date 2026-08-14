@@ -474,13 +474,21 @@ export const HackathonDetails: React.FC = () => {
           <div className="p-6 flex-1 space-y-4">
             <div className="space-y-1.5">
               <div className="flex items-center gap-2 flex-wrap">
-                <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
+                <span className={`text-[10px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-lg border shadow-sm ${
+                  hackathon.status === 'ongoing' 
+                    ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40 animate-pulse' 
+                    : hackathon.status === 'upcoming'
+                    ? 'bg-cyan-500/20 text-cyan-300 border-cyan-500/40'
+                    : hackathon.status === 'completed'
+                    ? 'bg-violet-500/20 text-violet-300 border-violet-500/40'
+                    : 'bg-rose-500/20 text-rose-300 border-rose-500/40'
+                }`}>
                   {hackathon.status}
                 </span>
-                <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">
+                <span className="text-[10px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-lg bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 shadow-sm">
                   {hackathon.mode}
                 </span>
-                <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                <span className="text-[10px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-lg bg-indigo-500/20 text-indigo-300 border border-indigo-500/40 shadow-sm">
                   {hackathon.participation_type}
                 </span>
               </div>
