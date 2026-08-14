@@ -211,34 +211,34 @@ export const Settings: React.FC = () => {
 
             {/* Form Fields block */}
             <div className="flex-1 w-full space-y-4">
-              <div className="grid sm:grid-cols-2 gap-4">
-                <div className="space-y-1.5">
-                  <label className="text-xs font-bold uppercase tracking-wider text-gray-400">Full Name</label>
-                  <div className="relative flex items-center">
-                    <User className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-500" />
-                    <input
-                      type="text"
-                      required
-                      value={fullName || authName}
-                      disabled={true}
-                      className="w-full bg-[#0d1321]/50 border border-cardBorder rounded-xl py-2.5 pl-10 pr-4 text-sm text-slate-800 dark:text-gray-200 opacity-90 cursor-not-allowed outline-none select-none"
-                      placeholder="Full Name"
-                    />
-                  </div>
+              {/* Full Name */}
+              <div className="space-y-1.5">
+                <label className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-gray-400">Full Name</label>
+                <div className="relative flex items-center">
+                  <User className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-indigo-500 dark:text-indigo-400 z-10 shrink-0" />
+                  <input
+                    type="text"
+                    required
+                    value={fullName || authName}
+                    disabled={true}
+                    className="w-full bg-slate-50 dark:bg-[#0d1321]/50 border border-slate-200 dark:border-cardBorder rounded-xl py-2.5 pl-10 pr-4 text-sm font-medium text-slate-800 dark:text-gray-200 cursor-not-allowed outline-none select-none"
+                    placeholder="Full Name"
+                  />
                 </div>
+              </div>
 
-                <div className="space-y-1.5">
-                  <label className="text-xs font-bold uppercase tracking-wider text-gray-400">Email Address</label>
-                  <div className="relative flex items-center">
-                    <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-500" />
-                    <input
-                      type="email"
-                      value={userEmail}
-                      disabled={true}
-                      className="w-full bg-[#0d1321]/50 border border-cardBorder rounded-xl py-2.5 pl-10 pr-4 text-sm text-slate-800 dark:text-gray-200 opacity-90 cursor-not-allowed outline-none select-none"
-                      placeholder="Email Address"
-                    />
-                  </div>
+              {/* Email Address below Full Name */}
+              <div className="space-y-1.5">
+                <label className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-gray-400">Email Address</label>
+                <div className="relative flex items-center">
+                  <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-indigo-500 dark:text-indigo-400 z-10 shrink-0" />
+                  <input
+                    type="email"
+                    value={userEmail}
+                    disabled={true}
+                    className="w-full bg-slate-50 dark:bg-[#0d1321]/50 border border-slate-200 dark:border-cardBorder rounded-xl py-2.5 pl-10 pr-4 text-sm font-medium text-slate-800 dark:text-gray-200 cursor-not-allowed outline-none select-none"
+                    placeholder="Email Address"
+                  />
                 </div>
               </div>
             </div>
