@@ -1,7 +1,36 @@
 import { Response } from 'express';
 import { AuthenticatedRequest } from '../middleware/auth.js';
-import { supabaseAdmin } from '../config/supabase.js';
+import { supabaseAdmin, ensureBucketExists } from '../config/supabase.js';
 import { syncEventForTeam, deleteEventForTeam } from '../services/calendar.js';
+import multer from 'multer';
+
+// Round file upload configuration (PPT, PPTX, PDF, images up to 25MB)
+export const roundFileUpload = multer({
+  limits: { fileSize: 25 * 1024 * 1024 },
+  fileFilter: (req, file, cb) => {
+    const allowedMimeTypes = [
+      'application/pdf',
+      'application/vnd.ms-powerpoint',
+      'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+      'application/octet-stream',
+      'image/jpeg',
+      'image/png',
+      'image/webp'
+    ];
+    const fileName = file.originalname.toLowerCase();
+    if (
+      allowedMimeTypes.includes(file.mimetype) ||
+      file.mimetype.startsWith('image/') ||
+      fileName.endsWith('.ppt') ||
+      fileName.endsWith('.pptx') ||
+      fileName.endsWith('.pdf')
+    ) {
+      cb(null, true);
+    } else {
+      cb(new Error('Invalid round file format. Only PPT, PPTX, PDF, and images are accepted.'));
+    }
+  }
+});
 
 export const getRounds = async (req: AuthenticatedRequest, res: Response) => {
   try {
@@ -280,4 +309,70 @@ export const deleteRound = async (req: AuthenticatedRequest, res: Response) => {
   }
 };
 
-export default { getRounds, createRound, updateRound, deleteRound };
+export const uploadRoundFile = async (req: AuthenticatedRequest, res: Response) => {
+  try {
+    const userId = req.user?.id;
+    const { id: hackathonId, roundId } = req.params;
+    if (!userId) return res.status(401).json({ error: 'Unauthorized' });
+
+    if (!req.file) {
+      return res.status(400).json({ error: 'No round file uploaded.' });
+    }
+
+    // Verify ownership of hackathon
+    const { data: hackathon, error: fetchErr } = await supabaseAdmin
+      .from('hackathons')
+      .select('id')
+      .eq('id', hackathonId)
+      .eq('user_id', userId)
+      .maybeSingle();
+
+    if (fetchErr || !hackathon) {
+      return res.status(404).json({ error: 'Hackathon not found or access denied.' });
+    }
+
+    const file = req.file;
+    const fileExtension = file.originalname.split('.').pop() || 'pdf';
+    const filePath = `rounds/${hackathonId}/${roundId}-${Date.now()}.${fileExtension}`;
+
+    // Ensure storage bucket exists
+    await ensureBucketExists('round-files');
+
+    const { error: uploadError } = await supabaseAdmin.storage
+      .from('round-files')
+      .upload(filePath, file.buffer, {
+        contentType: file.mimetype,
+        upsert: true
+      });
+
+    if (uploadError) {
+      return res.status(500).json({ error: 'Round file storage upload failed: ' + uploadError.message });
+    }
+
+    const { data: { publicUrl } } = supabaseAdmin.storage
+      .from('round-files')
+      .getPublicUrl(filePath);
+
+    // Save URL reference in hackathon_rounds table
+    const { data: round, error: dbError } = await supabaseAdmin
+      .from('hackathon_rounds')
+      .update({
+        proof_url: publicUrl,
+        submission_link: publicUrl,
+        updated_at: new Date().toISOString()
+      })
+      .eq('id', roundId)
+      .select()
+      .single();
+
+    if (dbError) {
+      return res.status(500).json({ error: 'Failed to update round file database link: ' + dbError.message });
+    }
+
+    res.json({ success: true, file_url: publicUrl, round });
+  } catch (err: any) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+export default { getRounds, createRound, updateRound, deleteRound, uploadRoundFile, roundFileUpload };

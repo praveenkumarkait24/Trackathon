@@ -12,7 +12,8 @@ import {
   Eye, 
   Trash2,
   AlertCircle,
-  Plus
+  Plus,
+  FileText
 } from 'lucide-react';
 import { LoadingSpinner } from '../components/LoadingSpinner.js';
 
@@ -264,11 +265,18 @@ export const Hackathons: React.FC = () => {
                     {/* Poster section */}
                     <div className="h-40 bg-[#090d16] relative overflow-hidden shrink-0 border-b border-cardBorder/30">
                       {hasPoster ? (
-                        <img 
-                          src={hack.poster_url} 
-                          alt={hack.name} 
-                          className="w-full h-full object-cover group-hover/card:scale-105 transition-transform duration-500" 
-                        />
+                        hack.poster_url.toLowerCase().includes('.pdf') ? (
+                          <div className="w-full h-full flex flex-col items-center justify-center bg-indigo-950/40 text-red-400 p-2 space-y-1">
+                            <FileText size={32} />
+                            <span className="text-[10px] font-bold text-gray-300">PDF Poster Document</span>
+                          </div>
+                        ) : (
+                          <img 
+                            src={hack.poster_url} 
+                            alt={hack.name} 
+                            className="w-full h-full object-cover group-hover/card:scale-105 transition-transform duration-500" 
+                          />
+                        )
                       ) : (
                         <div className="w-full h-full flex flex-col items-center justify-center text-gray-600 space-y-2">
                           <Trophy size={36} className="text-gray-700" />

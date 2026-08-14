@@ -62,6 +62,7 @@ export const roundSchema = z.object({
   venue: z.string().max(150).optional().nullable(),
   meeting_link: urlSchema,
   submission_link: urlSchema,
+  proof_url: urlSchema,
   instructions: z.string().optional().nullable(),
   status: z.enum(['upcoming', 'ongoing', 'completed', 'qualified', 'not_qualified', 'skipped', 'cancelled']).default('upcoming'),
 });

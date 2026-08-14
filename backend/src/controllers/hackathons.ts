@@ -4,15 +4,23 @@ import { supabaseAdmin, ensureBucketExists } from '../config/supabase.js';
 import { syncEventForTeam, deleteEventForTeam } from '../services/calendar.js';
 import multer from 'multer';
 
-// Poster upload configurations
+// Poster upload configurations (supports PDF and all image formats up to 15MB)
 export const posterUpload = multer({
-  limits: { fileSize: 5 * 1024 * 1024 }, // 5MB maximum size
+  limits: { fileSize: 15 * 1024 * 1024 },
   fileFilter: (req, file, cb) => {
-    const allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
-    if (allowedTypes.includes(file.mimetype)) {
+    const allowedMimeTypes = [
+      'image/jpeg', 'image/png', 'image/webp', 'image/gif', 'image/bmp', 'image/svg+xml',
+      'application/pdf'
+    ];
+    const filename = file.originalname.toLowerCase();
+    if (
+      allowedMimeTypes.includes(file.mimetype) ||
+      file.mimetype.startsWith('image/') ||
+      filename.endsWith('.pdf')
+    ) {
       cb(null, true);
     } else {
-      cb(new Error('Invalid poster image format. Only JPEG, PNG, and WEBP are accepted.'));
+      cb(new Error('Invalid poster format. PDF and image formats (JPEG, PNG, WEBP, GIF, SVG) are accepted.'));
     }
   }
 });

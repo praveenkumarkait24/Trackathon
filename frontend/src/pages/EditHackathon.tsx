@@ -12,7 +12,8 @@ import {
   Link as LinkIcon, 
   Info,
   Users,
-  AlertTriangle
+  AlertTriangle,
+  FileText
 } from 'lucide-react';
 import { LoadingSpinner } from '../components/LoadingSpinner.js';
 
@@ -127,8 +128,8 @@ export const EditHackathon: React.FC = () => {
   const handlePosterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
-      if (file.size > 5 * 1024 * 1024) {
-        alert('File size exceeds 5MB limit.');
+      if (file.size > 15 * 1024 * 1024) {
+        alert('File size exceeds 15MB limit.');
         return;
       }
       setPosterFile(file);
@@ -336,8 +337,15 @@ export const EditHackathon: React.FC = () => {
             <label className="text-xs font-bold uppercase tracking-wider text-gray-400">Hackathon Poster</label>
             <div className="flex flex-col sm:flex-row items-center gap-4 p-4 border border-dashed border-cardBorder rounded-xl bg-[#090d16]/30">
               {posterPreview ? (
-                <div className="w-24 h-24 rounded-lg bg-gray-900 overflow-hidden relative border border-cardBorder">
-                  <img src={posterPreview} alt="Poster preview" className="w-full h-full object-cover" />
+                <div className="w-24 h-24 rounded-lg bg-gray-900 overflow-hidden relative border border-cardBorder flex items-center justify-center">
+                  {posterFile?.type === 'application/pdf' || posterFile?.name.toLowerCase().endsWith('.pdf') || posterPreview.toLowerCase().includes('.pdf') ? (
+                    <div className="flex flex-col items-center justify-center p-2 text-center text-red-400 space-y-1">
+                      <FileText size={28} />
+                      <span className="text-[10px] font-bold text-gray-300 truncate max-w-[80px]">PDF Document</span>
+                    </div>
+                  ) : (
+                    <img src={posterPreview} alt="Poster preview" className="w-full h-full object-cover" />
+                  )}
                   <button 
                     type="button"
                     onClick={() => { setPosterFile(null); setPosterPreview(null); }}
@@ -355,7 +363,7 @@ export const EditHackathon: React.FC = () => {
                 <input
                   type="file"
                   id="poster-input"
-                  accept="image/jpeg,image/png,image/webp"
+                  accept="image/*,application/pdf,.pdf"
                   onChange={handlePosterChange}
                   className="hidden"
                 />
@@ -363,9 +371,9 @@ export const EditHackathon: React.FC = () => {
                   htmlFor="poster-input"
                   className="inline-block px-4 py-2 bg-white/5 hover:bg-white/10 border border-cardBorder hover:border-gray-600 rounded-lg text-xs font-bold cursor-pointer transition-colors"
                 >
-                  Change Poster Image
+                  Change Poster (PDF or Image)
                 </label>
-                <p className="text-[10px] text-gray-500 mt-1">JPEG, PNG, or WEBP. Max size 5MB.</p>
+                <p className="text-[10px] text-gray-500 mt-1">PDF or any image format (JPG, PNG, WEBP, GIF, SVG). Max 15MB.</p>
               </div>
             </div>
           </div>

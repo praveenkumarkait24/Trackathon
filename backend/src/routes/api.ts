@@ -49,6 +49,7 @@ router.get('/hackathons/:id/rounds', roundsController.getRounds);
 router.post('/hackathons/:id/rounds', validateBody(roundSchema), roundsController.createRound);
 router.put('/hackathons/:id/rounds/:roundId', validateBody(roundSchema), roundsController.updateRound);
 router.delete('/hackathons/:id/rounds/:roundId', roundsController.deleteRound);
+router.post('/hackathons/:id/rounds/:roundId/upload', roundsController.roundFileUpload.single('file'), roundsController.uploadRoundFile);
 
 // Team Members Endpoints
 router.get('/hackathons/:id/team', teamController.getTeamMembers);

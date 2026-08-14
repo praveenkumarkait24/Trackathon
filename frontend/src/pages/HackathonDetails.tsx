@@ -15,6 +15,7 @@ import {
   CheckCircle2, 
   XCircle,
   FileCheck,
+  FileText,
   Github,
   Video,
   Award,
@@ -210,6 +211,7 @@ export const HackathonDetails: React.FC = () => {
   const [newRoundMeeting, setNewRoundMeeting] = useState('');
   const [newRoundSubmission, setNewRoundSubmission] = useState('');
   const [newRoundInstructions, setNewRoundInstructions] = useState('');
+  const [newRoundFile, setNewRoundFile] = useState<File | null>(null);
   const [newRoundLoading, setNewRoundLoading] = useState(false);
   const [newRoundError, setNewRoundError] = useState<string | null>(null);
 
@@ -282,7 +284,14 @@ export const HackathonDetails: React.FC = () => {
         status: 'upcoming'
       };
 
-      await api.post(`/hackathons/${id}/rounds`, roundPayload);
+      const createdRound = await api.post(`/hackathons/${id}/rounds`, roundPayload);
+
+      // Upload round presentation file (PPT/PPTX/PDF) if provided
+      if (newRoundFile && createdRound?.id) {
+        const formData = new FormData();
+        formData.append('file', newRoundFile);
+        await api.post(`/hackathons/${id}/rounds/${createdRound.id}/upload`, formData, true);
+      }
 
       // Reset round form states
       setNewRoundName('');
@@ -294,6 +303,7 @@ export const HackathonDetails: React.FC = () => {
       setNewRoundMeeting('');
       setNewRoundSubmission('');
       setNewRoundInstructions('');
+      setNewRoundFile(null);
       
       setRoundModalOpen(false);
       fetchDetails(); // Reload data
@@ -442,7 +452,23 @@ export const HackathonDetails: React.FC = () => {
         <div className="lg:col-span-2 glass-panel rounded-2xl border border-cardBorder overflow-hidden flex flex-col">
           {hackathon.poster_url && (
             <div className="w-full h-64 md:h-80 bg-[#070c14] border-b border-cardBorder flex items-center justify-center overflow-hidden shrink-0">
-              <img src={hackathon.poster_url} alt="Poster" className="w-full h-full object-cover" />
+              {hackathon.poster_url.toLowerCase().includes('.pdf') ? (
+                <div className="flex flex-col items-center justify-center p-6 text-center space-y-3">
+                  <FileText size={44} className="text-red-400" />
+                  <span className="text-sm font-bold text-gray-200">Hackathon Poster PDF Document</span>
+                  <a 
+                    href={hackathon.poster_url} 
+                    target="_blank" 
+                    rel="noreferrer" 
+                    className="px-4 py-2 bg-indigoAccent hover:bg-indigo-600 text-white text-xs font-bold rounded-xl flex items-center space-x-2 transition-all shadow-glow"
+                  >
+                    <ExternalLink size={14} />
+                    <span>View / Download Poster PDF</span>
+                  </a>
+                </div>
+              ) : (
+                <img src={hackathon.poster_url} alt="Poster" className="w-full h-full object-cover" />
+              )}
             </div>
           )}
           <div className="p-6 flex-1 space-y-4">
@@ -872,13 +898,37 @@ export const HackathonDetails: React.FC = () => {
                           </span>
                         </div>
                       )}
-                      {(round.venue || round.meeting_link || round.submission_link) && (
+                      {(round.venue || round.meeting_link || round.submission_link || round.proof_url) && (
                         <div>
-                          <span className="font-bold text-gray-600 block">Venue & Submission Links</span>
+                          <span className="font-bold text-gray-600 block">Venue & Round Attachments</span>
                           <span className="text-gray-400 mt-0.5 block space-y-1">
                             {round.venue && <span className="block flex items-center space-x-1"><MapPin size={10} className="text-cyan-400" /> <span>{round.venue}</span></span>}
-                            {round.meeting_link && <a href={round.meeting_link} target="_blank" rel="noreferrer" className="text-indigo-400 hover:underline block flex items-center space-x-0.5"><Video size={10} /> <span>Meeting Link</span></a>}
-                            {round.submission_link && <a href={round.submission_link} target="_blank" rel="noreferrer" className="text-indigo-400 hover:underline block flex items-center space-x-0.5"><ExternalLink size={10} /> <span>Submission Link</span></a>}
+                            {round.meeting_link && <a href={round.meeting_link} target="_blank" rel="noreferrer" className="text-indigo-400 hover:underline flex items-center space-x-1"><Video size={10} /> <span>Meeting Link</span></a>}
+                            {(round.submission_link || round.proof_url) && (
+                              <a
+                                href={round.proof_url || round.submission_link}
+                                target="_blank"
+                                rel="noreferrer"
+                                className="inline-flex items-center space-x-1.5 px-2.5 py-1 bg-indigo-500/10 hover:bg-indigo-500/20 border border-indigo-500/20 rounded-lg text-xs font-bold text-indigo-300 transition-colors mt-1"
+                              >
+                                {(round.proof_url || round.submission_link)?.toLowerCase().match(/\.(ppt|pptx)$/) ? (
+                                  <>
+                                    <FileText size={13} className="text-amber-400" />
+                                    <span>View Presentation (PPT / PPTX)</span>
+                                  </>
+                                ) : (round.proof_url || round.submission_link)?.toLowerCase().includes('.pdf') ? (
+                                  <>
+                                    <FileText size={13} className="text-red-400" />
+                                    <span>View Round PDF</span>
+                                  </>
+                                ) : (
+                                  <>
+                                    <ExternalLink size={13} className="text-indigo-400" />
+                                    <span>View Submission File / Link</span>
+                                  </>
+                                )}
+                              </a>
+                            )}
                           </span>
                         </div>
                       )}
@@ -1105,6 +1155,18 @@ export const HackathonDetails: React.FC = () => {
                     className="w-full bg-[#0d1321]/60 border border-cardBorder focus:border-indigoAccent rounded-xl p-2.5 text-gray-200 outline-none"
                   />
                 </div>
+              </div>
+
+              {/* Presentation PPT / PDF Upload */}
+              <div className="space-y-1">
+                <label className="font-bold text-gray-400 uppercase tracking-wider">Upload Presentation (PPT / PPTX) or PDF</label>
+                <input
+                  type="file"
+                  accept=".ppt,.pptx,.pdf,application/pdf,application/vnd.ms-powerpoint,application/vnd.openxmlformats-officedocument.presentationml.presentation,image/*"
+                  onChange={(e) => e.target.files && setNewRoundFile(e.target.files[0])}
+                  className="w-full bg-[#0d1321]/40 border border-cardBorder rounded-xl p-2 text-xs text-gray-300"
+                />
+                <p className="text-[9px] text-gray-500">Upload presentation slides (.ppt, .pptx) or PDF round submission. Max 25MB.</p>
               </div>
 
               <div className="flex justify-end space-x-3 pt-4 border-t border-cardBorder/30">
