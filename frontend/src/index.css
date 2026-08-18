@@ -327,6 +327,14 @@ aside nav a.bg-gradient-to-r svg,
   color: #0f172a !important;
 }
 
+/* Explicit Copy Link button icon color -> Black in Light Mode (#0f172a), White in Dark Mode */
+:root .copy-link-btn,
+:root .copy-link-btn *,
+:root .copy-link-btn svg {
+  color: #0f172a !important;
+  stroke: #0f172a !important;
+}
+
 .dark .header-menu-btn,
 .dark .header-menu-btn *,
 .dark .header-menu-btn svg {

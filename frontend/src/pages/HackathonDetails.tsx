@@ -770,13 +770,17 @@ export const HackathonDetails: React.FC = () => {
                         <button
                           onClick={handleCopyInviteLink}
                           title={linkCopied ? 'Copied!' : 'Copy link'}
-                          className={`w-9 h-9 rounded-full border-2 flex items-center justify-center transition-all shadow-md hover:scale-110 active:scale-95 relative ${
+                          className={`w-9 h-9 rounded-full border-2 flex items-center justify-center transition-all shadow-md hover:scale-110 active:scale-95 relative copy-link-btn ${
                             linkCopied
-                              ? 'border-emerald-500 bg-emerald-500/20 text-emerald-400'
-                              : 'border-gray-600 bg-white/5 hover:bg-white/10 text-gray-300'
+                              ? 'border-emerald-500 bg-emerald-500/20 text-emerald-500'
+                              : 'border-slate-300 dark:border-gray-600 bg-slate-100 dark:bg-white/5 hover:bg-slate-200 dark:hover:bg-white/10'
                           }`}
                         >
-                          {linkCopied ? <Check size={14} /> : <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>}
+                          {linkCopied ? (
+                            <Check size={14} className="text-emerald-500" />
+                          ) : (
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ color: '#0f172a', stroke: '#0f172a' }}><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                          )}
                           {linkCopied && (
                             <span className="absolute -bottom-7 left-1/2 -translate-x-1/2 text-[10px] text-emerald-400 font-bold whitespace-nowrap">Copied!</span>
                           )}
