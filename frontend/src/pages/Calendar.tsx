@@ -141,11 +141,11 @@ export const Calendar: React.FC = () => {
 
   const getEventBadgeClass = (type: EventItem['type']) => {
     switch (type) {
-      case 'registration_deadline': return 'bg-rose-500/10 text-rose-400 border border-rose-500/20';
-      case 'hackathon_start': return 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20';
-      case 'hackathon_end': return 'bg-gray-500/10 text-gray-400 border border-gray-500/20';
-      case 'round_date': return 'bg-indigo-500/10 text-indigo-400 border border-indigo-500/20';
-      default: return 'bg-white/5 text-gray-300';
+      case 'registration_deadline': return 'bg-rose-500/20 text-rose-300 border border-rose-500/40 font-black';
+      case 'hackathon_start': return 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 font-black';
+      case 'hackathon_end': return 'bg-amber-500/20 text-amber-300 border border-amber-500/40 font-black';
+      case 'round_date': return 'bg-blue-500/20 text-blue-300 border border-blue-500/40 font-black';
+      default: return 'bg-white/10 text-gray-300';
     }
   };
 
@@ -167,7 +167,7 @@ export const Calendar: React.FC = () => {
         <div className="flex items-center space-x-4 bg-[#0d1321]/60 border border-cardBorder rounded-2xl p-1.5 shrink-0">
           <button 
             onClick={handlePrevMonth}
-            className="p-2 text-gray-400 hover:text-white hover:bg-white/5 rounded-xl transition-all"
+            className="p-2 text-blue-400 hover:text-white hover:bg-blue-600/30 bg-blue-600/10 border border-blue-500/20 rounded-xl transition-all"
           >
             <ChevronLeft size={16} />
           </button>
@@ -176,7 +176,7 @@ export const Calendar: React.FC = () => {
           </span>
           <button 
             onClick={handleNextMonth}
-            className="p-2 text-gray-400 hover:text-white hover:bg-white/5 rounded-xl transition-all"
+            className="p-2 text-blue-400 hover:text-white hover:bg-blue-600/30 bg-blue-600/10 border border-blue-500/20 rounded-xl transition-all"
           >
             <ChevronRight size={16} />
           </button>

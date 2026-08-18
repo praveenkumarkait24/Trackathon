@@ -214,49 +214,49 @@ export const Dashboard: React.FC = () => {
         </div>
         <Link 
           to="/hackathons/add" 
-          className="flex items-center space-x-2 px-5 py-3 bg-indigoAccent hover:bg-indigo-600 text-white rounded-xl font-bold text-sm shadow-glow transition-all hover:scale-[1.02]"
+          className="flex items-center space-x-2 px-5 py-3 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl font-bold text-sm shadow-md shadow-emerald-500/20 transition-all hover:scale-[1.02]"
         >
           <Plus size={16} />
           <span>Add Hackathon</span>
         </Link>
       </div>
 
-      {/* Summary Statistics Cards Grid */}
+      {/* Summary Statistics Cards Grid (Blue, Green, Yellow, Red) */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
-        <div className="glass-panel p-6 rounded-2xl border border-cardBorder relative overflow-hidden group hover:border-indigoAccent/20 transition-all">
+        <div className="glass-panel p-6 rounded-2xl border border-blue-500/30 bg-blue-500/5 relative overflow-hidden group hover:border-blue-500/60 hover:-translate-y-1 transition-all">
           <div className="flex justify-between items-start mb-4">
-            <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">Total Events</span>
-            <div className="p-2 bg-indigo-500/10 text-indigo-400 rounded-lg group-hover:scale-110 transition-transform">
+            <span className="text-xs font-bold text-blue-300 uppercase tracking-wider">Total Events</span>
+            <div className="p-2 bg-blue-500/20 text-blue-400 rounded-lg group-hover:scale-110 transition-transform">
               <Trophy size={18} />
             </div>
           </div>
           <p className="text-3xl font-extrabold text-white font-outfit">{totalHackathons}</p>
         </div>
 
-        <div className="glass-panel p-6 rounded-2xl border border-cardBorder relative overflow-hidden group hover:border-emeraldAccent/20 transition-all">
+        <div className="glass-panel p-6 rounded-2xl border border-emerald-500/30 bg-emerald-500/5 relative overflow-hidden group hover:border-emerald-500/60 hover:-translate-y-1 transition-all">
           <div className="flex justify-between items-start mb-4">
-            <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">Ongoing / Upcoming</span>
-            <div className="p-2 bg-emerald-500/10 text-emerald-400 rounded-lg group-hover:scale-110 transition-transform">
+            <span className="text-xs font-bold text-emerald-300 uppercase tracking-wider">Ongoing / Upcoming</span>
+            <div className="p-2 bg-emerald-500/20 text-emerald-400 rounded-lg group-hover:scale-110 transition-transform">
               <Clock size={18} />
             </div>
           </div>
           <p className="text-3xl font-extrabold text-white font-outfit">{ongoingHackathons + upcomingHackathons}</p>
         </div>
 
-        <div className="glass-panel p-6 rounded-2xl border border-cardBorder relative overflow-hidden group hover:border-amberAccent/20 transition-all">
+        <div className="glass-panel p-6 rounded-2xl border border-amber-500/30 bg-amber-500/5 relative overflow-hidden group hover:border-amber-500/60 hover:-translate-y-1 transition-all">
           <div className="flex justify-between items-start mb-4">
-            <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">Winners / Runners</span>
-            <div className="p-2 bg-amber-500/10 text-amber-400 rounded-lg group-hover:scale-110 transition-transform">
+            <span className="text-xs font-bold text-amber-300 uppercase tracking-wider">Winners / Runners</span>
+            <div className="p-2 bg-amber-500/20 text-amber-400 rounded-lg group-hover:scale-110 transition-transform">
               <Award size={18} />
             </div>
           </div>
           <p className="text-3xl font-extrabold text-white font-outfit">{winnersCount + runnerupsCount}</p>
         </div>
 
-        <div className="glass-panel p-6 rounded-2xl border border-cardBorder relative overflow-hidden group hover:border-cyanAccent/20 transition-all">
+        <div className="glass-panel p-6 rounded-2xl border border-rose-500/30 bg-rose-500/5 relative overflow-hidden group hover:border-rose-500/60 hover:-translate-y-1 transition-all">
           <div className="flex justify-between items-start mb-4">
-            <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">Certificates Saved</span>
-            <div className="p-2 bg-cyan-500/10 text-cyan-400 rounded-lg group-hover:scale-110 transition-transform">
+            <span className="text-xs font-bold text-rose-300 uppercase tracking-wider">Certificates Saved</span>
+            <div className="p-2 bg-rose-500/20 text-rose-400 rounded-lg group-hover:scale-110 transition-transform">
               <BookmarkCheck size={18} />
             </div>
           </div>

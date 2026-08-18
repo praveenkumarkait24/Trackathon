@@ -768,14 +768,14 @@ export const AddHackathon: React.FC = () => {
           <button
             type="button"
             onClick={() => navigate('/hackathons')}
-            className="px-6 py-3 bg-white/5 hover:bg-white/10 text-gray-300 hover:text-white border border-cardBorder hover:border-gray-600 rounded-xl font-bold transition-all text-sm"
+            className="px-6 py-3 bg-rose-600/20 hover:bg-rose-600/30 text-rose-300 hover:text-white border border-rose-500/40 rounded-xl font-bold transition-all text-sm"
           >
             Cancel
           </button>
           <button
             type="submit"
             disabled={loading}
-            className="px-8 py-3 bg-indigoAccent hover:bg-indigo-600 text-white rounded-xl font-bold shadow-glow transition-all flex items-center space-x-2 disabled:opacity-50 text-sm"
+            className="px-8 py-3 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl font-bold shadow-md shadow-emerald-500/20 transition-all flex items-center space-x-2 disabled:opacity-50 text-sm hover:scale-[1.02]"
           >
             <span>{loading ? 'Registering Tracker...' : 'Save Hackathon'}</span>
           </button>

@@ -106,7 +106,7 @@ export const Hackathons: React.FC = () => {
         </div>
         <Link 
           to="/hackathons/add" 
-          className="flex items-center space-x-2 px-5 py-3 bg-indigoAccent hover:bg-indigo-600 text-white rounded-xl font-bold text-sm shadow-glow transition-all hover:scale-[1.02]"
+          className="flex items-center space-x-2 px-5 py-3 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl font-bold text-sm shadow-md shadow-emerald-500/20 transition-all hover:scale-[1.02]"
         >
           <Plus size={16} />
           <span>Add Hackathon</span>
@@ -123,7 +123,7 @@ export const Hackathons: React.FC = () => {
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search hackathons by name, organizer, domain..."
-              className="w-full bg-[#0d1321]/60 border border-cardBorder focus:border-indigoAccent rounded-xl py-2.5 pl-11 pr-4 text-sm text-slate-800 dark:text-gray-200 placeholder-gray-600 outline-none transition-all"
+              className="w-full bg-[#0d1321]/60 border border-cardBorder focus:border-blue-500 rounded-xl py-2.5 pl-11 pr-4 text-sm text-slate-800 dark:text-gray-200 placeholder-gray-600 outline-none transition-all"
             />
           </div>
           <button
@@ -131,8 +131,8 @@ export const Hackathons: React.FC = () => {
             onClick={() => setShowFilterSidebar(!showFilterSidebar)}
             className={`px-4 py-2.5 border rounded-xl flex items-center space-x-2 text-sm font-bold transition-all shrink-0 ${
               showFilterSidebar 
-                ? 'bg-indigoAccent/15 border-indigoAccent text-indigo-400' 
-                : 'bg-white/5 border-cardBorder text-gray-400 hover:bg-white/10 hover:text-white'
+                ? 'bg-blue-600/20 border-blue-500 text-blue-300' 
+                : 'bg-blue-600/10 border-blue-500/30 text-blue-400 hover:bg-blue-600/20'
             }`}
           >
             <SlidersHorizontal size={16} />
@@ -140,7 +140,7 @@ export const Hackathons: React.FC = () => {
           </button>
           <button
             type="submit"
-            className="px-6 py-2.5 bg-indigoAccent hover:bg-indigo-600 text-white rounded-xl font-bold text-sm shadow-md transition-colors shrink-0"
+            className="px-6 py-2.5 bg-blue-600 hover:bg-blue-500 text-white rounded-xl font-bold text-sm shadow-md shadow-blue-500/20 transition-colors shrink-0"
           >
             Search
           </button>
@@ -153,7 +153,7 @@ export const Hackathons: React.FC = () => {
           <div className="w-full md:w-64 shrink-0 glass-panel p-5 rounded-2xl border border-cardBorder space-y-5 animate-slide-right select-none">
             <div className="flex items-center justify-between border-b border-cardBorder/30 pb-2.5">
               <span className="text-xs font-bold text-gray-200 flex items-center space-x-1.5 uppercase tracking-wider">
-                <SlidersHorizontal size={13} className="text-indigo-400 animate-pulse" />
+                <SlidersHorizontal size={13} className="text-blue-400 animate-pulse" />
                 <span>Filters</span>
               </span>
               <button 
@@ -164,7 +164,7 @@ export const Hackathons: React.FC = () => {
                   setParticipation('');
                   setResult('');
                 }}
-                className="text-[10px] font-bold text-indigo-400 hover:text-indigo-300 hover:underline transition-colors"
+                className="text-[10px] font-extrabold text-amber-400 hover:text-amber-300 hover:underline transition-colors px-2 py-0.5 rounded bg-amber-500/10 border border-amber-500/20"
               >
                 Clear All
               </button>

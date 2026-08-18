@@ -430,14 +430,14 @@ export const HackathonDetails: React.FC = () => {
           <div className="flex flex-wrap gap-2.5">
             <Link
               to={`/hackathons/${id}/edit`}
-              className="flex items-center space-x-2 px-4 py-2.5 bg-indigoAccent/10 hover:bg-indigoAccent/20 text-indigo-300 hover:text-indigo-200 border border-indigoAccent/30 rounded-xl text-xs font-bold transition-all"
+              className="flex items-center space-x-2 px-4 py-2.5 bg-blue-600 hover:bg-blue-500 text-white border border-blue-500/40 rounded-xl text-xs font-bold transition-all shadow-md shadow-blue-500/20"
             >
               <Edit size={15} />
               <span>Edit Details</span>
             </Link>
             <button
               onClick={handleDelete}
-              className="flex items-center space-x-2 px-4 py-2.5 bg-red-500/10 hover:bg-red-500/20 text-red-400 rounded-xl text-xs font-bold transition-all"
+              className="flex items-center space-x-2 px-4 py-2.5 bg-rose-600 hover:bg-rose-500 text-white rounded-xl text-xs font-bold transition-all shadow-md shadow-rose-500/20"
             >
               <Trash2 size={15} />
               <span>Delete</span>
@@ -520,7 +520,7 @@ export const HackathonDetails: React.FC = () => {
                     href={hackathon.registration_link} 
                     target="_blank" 
                     rel="noreferrer" 
-                    className="w-full py-2.5 bg-indigoAccent hover:bg-indigo-600 text-white rounded-xl text-xs font-bold transition-all shadow-glow hover:shadow-indigo-500/20 text-center block"
+                    className="w-full py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-extrabold transition-all shadow-md shadow-emerald-500/20 text-center block hover:scale-[1.01]"
                   >
                     Register / Apply Now
                   </a>
@@ -558,7 +558,7 @@ export const HackathonDetails: React.FC = () => {
                     href={hackathon.website_url} 
                     target="_blank" 
                     rel="noreferrer" 
-                    className="w-full py-2 bg-white/5 hover:bg-white/10 border border-cardBorder text-slate-800 dark:text-gray-300 rounded-xl text-xs font-bold transition-all text-center block"
+                    className="w-full py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-extrabold transition-all shadow-md shadow-blue-500/20 text-center block hover:scale-[1.01]"
                   >
                     Visit Event Website
                   </a>

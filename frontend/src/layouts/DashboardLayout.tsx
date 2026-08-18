@@ -141,7 +141,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) =>
         <div className="p-4 border-t border-cardBorder">
           <button
             onClick={handleLogout}
-            className="w-full flex items-center space-x-3 px-4 py-2.5 text-rose-500 hover:bg-rose-50 dark:hover:bg-red-500/10 rounded-xl transition-all duration-200 font-semibold text-sm border border-transparent hover:border-rose-200 dark:hover:border-red-500/20 group"
+            className="w-full flex items-center space-x-3 px-4 py-2.5 bg-rose-600/15 hover:bg-rose-600/25 text-rose-300 border border-rose-500/30 rounded-xl transition-all duration-200 font-bold text-sm group"
           >
             <LogOut size={18} className="group-hover:translate-x-0.5 transition-transform" />
             <span>Sign Out</span>
@@ -192,7 +192,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) =>
             <div className="border-t border-cardBorder pt-4">
               <button
                 onClick={handleLogout}
-                className="w-full flex items-center space-x-3 px-4 py-3 text-red-400 hover:bg-red-500/10 rounded-xl transition-colors font-medium border border-transparent"
+                className="w-full flex items-center space-x-3 px-4 py-3 bg-rose-600/15 hover:bg-rose-600/25 text-rose-300 border border-rose-500/30 rounded-xl transition-colors font-bold text-sm"
               >
                 <LogOut size={20} />
                 <span>Logout</span>

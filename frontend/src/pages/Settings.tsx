@@ -365,7 +365,7 @@ export const Settings: React.FC = () => {
           <button
             onClick={handleSave}
             disabled={saving}
-            className="flex items-center space-x-2 px-8 py-3 bg-indigoAccent hover:bg-indigo-600 text-white rounded-xl font-bold shadow-glow hover:shadow-indigo-500/30 transition-all text-sm disabled:opacity-50"
+            className="flex items-center space-x-2 px-8 py-3 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl font-bold shadow-md shadow-emerald-500/20 transition-all text-sm disabled:opacity-50 hover:scale-[1.02]"
           >
             <Save size={16} />
             <span>{saving ? 'Saving...' : 'Save Configuration'}</span>
