@@ -38,14 +38,15 @@ export const Hackathons: React.FC = () => {
   const fetchHackathons = async (query = search) => {
     try {
       setLoading(true);
-      const params: any = {};
-      if (query) params.search = query;
-      if (status) params.status = status;
-      if (mode) params.mode = mode;
-      if (participation) params.participation = participation;
-      if (result) params.result = result;
+      const queryParams = new URLSearchParams();
+      if (query) queryParams.append('search', query);
+      if (status) queryParams.append('status', status);
+      if (mode) queryParams.append('mode', mode);
+      if (participation) queryParams.append('participation_type', participation);
+      if (result) queryParams.append('result', result);
 
-      const data = await api.get('/hackathons', params);
+      const endpoint = queryParams.toString() ? `/hackathons?${queryParams.toString()}` : '/hackathons';
+      const data = await api.get(endpoint);
       setHackathons(data);
     } catch (err: any) {
       if (!api.getCached('/hackathons')) {
