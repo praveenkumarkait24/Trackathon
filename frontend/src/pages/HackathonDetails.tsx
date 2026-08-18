@@ -959,9 +959,9 @@ export const HackathonDetails: React.FC = () => {
                       <div className="flex justify-end pt-2 border-t border-cardBorder/20">
                         <button
                           onClick={() => handleDeleteRound(round.id)}
-                          className="px-3 py-1 bg-rose-500/15 hover:bg-rose-500/25 text-rose-400 border border-rose-500/30 rounded-lg text-xs font-bold transition-all flex items-center space-x-1 hover:scale-105"
+                          className="px-3.5 py-1.5 bg-rose-600 hover:bg-rose-500 text-white rounded-xl text-xs font-extrabold transition-all flex items-center space-x-1.5 shadow-md shadow-rose-500/20 hover:scale-105"
                         >
-                          <Trash2 size={12} />
+                          <Trash2 size={13} />
                           <span>Delete Round</span>
                         </button>
                       </div>
@@ -982,9 +982,10 @@ export const HackathonDetails: React.FC = () => {
             </h3>
             <button
               onClick={() => setAchievementModalOpen(true)}
-              className="px-3 py-1 bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/40 rounded-lg text-xs font-extrabold transition-all shadow-sm"
+              className="px-3.5 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-extrabold transition-all shadow-md shadow-emerald-500/20 flex items-center space-x-1.5"
             >
-              {hackathon.achievements ? 'Edit' : 'Record'}
+              <Award size={14} />
+              <span>{hackathon.achievements ? 'Edit Result' : 'Record Result'}</span>
             </button>
           </div>
 

@@ -13,7 +13,8 @@ import {
   Trash2,
   AlertCircle,
   Plus,
-  FileText
+  FileText,
+  RotateCcw
 } from 'lucide-react';
 import { LoadingSpinner } from '../components/LoadingSpinner.js';
 
@@ -34,33 +35,34 @@ export const Hackathons: React.FC = () => {
   const [result, setResult] = useState('');
   const [showFilterSidebar, setShowFilterSidebar] = useState(false);
 
-  const fetchHackathons = async (showLoader = false) => {
-    if (showLoader) setLoading(true);
+  const fetchHackathons = async (query = search) => {
     try {
-      const queryParams = new URLSearchParams();
-      if (search) queryParams.append('search', search);
-      if (status) queryParams.append('status', status);
-      if (mode) queryParams.append('mode', mode);
-      if (participation) queryParams.append('participation_type', participation);
-      if (result) queryParams.append('result', result);
+      setLoading(true);
+      const params: any = {};
+      if (query) params.search = query;
+      if (status) params.status = status;
+      if (mode) params.mode = mode;
+      if (participation) params.participation = participation;
+      if (result) params.result = result;
 
-      const data = await api.get(`/hackathons?${queryParams.toString()}`);
+      const data = await api.get('/hackathons', params);
       setHackathons(data);
     } catch (err: any) {
-      setError(err.message || 'Failed to search hackathons.');
+      if (!api.getCached('/hackathons')) {
+        setError(err.message || 'Failed to fetch hackathons.');
+      }
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    // Initial fetch (only show loader if cache is empty)
-    fetchHackathons(hackathons.length === 0);
+    fetchHackathons();
   }, [status, mode, participation, result]);
 
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    fetchHackathons(true);
+    fetchHackathons(search);
   };
 
   const handleDelete = async (id: string) => {
@@ -78,20 +80,20 @@ export const Hackathons: React.FC = () => {
 
   const getStatusBadgeClass = (s: string) => {
     switch (s) {
-      case 'ongoing': return 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 shadow-sm font-black animate-pulse';
-      case 'upcoming': return 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 shadow-sm font-black';
-      case 'completed': return 'bg-violet-500/20 text-violet-300 border border-violet-500/40 shadow-sm font-black';
-      case 'cancelled': return 'bg-rose-500/20 text-rose-300 border border-rose-500/40 shadow-sm font-black';
-      default: return 'bg-white/10 text-gray-300 border border-gray-500/30';
+      case 'ongoing': return 'bg-emerald-600 text-white border border-emerald-400 shadow-sm font-extrabold animate-pulse';
+      case 'upcoming': return 'bg-blue-600 text-white border border-blue-400 shadow-sm font-extrabold';
+      case 'completed': return 'bg-purple-600 text-white border border-purple-400 shadow-sm font-extrabold';
+      case 'cancelled': return 'bg-rose-600 text-white border border-rose-400 shadow-sm font-extrabold';
+      default: return 'bg-slate-700 text-white border border-slate-500 font-extrabold';
     }
   };
 
   const getResultBadgeClass = (res: string) => {
     switch (res) {
-      case 'winner': return 'bg-amber-500/25 text-amber-300 border border-amber-500/50 shadow-glowAmber font-black';
-      case 'runner_up': return 'bg-slate-400/20 text-cyan-300 border border-cyan-400/40 font-black';
-      case 'finalist': return 'bg-purple-500/20 text-purple-300 border border-purple-500/40 font-black';
-      case 'participant': return 'bg-blue-500/20 text-blue-300 border border-blue-500/40 font-black';
+      case 'winner': return 'bg-amber-500 text-white border border-amber-300 shadow-glowAmber font-extrabold';
+      case 'runner_up': return 'bg-cyan-600 text-white border border-cyan-400 font-extrabold';
+      case 'finalist': return 'bg-indigo-600 text-white border border-indigo-400 font-extrabold';
+      case 'participant': return 'bg-blue-600 text-white border border-blue-400 font-extrabold';
       default: return '';
     }
   };
@@ -106,9 +108,9 @@ export const Hackathons: React.FC = () => {
         </div>
         <Link 
           to="/hackathons/add" 
-          className="flex items-center space-x-2 px-5 py-3 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl font-bold text-sm shadow-md shadow-emerald-500/20 transition-all hover:scale-[1.02]"
+          className="flex items-center space-x-2 px-5 py-3 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl font-extrabold text-sm shadow-md shadow-emerald-500/20 transition-all hover:scale-[1.02]"
         >
-          <Plus size={16} />
+          <Plus size={18} />
           <span>Add Hackathon</span>
         </Link>
       </div>
@@ -117,22 +119,22 @@ export const Hackathons: React.FC = () => {
       <div className="glass-panel p-4 rounded-2xl border border-cardBorder space-y-4 max-w-2xl">
         <form onSubmit={handleSearchSubmit} className="flex gap-2">
           <div className="relative flex-1">
-            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-500" />
+            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
             <input
               type="text"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search hackathons by name, organizer, domain..."
-              className="w-full bg-[#0d1321]/60 border border-cardBorder focus:border-blue-500 rounded-xl py-2.5 pl-11 pr-4 text-sm text-slate-800 dark:text-gray-200 placeholder-gray-600 outline-none transition-all"
+              className="w-full bg-[#0d1321]/60 border border-cardBorder focus:border-blue-500 rounded-xl py-2.5 pl-11 pr-4 text-sm text-white placeholder-gray-500 outline-none transition-all font-semibold"
             />
           </div>
           <button
             type="button"
             onClick={() => setShowFilterSidebar(!showFilterSidebar)}
-            className={`px-4 py-2.5 border rounded-xl flex items-center space-x-2 text-sm font-bold transition-all shrink-0 ${
+            className={`px-4 py-2.5 rounded-xl flex items-center space-x-2 text-sm font-extrabold text-white transition-all shrink-0 shadow-md ${
               showFilterSidebar 
-                ? 'bg-blue-600/20 border-blue-500 text-blue-300' 
-                : 'bg-blue-600/10 border-blue-500/30 text-blue-400 hover:bg-blue-600/20'
+                ? 'bg-blue-600 border border-blue-400' 
+                : 'bg-blue-600/80 hover:bg-blue-600 border border-blue-500/50'
             }`}
           >
             <SlidersHorizontal size={16} />
@@ -140,9 +142,10 @@ export const Hackathons: React.FC = () => {
           </button>
           <button
             type="submit"
-            className="px-6 py-2.5 bg-blue-600 hover:bg-blue-500 text-white rounded-xl font-bold text-sm shadow-md shadow-blue-500/20 transition-colors shrink-0"
+            className="px-6 py-2.5 bg-blue-600 hover:bg-blue-500 text-white rounded-xl font-extrabold text-sm shadow-md shadow-blue-500/20 transition-all shrink-0 flex items-center space-x-2"
           >
-            Search
+            <Search size={16} />
+            <span>Search</span>
           </button>
         </form>
       </div>
@@ -152,8 +155,8 @@ export const Hackathons: React.FC = () => {
         {showFilterSidebar && (
           <div className="w-full md:w-64 shrink-0 glass-panel p-5 rounded-2xl border border-cardBorder space-y-5 animate-slide-right select-none">
             <div className="flex items-center justify-between border-b border-cardBorder/30 pb-2.5">
-              <span className="text-xs font-bold text-gray-200 flex items-center space-x-1.5 uppercase tracking-wider">
-                <SlidersHorizontal size={13} className="text-blue-400 animate-pulse" />
+              <span className="text-xs font-extrabold text-white flex items-center space-x-1.5 uppercase tracking-wider">
+                <SlidersHorizontal size={14} className="text-blue-400 animate-pulse" />
                 <span>Filters</span>
               </span>
               <button 
@@ -164,9 +167,10 @@ export const Hackathons: React.FC = () => {
                   setParticipation('');
                   setResult('');
                 }}
-                className="text-[10px] font-extrabold text-amber-400 hover:text-amber-300 hover:underline transition-colors px-2 py-0.5 rounded bg-amber-500/10 border border-amber-500/20"
+                className="text-xs font-extrabold text-white bg-amber-500 hover:bg-amber-400 transition-all px-2.5 py-1 rounded-lg flex items-center space-x-1 shadow-sm"
               >
-                Clear All
+                <RotateCcw size={12} />
+                <span>Clear All</span>
               </button>
             </div>
 

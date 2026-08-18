@@ -12,7 +12,9 @@ import {
   Info,
   Users,
   AlertTriangle,
-  FileText
+  FileText,
+  Save,
+  X
 } from 'lucide-react';
 
 interface TeammateInput {
@@ -768,15 +770,17 @@ export const AddHackathon: React.FC = () => {
           <button
             type="button"
             onClick={() => navigate('/hackathons')}
-            className="px-6 py-3 bg-rose-600/20 hover:bg-rose-600/30 text-rose-300 hover:text-white border border-rose-500/40 rounded-xl font-bold transition-all text-sm"
+            className="px-6 py-3 bg-rose-600 hover:bg-rose-500 text-white rounded-xl font-extrabold shadow-md shadow-rose-500/20 transition-all flex items-center space-x-2 text-sm hover:scale-[1.02]"
           >
-            Cancel
+            <X size={16} />
+            <span>Cancel</span>
           </button>
           <button
             type="submit"
             disabled={loading}
-            className="px-8 py-3 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl font-bold shadow-md shadow-emerald-500/20 transition-all flex items-center space-x-2 disabled:opacity-50 text-sm hover:scale-[1.02]"
+            className="px-8 py-3 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl font-extrabold shadow-md shadow-emerald-500/20 transition-all flex items-center space-x-2 disabled:opacity-50 text-sm hover:scale-[1.02]"
           >
+            <Save size={16} />
             <span>{loading ? 'Registering Tracker...' : 'Save Hackathon'}</span>
           </button>
         </div>
