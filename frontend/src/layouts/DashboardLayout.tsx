@@ -141,7 +141,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) =>
         <div className="p-4 border-t border-cardBorder">
           <button
             onClick={handleLogout}
-            className="w-full flex items-center space-x-3 px-4 py-2.5 bg-rose-600/15 hover:bg-rose-600/25 text-rose-300 border border-rose-500/30 rounded-xl transition-all duration-200 font-bold text-sm group"
+            className="w-full flex items-center justify-center space-x-2 px-4 py-2.5 bg-rose-600 hover:bg-rose-500 text-white rounded-full transition-all duration-200 font-extrabold text-sm shadow-md shadow-rose-500/20 group"
           >
             <LogOut size={18} className="group-hover:translate-x-0.5 transition-transform" />
             <span>Sign Out</span>
@@ -192,7 +192,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) =>
             <div className="border-t border-cardBorder pt-4">
               <button
                 onClick={handleLogout}
-                className="w-full flex items-center space-x-3 px-4 py-3 bg-rose-600/15 hover:bg-rose-600/25 text-rose-300 border border-rose-500/30 rounded-xl transition-colors font-bold text-sm"
+                className="w-full flex items-center justify-center space-x-2 px-4 py-3 bg-rose-600 hover:bg-rose-500 text-white rounded-full transition-colors font-extrabold text-sm shadow-md shadow-rose-500/20"
               >
                 <LogOut size={20} />
                 <span>Logout</span>
@@ -220,7 +220,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) =>
           <div className="flex items-center space-x-3">
             <Link 
               to="/settings" 
-              className="flex items-center space-x-2.5 bg-indigo-50/80 hover:bg-indigo-100 dark:bg-white/5 dark:hover:bg-white/10 border border-indigo-100 dark:border-cardBorder/40 rounded-xl px-3 py-1.5 transition-all shadow-sm group"
+              className="flex items-center space-x-2.5 bg-indigo-50/80 hover:bg-indigo-100 dark:bg-white/5 dark:hover:bg-white/10 border border-indigo-100 dark:border-cardBorder/40 rounded-full px-3.5 py-1.5 transition-all shadow-sm group"
             >
               <div className="w-8 h-8 rounded-full bg-gradient-to-br from-indigo-500 to-cyan-400 flex items-center justify-center font-bold text-white text-xs overflow-hidden ring-2 ring-white dark:ring-indigo-900 shadow-sm shrink-0">
                 {user?.user_metadata?.avatar_url || user?.user_metadata?.picture ? (
@@ -233,7 +233,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) =>
                   user?.email?.charAt(0).toUpperCase() || 'S'
                 )}
               </div>
-              <span className="font-bold text-xs text-slate-700 dark:text-gray-200 group-hover:text-indigo-500 dark:group-hover:text-white transition-colors truncate max-w-[180px]">
+              <span className="font-extrabold text-xs text-slate-700 dark:text-gray-200 group-hover:text-indigo-500 dark:group-hover:text-white transition-colors truncate max-w-[180px]">
                 {user?.user_metadata?.full_name || user?.user_metadata?.name || user?.email?.split('@')[0] || 'User'}
               </span>
             </Link>

@@ -104,7 +104,7 @@ export const Achievements: React.FC = () => {
           </p>
           <Link
             to="/hackathons"
-            className="inline-flex px-6 py-3 bg-blue-600 hover:bg-blue-500 text-white rounded-xl font-bold text-sm shadow-md shadow-blue-500/20 transition-all hover:scale-[1.02]"
+            className="inline-flex px-6 py-2.5 bg-blue-600 hover:bg-blue-500 text-white rounded-full font-extrabold text-sm shadow-md shadow-blue-500/20 transition-all hover:scale-[1.02]"
           >
             Track Completed Hackathons
           </Link>

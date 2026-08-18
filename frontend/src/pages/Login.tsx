@@ -123,7 +123,7 @@ export const Login: React.FC = () => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-3.5 bg-gradient-to-r from-indigo-500 to-cyan-500 hover:from-indigo-600 hover:to-cyan-600 text-white rounded-xl font-bold shadow-glow hover:shadow-glow-lg transition-all flex items-center justify-center space-x-2 disabled:opacity-50 text-base"
+            className="w-full py-3.5 bg-blue-600 hover:bg-blue-500 text-white rounded-full font-extrabold shadow-md shadow-blue-500/20 transition-all flex items-center justify-center space-x-2 disabled:opacity-50 text-base"
           >
             <span>{loading ? 'Signing in...' : 'Sign In'}</span>
             {!loading && <ArrowRight size={18} />}
@@ -143,7 +143,7 @@ export const Login: React.FC = () => {
             type="button"
             onClick={handleGoogleSignIn}
             disabled={loading}
-            className="w-full py-3.5 bg-white hover:bg-slate-50 dark:bg-white/5 dark:hover:bg-white/10 text-slate-700 dark:text-gray-200 rounded-xl font-bold transition-all border border-slate-200 dark:border-cardBorder flex items-center justify-center space-x-3 disabled:opacity-50 shadow-sm hover:shadow-md group"
+            className="w-full py-3.5 bg-white hover:bg-slate-50 dark:bg-white/5 dark:hover:bg-white/10 text-slate-700 dark:text-gray-200 rounded-full font-bold transition-all border border-slate-200 dark:border-cardBorder flex items-center justify-center space-x-3 disabled:opacity-50 shadow-sm hover:shadow-md group"
           >
             <svg className="w-5 h-5 shrink-0" viewBox="0 0 24 24">
               <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />

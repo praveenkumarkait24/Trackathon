@@ -109,7 +109,7 @@ export const Hackathons: React.FC = () => {
         </div>
         <Link 
           to="/hackathons/add" 
-          className="flex items-center space-x-2 px-5 py-3 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl font-extrabold text-sm shadow-md shadow-emerald-500/20 transition-all hover:scale-[1.02]"
+          className="flex items-center space-x-2 px-6 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-full font-extrabold text-sm shadow-md shadow-emerald-500/20 transition-all hover:scale-[1.02]"
         >
           <Plus size={18} />
           <span>Add Hackathon</span>
@@ -117,22 +117,22 @@ export const Hackathons: React.FC = () => {
       </div>
 
       {/* Filter and Search Bar */}
-      <div className="glass-panel p-4 rounded-2xl border border-cardBorder space-y-4 max-w-2xl">
+      <div className="glass-panel p-4 rounded-full border border-cardBorder space-y-4 max-w-2xl">
         <form onSubmit={handleSearchSubmit} className="flex gap-2">
           <div className="relative flex-1">
-            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
             <input
               type="text"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search hackathons by name, organizer, domain..."
-              className="w-full bg-[#0d1321]/60 border border-cardBorder focus:border-blue-500 rounded-xl py-2.5 pl-11 pr-4 text-sm text-white placeholder-gray-500 outline-none transition-all font-semibold"
+              className="w-full bg-[#0d1321]/60 border border-cardBorder focus:border-blue-500 rounded-full py-2.5 pl-12 pr-4 text-sm text-white placeholder-gray-500 outline-none transition-all font-semibold"
             />
           </div>
           <button
             type="button"
             onClick={() => setShowFilterSidebar(!showFilterSidebar)}
-            className={`px-4 py-2.5 rounded-xl flex items-center space-x-2 text-sm font-extrabold text-white transition-all shrink-0 shadow-md ${
+            className={`px-5 py-2.5 rounded-full flex items-center space-x-2 text-sm font-extrabold text-white transition-all shrink-0 shadow-md ${
               showFilterSidebar 
                 ? 'bg-blue-600 border border-blue-400' 
                 : 'bg-blue-600/80 hover:bg-blue-600 border border-blue-500/50'
@@ -143,7 +143,7 @@ export const Hackathons: React.FC = () => {
           </button>
           <button
             type="submit"
-            className="px-6 py-2.5 bg-blue-600 hover:bg-blue-500 text-white rounded-xl font-extrabold text-sm shadow-md shadow-blue-500/20 transition-all shrink-0 flex items-center space-x-2"
+            className="px-6 py-2.5 bg-blue-600 hover:bg-blue-500 text-white rounded-full font-extrabold text-sm shadow-md shadow-blue-500/20 transition-all shrink-0 flex items-center space-x-2"
           >
             <Search size={16} />
             <span>Search</span>
@@ -168,7 +168,7 @@ export const Hackathons: React.FC = () => {
                   setParticipation('');
                   setResult('');
                 }}
-                className="text-xs font-extrabold text-white bg-amber-500 hover:bg-amber-400 transition-all px-2.5 py-1 rounded-lg flex items-center space-x-1 shadow-sm"
+                className="text-xs font-extrabold text-white bg-amber-500 hover:bg-amber-400 transition-all px-3 py-1 rounded-full flex items-center space-x-1 shadow-sm"
               >
                 <RotateCcw size={12} />
                 <span>Clear All</span>

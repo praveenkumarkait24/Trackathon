@@ -188,7 +188,7 @@ export const Register: React.FC = () => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-3 bg-indigoAccent hover:bg-indigo-600 text-white rounded-xl font-semibold shadow-glow transition-all flex items-center justify-center space-x-2 disabled:opacity-50 mt-2"
+            className="w-full py-3 bg-blue-600 hover:bg-blue-500 text-white rounded-full font-extrabold shadow-md shadow-blue-500/20 transition-all flex items-center justify-center space-x-2 disabled:opacity-50 mt-2"
           >
             <span>{loading ? 'Creating Account...' : 'Register'}</span>
             {!loading && <ArrowRight size={18} />}
@@ -208,7 +208,7 @@ export const Register: React.FC = () => {
             type="button"
             onClick={handleGoogleSignIn}
             disabled={loading}
-            className="w-full py-3 bg-white/5 hover:bg-white/10 text-gray-200 hover:text-white rounded-xl font-bold transition-all border border-cardBorder flex items-center justify-center space-x-2.5 disabled:opacity-50"
+            className="w-full py-3 bg-white/5 hover:bg-white/10 text-gray-200 hover:text-white rounded-full font-bold transition-all border border-cardBorder flex items-center justify-center space-x-2.5 disabled:opacity-50"
           >
             <svg className="w-4 h-4 shrink-0" viewBox="0 0 24 24">
               <path

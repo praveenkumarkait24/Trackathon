@@ -214,9 +214,9 @@ export const Dashboard: React.FC = () => {
         </div>
         <Link 
           to="/hackathons/add" 
-          className="flex items-center space-x-2 px-5 py-3 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl font-bold text-sm shadow-md shadow-emerald-500/20 transition-all hover:scale-[1.02]"
+          className="flex items-center space-x-2 px-6 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-full font-extrabold text-sm shadow-md shadow-emerald-500/20 transition-all hover:scale-[1.02]"
         >
-          <Plus size={16} />
+          <Plus size={18} />
           <span>Add Hackathon</span>
         </Link>
       </div>

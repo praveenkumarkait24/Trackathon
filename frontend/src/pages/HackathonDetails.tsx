@@ -430,14 +430,14 @@ export const HackathonDetails: React.FC = () => {
           <div className="flex flex-wrap gap-2.5">
             <Link
               to={`/hackathons/${id}/edit`}
-              className="flex items-center space-x-2 px-4 py-2.5 bg-blue-600 hover:bg-blue-500 text-white border border-blue-500/40 rounded-xl text-xs font-bold transition-all shadow-md shadow-blue-500/20"
+              className="flex items-center space-x-2 px-5 py-2 bg-blue-600 hover:bg-blue-500 text-white border border-blue-500/40 rounded-full text-xs font-extrabold transition-all shadow-md shadow-blue-500/20"
             >
               <Edit size={15} />
               <span>Edit Details</span>
             </Link>
             <button
               onClick={handleDelete}
-              className="flex items-center space-x-2 px-4 py-2.5 bg-rose-600 hover:bg-rose-500 text-white rounded-xl text-xs font-bold transition-all shadow-md shadow-rose-500/20"
+              className="flex items-center space-x-2 px-5 py-2 bg-rose-600 hover:bg-rose-500 text-white rounded-full text-xs font-extrabold transition-all shadow-md shadow-rose-500/20"
             >
               <Trash2 size={15} />
               <span>Delete</span>
@@ -520,12 +520,12 @@ export const HackathonDetails: React.FC = () => {
                     href={hackathon.registration_link} 
                     target="_blank" 
                     rel="noreferrer" 
-                    className="w-full py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-extrabold transition-all shadow-md shadow-emerald-500/20 text-center block hover:scale-[1.01]"
+                    className="w-full py-3 bg-blue-600 hover:bg-blue-500 text-white rounded-full text-xs font-extrabold transition-all shadow-md shadow-blue-500/20 text-center block hover:scale-[1.01]"
                   >
                     Register / Apply Now
                   </a>
                 ) : (
-                  <span className="w-full py-2.5 bg-gray-500/10 text-gray-500 rounded-xl text-xs font-bold text-center block">
+                  <span className="w-full py-3 bg-gray-500/10 text-gray-500 rounded-full text-xs font-extrabold text-center block">
                     No Direct Registration Link
                   </span>
                 )}
@@ -558,12 +558,12 @@ export const HackathonDetails: React.FC = () => {
                     href={hackathon.website_url} 
                     target="_blank" 
                     rel="noreferrer" 
-                    className="w-full py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-extrabold transition-all shadow-md shadow-blue-500/20 text-center block hover:scale-[1.01]"
+                    className="w-full py-2.5 bg-blue-600 hover:bg-blue-500 text-white rounded-full text-xs font-extrabold transition-all shadow-md shadow-blue-500/20 text-center block hover:scale-[1.01]"
                   >
                     Visit Event Website
                   </a>
                 ) : (
-                  <span className="w-full py-2 bg-gray-500/10 text-gray-500 rounded-xl text-xs font-bold text-center block">
+                  <span className="w-full py-2.5 bg-gray-500/10 text-gray-500 rounded-full text-xs font-bold text-center block">
                     No Website Configured
                   </span>
                 )}
@@ -959,7 +959,7 @@ export const HackathonDetails: React.FC = () => {
                       <div className="flex justify-end pt-2 border-t border-cardBorder/20">
                         <button
                           onClick={() => handleDeleteRound(round.id)}
-                          className="px-3.5 py-1.5 bg-rose-600 hover:bg-rose-500 text-white rounded-xl text-xs font-extrabold transition-all flex items-center space-x-1.5 shadow-md shadow-rose-500/20 hover:scale-105"
+                          className="px-4 py-1.5 bg-rose-600 hover:bg-rose-500 text-white rounded-full text-xs font-extrabold transition-all flex items-center space-x-1.5 shadow-md shadow-rose-500/20 hover:scale-105"
                         >
                           <Trash2 size={13} />
                           <span>Delete Round</span>
@@ -982,7 +982,7 @@ export const HackathonDetails: React.FC = () => {
             </h3>
             <button
               onClick={() => setAchievementModalOpen(true)}
-              className="px-3.5 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-extrabold transition-all shadow-md shadow-emerald-500/20 flex items-center space-x-1.5"
+              className="px-4 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-full text-xs font-extrabold transition-all shadow-md shadow-emerald-500/20 flex items-center space-x-1.5"
             >
               <Award size={14} />
               <span>{hackathon.achievements ? 'Edit Result' : 'Record Result'}</span>

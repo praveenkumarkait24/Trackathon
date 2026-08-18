@@ -164,10 +164,10 @@ export const Calendar: React.FC = () => {
           <p className="text-gray-400 text-sm mt-1">Track deadlines and event timings visually.</p>
         </div>
 
-        <div className="flex items-center space-x-4 bg-[#0d1321]/60 border border-cardBorder rounded-2xl p-1.5 shrink-0">
+        <div className="flex items-center space-x-4 bg-[#0d1321]/60 border border-cardBorder rounded-full px-4 py-1.5 shrink-0">
           <button 
             onClick={handlePrevMonth}
-            className="p-2 text-blue-400 hover:text-white hover:bg-blue-600/30 bg-blue-600/10 border border-blue-500/20 rounded-xl transition-all"
+            className="p-2 text-white bg-blue-600 hover:bg-blue-500 rounded-full transition-all shadow-md shadow-blue-500/20"
           >
             <ChevronLeft size={16} />
           </button>
@@ -176,7 +176,7 @@ export const Calendar: React.FC = () => {
           </span>
           <button 
             onClick={handleNextMonth}
-            className="p-2 text-blue-400 hover:text-white hover:bg-blue-600/30 bg-blue-600/10 border border-blue-500/20 rounded-xl transition-all"
+            className="p-2 text-white bg-blue-600 hover:bg-blue-500 rounded-full transition-all shadow-md shadow-blue-500/20"
           >
             <ChevronRight size={16} />
           </button>
