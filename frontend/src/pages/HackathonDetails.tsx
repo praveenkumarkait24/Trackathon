@@ -828,10 +828,10 @@ export const HackathonDetails: React.FC = () => {
                       : 'No deadline set'}
                   </p>
                 </div>
-                <span className={`text-[10px] font-extrabold uppercase tracking-wider px-3.5 py-1 rounded-full border shadow-sm ${
+                <span className={`text-[10px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-lg border shadow-sm ${
                   hackathon.registration_deadline && new Date(hackathon.registration_deadline) < new Date()
-                    ? 'bg-emerald-600 text-white border-emerald-400'
-                    : 'bg-blue-600 text-white border-blue-400'
+                    ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40'
+                    : 'bg-cyan-500/20 text-cyan-300 border-cyan-500/40'
                 }`}>
                   {hackathon.registration_deadline && new Date(hackathon.registration_deadline) < new Date() ? 'Completed' : 'Upcoming'}
                 </span>
@@ -877,29 +877,29 @@ export const HackathonDetails: React.FC = () => {
                           value={round.status}
                           onChange={(e) => handleUpdateRoundStatus(round, e.target.value)}
                           disabled={isUpdating}
-                          className={`rounded-full px-4 py-1.5 text-xs font-extrabold outline-none transition-all cursor-pointer text-white shadow-md ${
+                          className={`border rounded-xl px-3 py-1.5 text-xs font-black outline-none transition-all cursor-pointer ${
                             round.status === 'ongoing' || round.status === 'completed' || round.status === 'qualified'
-                              ? 'bg-emerald-600 border border-emerald-400'
+                              ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/50 shadow-emerald-500/10'
                               : round.status === 'not_qualified' || round.status === 'cancelled'
-                              ? 'bg-rose-600 border border-rose-400'
-                              : 'bg-blue-600 border border-blue-400'
+                              ? 'bg-rose-500/20 text-rose-300 border-rose-500/50 shadow-rose-500/10'
+                              : 'bg-cyan-500/20 text-cyan-300 border-cyan-500/50 shadow-cyan-500/10'
                           }`}
                         >
-                          <option value="upcoming" className="bg-[#0d1321] text-white font-bold">Upcoming</option>
-                          <option value="ongoing" className="bg-[#0d1321] text-white font-bold">Ongoing</option>
-                          <option value="completed" className="bg-[#0d1321] text-white font-bold">Completed</option>
-                          <option value="qualified" className="bg-[#0d1321] text-white font-bold">Qualified</option>
-                          <option value="not_qualified" className="bg-[#0d1321] text-white font-bold">Not Qualified</option>
-                          <option value="skipped" className="bg-[#0d1321] text-white font-bold">Skipped</option>
-                          <option value="cancelled" className="bg-[#0d1321] text-white font-bold">Cancelled</option>
+                          <option value="upcoming" className="bg-[#0d1321] text-cyan-300 font-bold">Upcoming</option>
+                          <option value="ongoing" className="bg-[#0d1321] text-emerald-300 font-bold">Ongoing</option>
+                          <option value="completed" className="bg-[#0d1321] text-emerald-300 font-bold">Completed</option>
+                          <option value="qualified" className="bg-[#0d1321] text-emerald-300 font-bold">Qualified</option>
+                          <option value="not_qualified" className="bg-[#0d1321] text-rose-300 font-bold">Not Qualified</option>
+                          <option value="skipped" className="bg-[#0d1321] text-gray-400 font-bold">Skipped</option>
+                          <option value="cancelled" className="bg-[#0d1321] text-rose-300 font-bold">Cancelled</option>
                         </select>
                       ) : (
-                        <span className={`px-3 py-1 rounded-full text-xs font-extrabold uppercase tracking-wider border text-white ${
+                        <span className={`px-2.5 py-1 rounded-lg text-xs font-black uppercase tracking-wider border ${
                           round.status === 'ongoing' || round.status === 'completed' || round.status === 'qualified'
-                            ? 'bg-emerald-600 border-emerald-400'
+                            ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40'
                             : round.status === 'not_qualified' || round.status === 'cancelled'
-                            ? 'bg-rose-600 border-rose-400'
-                            : 'bg-blue-600 border-blue-400'
+                            ? 'bg-rose-500/20 text-rose-300 border-rose-500/40'
+                            : 'bg-cyan-500/20 text-cyan-300 border-cyan-500/40'
                         }`}>
                           {round.status}
                         </span>
@@ -1062,14 +1062,13 @@ export const HackathonDetails: React.FC = () => {
             </div>
           ) : (
             <div className="flex flex-col items-center justify-center py-10 text-center text-gray-500 space-y-3">
-              <Award size={36} className="text-emerald-500/30" />
+              <Award size={32} className="text-amber-500/20" />
               <p className="text-xs text-gray-400 font-medium">This hackathon result has not been recorded yet.</p>
               <button 
                 onClick={() => setAchievementModalOpen(true)}
-                className="px-6 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-full text-xs font-extrabold transition-all shadow-md shadow-emerald-500/20 hover:scale-[1.02] flex items-center space-x-2"
+                className="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-extrabold transition-all shadow-md shadow-emerald-500/20 hover:scale-[1.02]"
               >
-                <Award size={16} className="text-white shrink-0" />
-                <span>Record Achievement Result</span>
+                Record Achievement Result
               </button>
             </div>
           )}

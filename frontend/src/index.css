@@ -68,29 +68,6 @@
   .text-xs { font-size: 0.8125rem !important; } /* 13px */
   .text-sm { font-size: 0.9375rem !important; } /* 15px */
   .text-base { font-size: 1.0625rem !important; } /* 17px */
-
-  /* Global button text contrast enforcement - guarantee 100% white text on filled action buttons */
-  button.bg-emerald-600, a.bg-emerald-600,
-  button.bg-blue-600, a.bg-blue-600,
-  button.bg-rose-600, a.bg-rose-600,
-  button.bg-amber-500, a.bg-amber-500,
-  .rounded-full.bg-emerald-600,
-  .rounded-full.bg-blue-600,
-  .rounded-full.bg-rose-600,
-  .rounded-full.bg-amber-500 {
-    color: #ffffff !important;
-  }
-
-  button.bg-emerald-600 *, a.bg-emerald-600 *,
-  button.bg-blue-600 *, a.bg-blue-600 *,
-  button.bg-rose-600 *, a.bg-rose-600 *,
-  button.bg-amber-500 *, a.bg-amber-500 *,
-  .rounded-full.bg-emerald-600 *,
-  .rounded-full.bg-blue-600 *,
-  .rounded-full.bg-rose-600 *,
-  .rounded-full.bg-amber-500 * {
-    color: #ffffff !important;
-  }
 }
 
 /* ==========================================
@@ -283,12 +260,25 @@ button:active:not(:disabled) {
   color: #1e293b !important;
 }
 
-/* Ensure accent button text stays white */
-:root .bg-indigoAccent,
-:root .bg-indigoAccent *,
-:root button.bg-indigoAccent,
-:root a.bg-indigoAccent {
+/* Ensure ALL action buttons, pill buttons, icons, and nested text stay 100% crisp white in Light and Dark mode */
+:root button,
+:root button *,
+:root a.rounded-full,
+:root a.rounded-full *,
+:root button.rounded-full,
+:root button.rounded-full *,
+:root [class*="bg-rose-600"],
+:root [class*="bg-rose-600"] *,
+:root [class*="bg-emerald-600"],
+:root [class*="bg-emerald-600"] *,
+:root [class*="bg-blue-600"],
+:root [class*="bg-blue-600"] *,
+:root [class*="bg-amber-500"],
+:root [class*="bg-amber-500"] *,
+:root [class*="bg-indigoAccent"],
+:root [class*="bg-indigoAccent"] * {
   color: #ffffff !important;
+  stroke: #ffffff !important;
 }
 
 /* Accent colors remain vibrant */
