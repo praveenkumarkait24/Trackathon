@@ -260,27 +260,58 @@ button:active:not(:disabled) {
   color: #1e293b !important;
 }
 
-/* Ensure ALL action buttons, icons, and nested text in glass panels stay 100% crisp white */
-:root .glass-panel button,
-:root .glass-panel button *,
-:root .glass-panel button span,
-:root .glass-panel button svg,
-:root .glass-panel a[class*="bg-"],
-:root .glass-panel a[class*="bg-"] *,
-:root .glass-panel a[class*="bg-"] span,
-:root .glass-panel a[class*="bg-"] svg,
-:root [class*="bg-rose-600"],
-:root [class*="bg-rose-600"] *,
-:root [class*="bg-emerald-600"],
-:root [class*="bg-emerald-600"] *,
-:root [class*="bg-blue-600"],
-:root [class*="bg-blue-600"] *,
-:root [class*="bg-amber-500"],
-:root [class*="bg-amber-500"] *,
-:root [class*="bg-indigoAccent"],
-:root [class*="bg-indigoAccent"] * {
+/* Ensure ALL action buttons, icons, and nested text in glass panels stay 100% crisp white (excluding sidebar navigation) */
+:root .glass-panel button:not(aside nav *),
+:root .glass-panel button:not(aside nav *) *,
+:root .glass-panel button:not(aside nav *) span,
+:root .glass-panel button:not(aside nav *) svg,
+:root .glass-panel a[class*="bg-"]:not(aside nav *),
+:root .glass-panel a[class*="bg-"]:not(aside nav *) *,
+:root .glass-panel a[class*="bg-"]:not(aside nav *) span,
+:root .glass-panel a[class*="bg-"]:not(aside nav *) svg,
+:root [class*="bg-rose-600"]:not(aside nav *),
+:root [class*="bg-rose-600"]:not(aside nav *) *,
+:root [class*="bg-emerald-600"]:not(aside nav *),
+:root [class*="bg-emerald-600"]:not(aside nav *) *,
+:root [class*="bg-blue-600"]:not(aside nav *),
+:root [class*="bg-blue-600"]:not(aside nav *) *,
+:root [class*="bg-amber-500"]:not(aside nav *),
+:root [class*="bg-amber-500"]:not(aside nav *) *,
+:root [class*="bg-indigoAccent"]:not(aside nav *),
+:root [class*="bg-indigoAccent"]:not(aside nav *) * {
   color: #ffffff !important;
   stroke: #ffffff !important;
+}
+
+/* Sidebar Navigation Links, Text & Icons in Light Mode -> ALWAYS BLACK (#0f172a) */
+aside nav a,
+aside nav a *,
+aside nav a span,
+aside nav a svg,
+:root aside nav a,
+:root aside nav a *,
+:root aside nav a span,
+:root aside nav a svg {
+  color: #0f172a !important;
+  stroke: #0f172a !important;
+  font-weight: 700 !important;
+}
+
+aside nav a:hover span,
+aside nav a:hover svg,
+:root aside nav a:hover span,
+:root aside nav a:hover svg {
+  color: #4f46e5 !important;
+  stroke: #4f46e5 !important;
+}
+
+aside nav a.bg-gradient-to-r span,
+aside nav a.bg-gradient-to-r svg,
+:root aside nav a.bg-gradient-to-r span,
+:root aside nav a.bg-gradient-to-r svg {
+  color: #0f172a !important;
+  stroke: #0f172a !important;
+  font-weight: 800 !important;
 }
 
 /* Header Menu Button & Profile Badge Text in Light Mode -> Dark Black (#0f172a) */
@@ -306,6 +337,22 @@ button:active:not(:disabled) {
 .dark .profile-nav-badge span,
 .dark .profile-nav-badge * {
   color: #ffffff !important;
+}
+
+.dark aside nav a,
+.dark aside nav a span {
+  color: #94a3b8 !important;
+}
+
+.dark aside nav a svg {
+  stroke: #94a3b8 !important;
+  color: #94a3b8 !important;
+}
+
+.dark aside nav a.bg-gradient-to-r span,
+.dark aside nav a.bg-gradient-to-r svg {
+  color: #ffffff !important;
+  stroke: #ffffff !important;
 }
 
 /* Explicit Sign Out / Logout button text & icon -> Always pure crisp white */
