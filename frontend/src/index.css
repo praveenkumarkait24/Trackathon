@@ -260,13 +260,7 @@ button:active:not(:disabled) {
   color: #1e293b !important;
 }
 
-/* Ensure ALL action buttons, pill buttons, icons, and nested text stay 100% crisp white in Light and Dark mode */
-:root button,
-:root button *,
-:root a.rounded-full,
-:root a.rounded-full *,
-:root button.rounded-full,
-:root button.rounded-full *,
+/* Ensure solid filled action buttons, icons, and nested text stay 100% crisp white */
 :root [class*="bg-rose-600"],
 :root [class*="bg-rose-600"] *,
 :root [class*="bg-emerald-600"],
@@ -279,6 +273,31 @@ button:active:not(:disabled) {
 :root [class*="bg-indigoAccent"] * {
   color: #ffffff !important;
   stroke: #ffffff !important;
+}
+
+/* Header Menu Button & Profile Badge Text in Light Mode -> Dark Black (#0f172a) */
+:root .header-menu-btn,
+:root .header-menu-btn *,
+:root .header-menu-btn svg {
+  color: #0f172a !important;
+  stroke: #0f172a !important;
+}
+
+:root .profile-nav-badge span,
+:root .profile-nav-badge * {
+  color: #0f172a !important;
+}
+
+.dark .header-menu-btn,
+.dark .header-menu-btn *,
+.dark .header-menu-btn svg {
+  color: #ffffff !important;
+  stroke: #ffffff !important;
+}
+
+.dark .profile-nav-badge span,
+.dark .profile-nav-badge * {
+  color: #ffffff !important;
 }
 
 /* Accent colors remain vibrant */
