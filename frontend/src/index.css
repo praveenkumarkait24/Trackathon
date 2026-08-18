@@ -260,11 +260,11 @@ button:active:not(:disabled) {
   color: #1e293b !important;
 }
 
-/* Ensure ALL action buttons, icons, and nested text in glass panels stay 100% crisp white (excluding sidebar navigation) */
-:root .glass-panel button:not(aside nav *),
-:root .glass-panel button:not(aside nav *) *,
-:root .glass-panel button:not(aside nav *) span,
-:root .glass-panel button:not(aside nav *) svg,
+/* Ensure ALL action buttons, icons, and nested text in glass panels stay 100% crisp white (excluding sidebar navigation & copy link button) */
+:root .glass-panel button:not(aside nav *):not(.copy-link-btn):not(.copy-link-btn *),
+:root .glass-panel button:not(aside nav *):not(.copy-link-btn) *,
+:root .glass-panel button:not(aside nav *):not(.copy-link-btn) span,
+:root .glass-panel button:not(aside nav *):not(.copy-link-btn) svg,
 :root .glass-panel a[class*="bg-"]:not(aside nav *),
 :root .glass-panel a[class*="bg-"]:not(aside nav *) *,
 :root .glass-panel a[class*="bg-"]:not(aside nav *) span,
@@ -328,11 +328,36 @@ aside nav a.bg-gradient-to-r svg,
 }
 
 /* Explicit Copy Link button icon color -> Black in Light Mode (#0f172a), White in Dark Mode */
+.copy-link-btn,
+.copy-link-btn *,
+.copy-link-btn svg,
+.copy-link-btn svg path,
+.copy-link-btn svg rect,
 :root .copy-link-btn,
 :root .copy-link-btn *,
-:root .copy-link-btn svg {
+:root .copy-link-btn svg,
+:root .copy-link-btn svg path,
+:root .copy-link-btn svg rect,
+:root .glass-panel .copy-link-btn,
+:root .glass-panel .copy-link-btn *,
+:root .glass-panel .copy-link-btn svg {
   color: #0f172a !important;
   stroke: #0f172a !important;
+}
+
+.dark .copy-link-btn,
+.dark .copy-link-btn *,
+.dark .copy-link-btn svg,
+.dark .copy-link-btn svg path,
+.dark .copy-link-btn svg rect,
+.dark :root .copy-link-btn,
+.dark :root .copy-link-btn *,
+.dark :root .copy-link-btn svg,
+.dark :root .glass-panel .copy-link-btn,
+.dark :root .glass-panel .copy-link-btn *,
+.dark :root .glass-panel .copy-link-btn svg {
+  color: #ffffff !important;
+  stroke: #ffffff !important;
 }
 
 .dark .header-menu-btn,

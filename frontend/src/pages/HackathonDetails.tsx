@@ -27,7 +27,8 @@ import {
   MessageCircle,
   Send,
   UserMinus,
-  Check
+  Check,
+  Copy
 } from 'lucide-react';
 import { LoadingSpinner } from '../components/LoadingSpinner.js';
 
@@ -779,7 +780,7 @@ export const HackathonDetails: React.FC = () => {
                           {linkCopied ? (
                             <Check size={14} className="text-emerald-500" />
                           ) : (
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ color: '#0f172a', stroke: '#0f172a' }}><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                            <Copy size={14} className="text-slate-900 dark:text-white" style={{ color: '#0f172a', stroke: '#0f172a' }} />
                           )}
                           {linkCopied && (
                             <span className="absolute -bottom-7 left-1/2 -translate-x-1/2 text-[10px] text-emerald-400 font-bold whitespace-nowrap">Copied!</span>
