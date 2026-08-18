@@ -68,6 +68,29 @@
   .text-xs { font-size: 0.8125rem !important; } /* 13px */
   .text-sm { font-size: 0.9375rem !important; } /* 15px */
   .text-base { font-size: 1.0625rem !important; } /* 17px */
+
+  /* Global button text contrast enforcement - guarantee 100% white text on filled action buttons */
+  button.bg-emerald-600, a.bg-emerald-600,
+  button.bg-blue-600, a.bg-blue-600,
+  button.bg-rose-600, a.bg-rose-600,
+  button.bg-amber-500, a.bg-amber-500,
+  .rounded-full.bg-emerald-600,
+  .rounded-full.bg-blue-600,
+  .rounded-full.bg-rose-600,
+  .rounded-full.bg-amber-500 {
+    color: #ffffff !important;
+  }
+
+  button.bg-emerald-600 *, a.bg-emerald-600 *,
+  button.bg-blue-600 *, a.bg-blue-600 *,
+  button.bg-rose-600 *, a.bg-rose-600 *,
+  button.bg-amber-500 *, a.bg-amber-500 *,
+  .rounded-full.bg-emerald-600 *,
+  .rounded-full.bg-blue-600 *,
+  .rounded-full.bg-rose-600 *,
+  .rounded-full.bg-amber-500 * {
+    color: #ffffff !important;
+  }
 }
 
 /* ==========================================
