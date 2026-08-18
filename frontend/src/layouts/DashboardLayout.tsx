@@ -129,9 +129,10 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) =>
               >
                 <Icon 
                   size={19} 
-                  className={`transition-all duration-200 ${Active ? item.activeColor : 'text-slate-400 group-hover:text-indigo-500 dark:group-hover:text-white'}`} 
+                  className="transition-all duration-200 text-white" 
+                  style={{ color: '#ffffff', stroke: '#ffffff' }}
                 />
-                <span className={Active ? `${item.activeColor} dark:text-white` : 'text-slate-600 dark:text-gray-400 group-hover:text-indigo-600 dark:group-hover:text-white'}>{item.name}</span>
+                <span className="text-white font-extrabold" style={{ color: '#ffffff' }}>{item.name}</span>
               </Link>
             );
           })}
@@ -183,8 +184,8 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) =>
                         : 'border-l-[3px] border-transparent hover:bg-indigo-50 dark:hover:bg-white/5'
                     }`}
                   >
-                    <Icon size={19} className={Active ? item.activeColor : 'text-slate-400'} />
-                    <span className={Active ? item.activeColor : 'text-slate-600 dark:text-gray-400'}>{item.name}</span>
+                    <Icon size={19} className="text-white" style={{ color: '#ffffff', stroke: '#ffffff' }} />
+                    <span className="text-white font-extrabold" style={{ color: '#ffffff' }}>{item.name}</span>
                   </Link>
                 );
               })}

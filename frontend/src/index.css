@@ -354,26 +354,30 @@ button:active:not(:disabled) {
 }
 
 /* ==========================================
-   SIDEBAR LIGHT MODE
+   SIDEBAR NAV BAR LIGHT & DARK MODE - PURE WHITE TEXT
    ========================================== */
-:root aside {
-  background: linear-gradient(160deg, #ffffff 0%, #f5f3ff 100%) !important;
-  border-right: 1px solid rgba(99, 102, 241, 0.12) !important;
-  box-shadow: 4px 0 20px -4px rgba(99, 102, 241, 0.08) !important;
+aside,
+:root aside,
+.dark aside {
+  background: #090d16 !important;
+  border-right: 1px solid rgba(255, 255, 255, 0.12) !important;
+  box-shadow: 4px 0 20px -4px rgba(0, 0, 0, 0.4) !important;
 }
 
-:root aside nav a {
-  color: #475569 !important;
-  font-weight: 500;
-  font-size: 0.9375rem !important;
-  border-radius: 12px;
-  transition: all 0.2s ease;
+aside nav a span,
+aside nav a svg,
+:root aside nav a span,
+:root aside nav a svg,
+.dark aside nav a span,
+.dark aside nav a svg {
+  color: #ffffff !important;
+  stroke: #ffffff !important;
+  font-weight: 700 !important;
 }
 
-:root aside nav a:hover {
-  background-color: rgba(99, 102, 241, 0.08) !important;
-  color: #4f46e5 !important;
-  transform: translateX(2px);
+:root aside nav a:hover,
+.dark aside nav a:hover {
+  background-color: rgba(255, 255, 255, 0.1) !important;
 }
 
 :root aside nav a.bg-gradient-to-r {
