@@ -1070,9 +1070,11 @@ export const HackathonDetails: React.FC = () => {
               <p className="text-xs text-gray-400 font-medium">This hackathon result has not been recorded yet.</p>
               <button 
                 onClick={() => setAchievementModalOpen(true)}
-                className="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-extrabold transition-all shadow-md shadow-emerald-500/20 hover:scale-[1.02]"
+                className="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-500 !text-white rounded-full text-xs font-extrabold transition-all shadow-md shadow-emerald-500/20 hover:scale-[1.02] flex items-center space-x-2"
+                style={{ color: '#ffffff' }}
               >
-                Record Achievement Result
+                <Award size={15} style={{ color: '#ffffff', stroke: '#ffffff' }} />
+                <span style={{ color: '#ffffff' }}>Record Achievement Result</span>
               </button>
             </div>
           )}
@@ -1325,10 +1327,9 @@ export const HackathonDetails: React.FC = () => {
                 <button
                   type="submit"
                   disabled={achievementSaving}
-                  className="px-6 py-2.5 bg-emerald-600 hover:bg-emerald-500 !text-white rounded-full font-extrabold shadow-md shadow-emerald-500/20"
-                  style={{ color: '#ffffff' }}
+                  className="px-6 py-2 bg-indigoAccent hover:bg-indigo-600 text-white rounded-xl font-bold shadow-glow"
                 >
-                  <span style={{ color: '#ffffff' }}>{achievementSaving ? 'Uploading...' : 'Save Result'}</span>
+                  {achievementSaving ? 'Uploading...' : 'Save Result'}
                 </button>
               </div>
             </form>
