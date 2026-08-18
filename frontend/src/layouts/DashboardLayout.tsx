@@ -121,7 +121,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) =>
                 key={item.name}
                 to={item.path}
                 style={{ animationDelay: `${idx * 0.06}s` }}
-                className={`flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 group font-bold text-sm animate-slide-in-left ${
+                className={`flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 group font-semibold text-sm animate-slide-in-left ${
                   Active
                     ? `bg-gradient-to-r ${item.activeBg} border-l-[3px] ${item.border} shadow-sm`
                     : 'border-l-[3px] border-transparent hover:bg-indigo-50 dark:hover:bg-white/5'
@@ -129,11 +129,9 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) =>
               >
                 <Icon 
                   size={19} 
-                  className={`transition-all duration-200 ${Active ? item.activeColor : 'text-slate-700 dark:text-slate-400 group-hover:text-indigo-600 dark:group-hover:text-white'}`} 
+                  className={`transition-all duration-200 ${Active ? item.activeColor : 'text-slate-400 group-hover:text-indigo-500 dark:group-hover:text-white'}`} 
                 />
-                <span className="text-slate-900 dark:text-gray-100 font-extrabold group-hover:text-indigo-600 dark:group-hover:text-white">
-                  {item.name}
-                </span>
+                <span className={Active ? `${item.activeColor} dark:text-white` : 'text-slate-600 dark:text-gray-400 group-hover:text-indigo-600 dark:group-hover:text-white'}>{item.name}</span>
               </Link>
             );
           })}
@@ -185,8 +183,8 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) =>
                         : 'border-l-[3px] border-transparent hover:bg-indigo-50 dark:hover:bg-white/5'
                     }`}
                   >
-                    <Icon size={19} className={Active ? item.activeColor : 'text-slate-700 dark:text-slate-400'} />
-                    <span className="text-slate-900 dark:text-gray-100 font-extrabold">{item.name}</span>
+                    <Icon size={19} className={Active ? item.activeColor : 'text-slate-400'} />
+                    <span className={Active ? item.activeColor : 'text-slate-600 dark:text-gray-400'}>{item.name}</span>
                   </Link>
                 );
               })}
