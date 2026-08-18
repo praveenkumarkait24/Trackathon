@@ -300,6 +300,19 @@ button:active:not(:disabled) {
   color: #ffffff !important;
 }
 
+/* Explicit Sign Out / Logout button text & icon -> Always pure crisp white */
+.signout-btn,
+.signout-btn *,
+.signout-btn span,
+.signout-btn svg,
+:root .signout-btn,
+:root .signout-btn *,
+:root .signout-btn span,
+:root .signout-btn svg {
+  color: #ffffff !important;
+  stroke: #ffffff !important;
+}
+
 /* Accent colors remain vibrant */
 :root .text-indigo-400, :root .text-indigo-300 { color: #4f46e5 !important; }
 :root .text-indigo-500 { color: #4338ca !important; }
