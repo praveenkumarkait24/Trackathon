@@ -520,9 +520,10 @@ export const HackathonDetails: React.FC = () => {
                     href={hackathon.registration_link} 
                     target="_blank" 
                     rel="noreferrer" 
-                    className="w-full py-3 bg-blue-600 hover:bg-blue-500 text-white rounded-full text-xs font-extrabold transition-all shadow-md shadow-blue-500/20 text-center block hover:scale-[1.01]"
+                    className="w-full py-3 bg-blue-600 hover:bg-blue-500 !text-white rounded-full text-xs font-extrabold transition-all shadow-md shadow-blue-500/20 text-center block hover:scale-[1.01]"
+                    style={{ color: '#ffffff' }}
                   >
-                    Register / Apply Now
+                    <span style={{ color: '#ffffff' }}>Register / Apply Now</span>
                   </a>
                 ) : (
                   <span className="w-full py-3 bg-gray-500/10 text-gray-500 rounded-full text-xs font-extrabold text-center block">
@@ -802,15 +803,16 @@ export const HackathonDetails: React.FC = () => {
             <button
               onClick={() => setRoundModalOpen(true)}
               disabled={!canAddRound}
-              className={`flex items-center space-x-1.5 px-3.5 py-2 rounded-xl text-xs font-extrabold transition-all shadow-md ${
+              className={`flex items-center space-x-1.5 px-4 py-2 rounded-full text-xs font-extrabold transition-all shadow-md ${
                 canAddRound
-                  ? 'bg-emerald-600 hover:bg-emerald-500 text-white shadow-emerald-500/20 hover:scale-[1.02]'
+                  ? 'bg-emerald-600 hover:bg-emerald-500 !text-white shadow-emerald-500/20 hover:scale-[1.02]'
                   : 'bg-gray-800 text-gray-500 cursor-not-allowed border border-cardBorder'
               }`}
+              style={canAddRound ? { color: '#ffffff' } : {}}
               title={!canAddRound ? `Reached total rounds limit (${limit} rounds). You can increase this in Edit Details.` : ''}
             >
-              <Plus size={15} />
-              <span>Add Round</span>
+              <Plus size={15} style={canAddRound ? { color: '#ffffff', stroke: '#ffffff' } : {}} />
+              <span style={canAddRound ? { color: '#ffffff' } : {}}>Add Round</span>
             </button>
           </div>
 
@@ -959,10 +961,11 @@ export const HackathonDetails: React.FC = () => {
                       <div className="flex justify-end pt-2 border-t border-cardBorder/20">
                         <button
                           onClick={() => handleDeleteRound(round.id)}
-                          className="px-4 py-1.5 bg-rose-600 hover:bg-rose-500 text-white rounded-full text-xs font-extrabold transition-all flex items-center space-x-1.5 shadow-md shadow-rose-500/20 hover:scale-105"
+                          className="px-4 py-1.5 bg-rose-600 hover:bg-rose-500 !text-white rounded-full text-xs font-extrabold transition-all flex items-center space-x-1.5 shadow-md shadow-rose-500/20 hover:scale-105"
+                          style={{ color: '#ffffff' }}
                         >
-                          <Trash2 size={13} />
-                          <span>Delete Round</span>
+                          <Trash2 size={13} style={{ color: '#ffffff', stroke: '#ffffff' }} />
+                          <span style={{ color: '#ffffff' }}>Delete Round</span>
                         </button>
                       </div>
                     )}
@@ -982,10 +985,11 @@ export const HackathonDetails: React.FC = () => {
             </h3>
             <button
               onClick={() => setAchievementModalOpen(true)}
-              className="px-4 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-full text-xs font-extrabold transition-all shadow-md shadow-emerald-500/20 flex items-center space-x-1.5"
+              className="px-4 py-1.5 bg-emerald-600 hover:bg-emerald-500 !text-white rounded-full text-xs font-extrabold transition-all shadow-md shadow-emerald-500/20 flex items-center space-x-1.5"
+              style={{ color: '#ffffff' }}
             >
-              <Award size={14} />
-              <span>{hackathon.achievements ? 'Edit Result' : 'Record Result'}</span>
+              <Award size={14} style={{ color: '#ffffff', stroke: '#ffffff' }} />
+              <span style={{ color: '#ffffff' }}>{hackathon.achievements ? 'Edit Result' : 'Record Result'}</span>
             </button>
           </div>
 
@@ -1321,9 +1325,10 @@ export const HackathonDetails: React.FC = () => {
                 <button
                   type="submit"
                   disabled={achievementSaving}
-                  className="px-6 py-2 bg-indigoAccent hover:bg-indigo-600 text-white rounded-xl font-bold shadow-glow"
+                  className="px-6 py-2.5 bg-emerald-600 hover:bg-emerald-500 !text-white rounded-full font-extrabold shadow-md shadow-emerald-500/20"
+                  style={{ color: '#ffffff' }}
                 >
-                  {achievementSaving ? 'Uploading...' : 'Save Result'}
+                  <span style={{ color: '#ffffff' }}>{achievementSaving ? 'Uploading...' : 'Save Result'}</span>
                 </button>
               </div>
             </form>
