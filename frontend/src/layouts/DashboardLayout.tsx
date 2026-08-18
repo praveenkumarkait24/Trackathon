@@ -215,6 +215,29 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) =>
               <Menu size={18} />
             </button>
           </div>
+
+          {/* Top Right Profile Badge */}
+          <div className="flex items-center space-x-3">
+            <Link 
+              to="/settings" 
+              className="flex items-center space-x-2.5 bg-indigo-50/80 hover:bg-indigo-100 dark:bg-white/5 dark:hover:bg-white/10 border border-indigo-100 dark:border-cardBorder/40 rounded-xl px-3 py-1.5 transition-all shadow-sm group"
+            >
+              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-indigo-500 to-cyan-400 flex items-center justify-center font-bold text-white text-xs overflow-hidden ring-2 ring-white dark:ring-indigo-900 shadow-sm shrink-0">
+                {user?.user_metadata?.avatar_url || user?.user_metadata?.picture ? (
+                  <img 
+                    src={user.user_metadata.avatar_url || user.user_metadata.picture} 
+                    alt="Avatar" 
+                    className="w-full h-full object-cover" 
+                  />
+                ) : (
+                  user?.email?.charAt(0).toUpperCase() || 'S'
+                )}
+              </div>
+              <span className="font-bold text-xs text-slate-700 dark:text-gray-200 group-hover:text-indigo-500 dark:group-hover:text-white transition-colors truncate max-w-[180px]">
+                {user?.user_metadata?.full_name || user?.user_metadata?.name || user?.email?.split('@')[0] || 'User'}
+              </span>
+            </Link>
+          </div>
         </header>
 
         {/* Content Area */}
