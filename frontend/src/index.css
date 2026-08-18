@@ -242,25 +242,33 @@ button:active:not(:disabled) {
 }
 
 :root .glass-panel p,
-:root .glass-panel span,
-:root .glass-panel [class*="text-gray-400"] {
+:root .glass-panel span:not(button *):not(a[class*="bg-"] *),
+:root .glass-panel [class*="text-gray-400"]:not(button *):not(a[class*="bg-"] *) {
   color: #334155 !important;
 }
 
-:root .glass-panel [class*="text-gray-500"],
-:root [class*="text-gray-500"] {
+:root [class*="text-gray-500"]:not(button *):not(a[class*="bg-"] *),
+:root [class*="text-gray-500"]:not(button *):not(a[class*="bg-"] *) {
   color: #64748b !important;
 }
 
-:root [class*="text-gray-400"] {
+:root [class*="text-gray-400"]:not(button *):not(a[class*="bg-"] *) {
   color: #475569 !important;
 }
 
-:root [class*="text-gray-300"] {
+:root [class*="text-gray-300"]:not(button *):not(a[class*="bg-"] *) {
   color: #1e293b !important;
 }
 
-/* Ensure solid filled action buttons, icons, and nested text stay 100% crisp white */
+/* Ensure ALL action buttons, icons, and nested text in glass panels stay 100% crisp white */
+:root .glass-panel button,
+:root .glass-panel button *,
+:root .glass-panel button span,
+:root .glass-panel button svg,
+:root .glass-panel a[class*="bg-"],
+:root .glass-panel a[class*="bg-"] *,
+:root .glass-panel a[class*="bg-"] span,
+:root .glass-panel a[class*="bg-"] svg,
 :root [class*="bg-rose-600"],
 :root [class*="bg-rose-600"] *,
 :root [class*="bg-emerald-600"],
