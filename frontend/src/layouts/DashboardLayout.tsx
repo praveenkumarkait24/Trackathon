@@ -112,7 +112,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) =>
         </div>
 
         {/* Navigation Links */}
-        <nav className="flex-1 px-3 py-5 space-y-1 overflow-y-auto">
+        <nav className="flex-1 px-3 py-5 space-y-1.5 overflow-y-auto">
           {menuItems.map((item, idx) => {
             const Active = isActive(item.path);
             const Icon = item.icon;
@@ -121,17 +121,17 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) =>
                 key={item.name}
                 to={item.path}
                 style={{ animationDelay: `${idx * 0.06}s` }}
-                className={`flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 group font-semibold text-sm animate-slide-in-left ${
+                className={`flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 group font-bold text-sm animate-slide-in-left ${
                   Active
-                    ? `bg-gradient-to-r ${item.activeBg} border-l-[3px] ${item.border} shadow-sm`
-                    : 'border-l-[3px] border-transparent hover:bg-indigo-50 dark:hover:bg-white/5'
+                    ? 'bg-gradient-to-r from-[#059669] to-[#10b981] text-white border-l-[4px] border-[#064e3b] shadow-md shadow-emerald-600/20'
+                    : 'border-l-[4px] border-transparent text-slate-700 hover:text-[#047857] hover:bg-[#ecfdf5] dark:text-slate-300 dark:hover:text-white dark:hover:bg-white/5'
                 }`}
               >
                 <Icon 
                   size={19} 
-                  className={`transition-all duration-200 ${Active ? item.activeColor : 'text-slate-400 group-hover:text-indigo-500 dark:group-hover:text-white'}`} 
+                  className={`transition-all duration-200 ${Active ? 'text-white' : 'text-slate-500 group-hover:text-[#047857] dark:text-slate-400 dark:group-hover:text-white'}`} 
                 />
-                <span className={Active ? `${item.activeColor} dark:text-white` : 'text-slate-600 dark:text-gray-400 group-hover:text-indigo-600 dark:group-hover:text-white'}>{item.name}</span>
+                <span className={Active ? 'text-white' : 'text-slate-700 group-hover:text-[#047857] dark:text-slate-300 dark:group-hover:text-white'}>{item.name}</span>
               </Link>
             );
           })}
@@ -168,7 +168,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) =>
               </div>
             </div>
 
-            <nav className="flex-1 space-y-1">
+            <nav className="flex-1 space-y-1.5">
               {menuItems.map((item) => {
                 const Active = isActive(item.path);
                 const Icon = item.icon;
@@ -177,14 +177,14 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) =>
                     key={item.name}
                     to={item.path}
                     onClick={() => setMobileMenuOpen(false)}
-                    className={`flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 font-semibold text-sm ${
+                    className={`flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 font-bold text-sm ${
                       Active
-                        ? `bg-gradient-to-r ${item.activeBg} border-l-[3px] ${item.border} shadow-sm`
-                        : 'border-l-[3px] border-transparent hover:bg-indigo-50 dark:hover:bg-white/5'
+                        ? 'bg-gradient-to-r from-[#059669] to-[#10b981] text-white border-l-[4px] border-[#064e3b] shadow-md shadow-emerald-600/20'
+                        : 'border-l-[4px] border-transparent text-slate-700 hover:text-[#047857] hover:bg-[#ecfdf5] dark:text-slate-300 dark:hover:text-white dark:hover:bg-white/5'
                     }`}
                   >
-                    <Icon size={19} className={Active ? item.activeColor : 'text-slate-400'} />
-                    <span className={Active ? item.activeColor : 'text-slate-600 dark:text-gray-400'}>{item.name}</span>
+                    <Icon size={19} className={Active ? 'text-white' : 'text-slate-500'} />
+                    <span className={Active ? 'text-white' : 'text-slate-700 dark:text-slate-300'}>{item.name}</span>
                   </Link>
                 );
               })}

@@ -5,638 +5,512 @@
 @tailwind utilities;
 
 /* ==========================================
-   CSS CUSTOM PROPERTIES
+   GLOBAL DESIGN SYSTEM COLOR TOKENS
    ========================================== */
 :root {
-  --bg-primary: #f0f4ff;
-  --bg-card: #ffffff;
-  --color-card-border: rgba(99, 102, 241, 0.12);
-  --shadow-card: 0 4px 24px -4px rgba(99, 102, 241, 0.08), 0 1px 4px rgba(0,0,0,0.04);
-  --shadow-card-hover: 0 12px 40px -8px rgba(99, 102, 241, 0.18), 0 4px 16px rgba(0,0,0,0.06);
-  --color-accent: #6366f1;
-  --color-accent-2: #06b6d4;
+  --color-page-bg: #f6faf8;
+  --color-card-bg: #ffffff;
+  --color-card-border: #d9e2e0;
+  
+  --color-deep-emerald: #064e3b;
+  --color-emerald: #059669;
+  --color-bright-green: #10b981;
+  --color-teal: #0f766e;
+  --color-cyan: #0891b2;
+  --color-blue: #2563eb;
+  --color-purple: #7c3aed;
+  --color-orange: #f59e0b;
+  --color-red: #dc2626;
+  
+  --color-dark-navy: #172033;
+  --color-dark-gray: #334155;
+  --color-medium-gray: #64748b;
+  --color-light-gray: #94a3b8;
+
+  --shadow-card: 0 4px 20px -2px rgba(6, 78, 59, 0.06), 0 1px 4px rgba(0, 0, 0, 0.03);
+  --shadow-card-hover: 0 12px 32px -4px rgba(5, 150, 105, 0.14), 0 4px 12px rgba(0, 0, 0, 0.04);
 }
 
 .dark {
-  --bg-primary: #090d16;
-  --bg-card: rgba(17, 25, 40, 0.65);
-  --color-card-border: rgba(255, 255, 255, 0.08);
+  --color-page-bg: #090d16;
+  --color-card-bg: rgba(17, 25, 40, 0.85);
+  --color-card-border: rgba(255, 255, 255, 0.1);
+  --color-dark-navy: #ffffff;
+  --color-dark-gray: #cbd5e1;
+  --color-medium-gray: #94a3b8;
   --shadow-card: 0 4px 24px -4px rgba(0, 0, 0, 0.4);
-  --shadow-card-hover: 0 12px 40px -8px rgba(99, 102, 241, 0.3);
+  --shadow-card-hover: 0 12px 40px -8px rgba(16, 185, 129, 0.25);
 }
 
 /* ==========================================
-   PLACEHOLDER COLORS
-   ========================================== */
-:root input::placeholder,
-:root select::placeholder,
-:root textarea::placeholder {
-  color: #94a3b8 !important;
-  opacity: 1 !important;
-}
-
-.dark input::placeholder,
-.dark select::placeholder,
-.dark textarea::placeholder {
-  color: #4b5563 !important;
-  opacity: 1 !important;
-}
-
-/* ==========================================
-   BASE LAYER
+   BASE STYLES & TYPOGRAPHY
    ========================================== */
 @layer base {
   body {
-    @apply bg-darkBg text-slate-800 dark:text-gray-200 antialiased selection:bg-indigo-500 selection:text-white;
+    background-color: var(--color-page-bg) !important;
+    color: var(--color-dark-navy) !important;
     font-family: 'Inter', 'Poppins', sans-serif;
     font-size: 15px;
     line-height: 1.65;
     background-image:
-      radial-gradient(circle at 15% 20%, rgba(99, 102, 241, 0.06) 0%, transparent 45%),
-      radial-gradient(circle at 85% 80%, rgba(6, 182, 212, 0.06) 0%, transparent 45%),
-      radial-gradient(circle at 50% 50%, rgba(168, 85, 247, 0.03) 0%, transparent 60%);
+      radial-gradient(circle at 15% 20%, rgba(5, 150, 105, 0.04) 0%, transparent 45%),
+      radial-gradient(circle at 85% 80%, rgba(15, 118, 110, 0.04) 0%, transparent 45%);
     background-attachment: fixed;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
   }
 
   h1, h2, h3, h4, h5, h6 {
     font-family: 'Outfit', 'Poppins', sans-serif;
+    color: #172033 !important;
     font-weight: 700;
     letter-spacing: -0.01em;
   }
 
-  /* Minimum font sizes for readability */
-  .text-xs { font-size: 0.8125rem !important; } /* 13px */
-  .text-sm { font-size: 0.9375rem !important; } /* 15px */
-  .text-base { font-size: 1.0625rem !important; } /* 17px */
+  p {
+    color: #334155;
+    font-size: 0.9375rem;
+  }
+
+  .text-xs { font-size: 0.8125rem !important; }
+  .text-sm { font-size: 0.9375rem !important; }
+  .text-base { font-size: 1.0625rem !important; }
 }
 
 /* ==========================================
-   PREMIUM SCROLLBAR
+   SCROLLBAR STYLING
    ========================================== */
 ::-webkit-scrollbar { width: 6px; height: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, #a5b4fc, #67e8f9);
+  background: linear-gradient(180deg, #059669, #0891b2);
   border-radius: 10px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, #818cf8, #22d3ee);
+  background: linear-gradient(180deg, #047857, #0e7490);
 }
 
 /* ==========================================
-   GLASSMORPHISM CARDS
+   CARDS & GLASS PANELS
    ========================================== */
 .glass-panel {
-  background: var(--bg-card);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid var(--color-card-border);
-  box-shadow: var(--shadow-card);
-  transition: box-shadow 0.3s ease, transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.3s ease;
+  background: #ffffff !important;
+  border: 1px solid #d9e2e0 !important;
+  box-shadow: 0 4px 20px -2px rgba(6, 78, 59, 0.06), 0 1px 4px rgba(0, 0, 0, 0.03) !important;
+  border-radius: 1rem;
+  transition: box-shadow 0.3s ease, transform 0.3s ease, border-color 0.3s ease;
 }
 
 .glass-panel:hover {
-  box-shadow: var(--shadow-card-hover);
+  box-shadow: 0 10px 28px -4px rgba(5, 150, 105, 0.12), 0 4px 12px rgba(0, 0, 0, 0.04) !important;
 }
 
-.glass-panel-hover {
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.glass-panel-hover:hover {
-  border-color: rgba(99, 102, 241, 0.3) !important;
-  transform: translateY(-3px);
-  box-shadow: var(--shadow-card-hover);
+.dark .glass-panel {
+  background: rgba(17, 25, 40, 0.85) !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
+  box-shadow: 0 4px 24px -4px rgba(0, 0, 0, 0.4) !important;
 }
 
 /* ==========================================
-   KEYFRAME ANIMATIONS
+   TEXT CONTRAST HIERARCHY
    ========================================== */
-
-/* Fade In */
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+:root h1, :root h2, :root h3, :root h4, :root h5, :root h6 {
+  color: #172033 !important;
 }
 
-/* Slide Up */
-@keyframes slideUp {
-  from { opacity: 0; transform: translateY(16px); }
-  to { opacity: 1; transform: translateY(0); }
+:root .text-slate-800,
+:root .text-gray-900,
+:root .text-gray-800,
+:root .text-gray-700 {
+  color: #172033 !important;
 }
 
-/* Slide In from Left */
-@keyframes slideInLeft {
-  from { opacity: 0; transform: translateX(-20px); }
-  to { opacity: 1; transform: translateX(0); }
+:root .text-gray-600,
+:root .text-slate-600 {
+  color: #334155 !important;
 }
 
-/* Scale In */
-@keyframes scaleIn {
-  from { opacity: 0; transform: scale(0.94); }
-  to { opacity: 1; transform: scale(1); }
+:root .text-gray-500,
+:root .text-slate-500 {
+  color: #475569 !important;
 }
 
-/* Shimmer gradient */
-@keyframes shimmer {
-  0% { background-position: -200% center; }
-  100% { background-position: 200% center; }
+:root .text-gray-400,
+:root .text-slate-400 {
+  color: #64748b !important;
 }
 
-/* Glow Pulse */
-@keyframes glowPulse {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.3); }
-  50% { box-shadow: 0 0 20px 6px rgba(99, 102, 241, 0.15); }
+/* Dark mode text overrides */
+.dark h1, .dark h2, .dark h3, .dark h4, .dark h5, .dark h6 {
+  color: #ffffff !important;
 }
-
-/* Float */
-@keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-6px); }
+.dark p, .dark span:not(.badge-span) {
+  color: #94a3b8 !important;
 }
-
-/* Active pulse for rounds */
-@keyframes activePulse {
-  0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); }
-  50% { transform: scale(1.05); box-shadow: 0 0 12px 6px rgba(16, 185, 129, 0.2); }
-}
-
-/* Staggered card entrance */
-@keyframes cardEntrance {
-  from { opacity: 0; transform: translateY(20px) scale(0.98); }
-  to { opacity: 1; transform: translateY(0) scale(1); }
+.dark .text-slate-800, .dark .text-gray-900, .dark .text-gray-800 {
+  color: #ffffff !important;
 }
 
 /* ==========================================
-   ANIMATION UTILITY CLASSES
+   BUTTON CONTRAST & VISIBILITY RULES
    ========================================== */
-.animate-fade-in { animation: fadeIn 0.45s ease-out forwards; }
-.animate-slide-up { animation: slideUp 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-.animate-slide-in-left { animation: slideInLeft 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-.animate-scale-in { animation: scaleIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-.animate-float { animation: float 3s ease-in-out infinite; }
-.animate-glow-pulse { animation: glowPulse 2s ease-in-out infinite; }
-.active-pulse-node { animation: activePulse 2s infinite ease-in-out; }
-
-/* Staggered children */
-.stagger-children > *:nth-child(1) { animation: cardEntrance 0.4s 0.05s cubic-bezier(0.16, 1, 0.3, 1) both; }
-.stagger-children > *:nth-child(2) { animation: cardEntrance 0.4s 0.12s cubic-bezier(0.16, 1, 0.3, 1) both; }
-.stagger-children > *:nth-child(3) { animation: cardEntrance 0.4s 0.19s cubic-bezier(0.16, 1, 0.3, 1) both; }
-.stagger-children > *:nth-child(4) { animation: cardEntrance 0.4s 0.26s cubic-bezier(0.16, 1, 0.3, 1) both; }
-.stagger-children > *:nth-child(5) { animation: cardEntrance 0.4s 0.33s cubic-bezier(0.16, 1, 0.3, 1) both; }
-.stagger-children > *:nth-child(6) { animation: cardEntrance 0.4s 0.40s cubic-bezier(0.16, 1, 0.3, 1) both; }
-
-/* Shimmer text */
-.shimmer-text {
-  background: linear-gradient(90deg, #6366f1 0%, #06b6d4 40%, #a855f7 70%, #6366f1 100%);
-  background-size: 200% auto;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  animation: shimmer 3s linear infinite;
-}
-
-/* Timeline */
-.timeline-line {
-  background: linear-gradient(180deg, #6366f1 0%, #06b6d4 100%);
-}
-
-/* ==========================================
-   INTERACTIVE BUTTON EFFECTS
-   ========================================== */
-button, a {
+/* All buttons keep text visible without clipping */
+button, a.btn, a[class*="px-"] {
+  white-space: normal;
+  word-break: break-word;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 button:active:not(:disabled) {
-  transform: scale(0.97);
+  transform: scale(0.98);
 }
 
-/* ==========================================
-   LIGHT MODE GLOBAL OVERRIDES
-   ========================================== */
-
-/* Body background in light mode */
-:root body {
-  background-color: #f0f4ff !important;
+/* Primary Action Buttons (Emerald / Green) */
+button.bg-emerald-600,
+button.bg-emerald-500,
+a.bg-emerald-600,
+a.bg-emerald-500,
+.btn-primary {
+  background: linear-gradient(135deg, #059669 0%, #10b981 100%) !important;
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  border: none !important;
+  box-shadow: 0 4px 14px rgba(5, 150, 105, 0.25) !important;
 }
 
-/* Headings */
-:root h1, :root h2, :root h3, :root h4 {
-  color: #0f172a !important;
-}
-
-/* Paragraph text */
-:root p {
-  color: #334155 !important;
-  font-size: 0.9375rem;
-}
-
-/* White text → dark in light mode */
-:root .glass-panel .text-white,
-:root .glass-panel [class*="text-white"],
-:root .glass-panel [class*="text-gray-100"],
-:root .glass-panel [class*="text-gray-200"],
-:root .glass-panel [class*="text-gray-300"] {
-  color: #0f172a !important;
-}
-
-:root .glass-panel p,
-:root .glass-panel span:not(button *):not(a[class*="bg-"] *),
-:root .glass-panel [class*="text-gray-400"]:not(button *):not(a[class*="bg-"] *) {
-  color: #334155 !important;
-}
-
-:root [class*="text-gray-500"]:not(button *):not(a[class*="bg-"] *),
-:root [class*="text-gray-500"]:not(button *):not(a[class*="bg-"] *) {
-  color: #64748b !important;
-}
-
-:root [class*="text-gray-400"]:not(button *):not(a[class*="bg-"] *) {
-  color: #475569 !important;
-}
-
-:root [class*="text-gray-300"]:not(button *):not(a[class*="bg-"] *) {
-  color: #1e293b !important;
-}
-
-/* Ensure ALL action buttons, icons, and nested text in glass panels stay 100% crisp white (excluding sidebar navigation, copy link button & grid card links) */
-:root .glass-panel button:not(aside nav *):not(.copy-link-btn):not(.copy-link-btn *),
-:root .glass-panel button:not(aside nav *):not(.copy-link-btn) *,
-:root .glass-panel button:not(aside nav *):not(.copy-link-btn) span,
-:root .glass-panel button:not(aside nav *):not(.copy-link-btn) svg,
-:root .glass-panel a[class*="bg-"]:not(aside nav *):not(.grid-card-link):not(.grid-card-link *),
-:root .glass-panel a[class*="bg-"]:not(aside nav *):not(.grid-card-link) *,
-:root .glass-panel a[class*="bg-"]:not(aside nav *):not(.grid-card-link) span,
-:root .glass-panel a[class*="bg-"]:not(aside nav *):not(.grid-card-link) svg,
-:root [class*="bg-rose-600"]:not(aside nav *),
-:root [class*="bg-rose-600"]:not(aside nav *) *,
-:root [class*="bg-emerald-600"]:not(aside nav *),
-:root [class*="bg-emerald-600"]:not(aside nav *) *,
-:root [class*="bg-blue-600"]:not(aside nav *),
-:root [class*="bg-blue-600"]:not(aside nav *) *,
-:root [class*="bg-amber-500"]:not(aside nav *),
-:root [class*="bg-amber-500"]:not(aside nav *) *,
-:root [class*="bg-indigoAccent"]:not(aside nav *),
-:root [class*="bg-indigoAccent"]:not(aside nav *) * {
+button.bg-emerald-600 *,
+button.bg-emerald-500 *,
+a.bg-emerald-600 *,
+a.bg-emerald-500 * {
   color: #ffffff !important;
   stroke: #ffffff !important;
 }
 
-/* Explicit Light Mode Text Colors for Recent Hackathons, Upcoming Deadlines & Calendar Grid Items */
+button.bg-emerald-600:hover,
+button.bg-emerald-500:hover,
+a.bg-emerald-600:hover,
+a.bg-emerald-500:hover {
+  background: linear-gradient(135deg, #047857 0%, #059669 100%) !important;
+  box-shadow: 0 6px 20px rgba(5, 150, 105, 0.35) !important;
+}
+
+/* Secondary Buttons */
+button.bg-white,
+button.border-cardBorder,
+button.border-slate-300,
+a.bg-white:not(.profile-nav-badge) {
+  background-color: #ffffff !important;
+  color: #064e3b !important;
+  border: 1px solid #059669 !important;
+  font-weight: 700 !important;
+}
+
+button.bg-white *,
+button.border-cardBorder *,
+a.bg-white:not(.profile-nav-badge) * {
+  color: #064e3b !important;
+  stroke: #064e3b !important;
+}
+
+button.bg-white:hover,
+button.border-cardBorder:hover {
+  background-color: #ecfdf5 !important;
+  color: #047857 !important;
+}
+
+/* Info / Blue Buttons */
+button.bg-blue-600,
+button.bg-blue-500,
+a.bg-blue-600,
+a.bg-blue-500 {
+  background-color: #2563eb !important;
+  color: #ffffff !important;
+  font-weight: 700 !important;
+}
+button.bg-blue-600 *, a.bg-blue-600 * {
+  color: #ffffff !important;
+  stroke: #ffffff !important;
+}
+
+/* Danger / Red Buttons */
+button.bg-rose-600,
+button.bg-red-600,
+a.bg-rose-600,
+a.bg-red-600 {
+  background-color: #dc2626 !important;
+  color: #ffffff !important;
+  font-weight: 700 !important;
+}
+button.bg-rose-600 *, a.bg-rose-600 * {
+  color: #ffffff !important;
+  stroke: #ffffff !important;
+}
+
+/* Purple Buttons */
+button.bg-purple-600,
+button.bg-violet-600,
+a.bg-purple-600 {
+  background-color: #7c3aed !important;
+  color: #ffffff !important;
+  font-weight: 700 !important;
+}
+button.bg-purple-600 *, a.bg-purple-600 * {
+  color: #ffffff !important;
+  stroke: #ffffff !important;
+}
+
+/* Warning Buttons */
+button.bg-amber-500,
+a.bg-amber-500 {
+  background-color: #f59e0b !important;
+  color: #172033 !important;
+  font-weight: 700 !important;
+}
+
+/* Focus Ring */
+button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
+  outline: 2px solid #059669 !important;
+  outline-offset: 2px !important;
+}
+
+/* Disabled State */
+button:disabled, input:disabled, select:disabled {
+  opacity: 0.65 !important;
+  cursor: not-allowed !important;
+}
+
+/* Signout Button Explicit White Text */
+.signout-btn, .signout-btn *, .signout-btn span, .signout-btn svg {
+  color: #ffffff !important;
+  stroke: #ffffff !important;
+}
+
+/* ==========================================
+   FORMS & INPUT CONTRAST
+   ========================================== */
+:root input[type="text"],
+:root input[type="email"],
+:root input[type="password"],
+:root input[type="number"],
+:root input[type="url"],
+:root input[type="date"],
+:root input[type="time"],
+:root input[type="datetime-local"],
+:root select,
+:root textarea {
+  background-color: #ffffff !important;
+  color: #172033 !important;
+  border: 1px solid #cbd5e1 !important;
+  border-radius: 0.75rem;
+  font-weight: 500;
+  font-size: 0.9375rem;
+}
+
+:root input:focus,
+:root select:focus,
+:root textarea:focus {
+  border-color: #059669 !important;
+  box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.15) !important;
+  outline: none !important;
+}
+
+:root input::placeholder,
+:root textarea::placeholder {
+  color: #64748b !important;
+  opacity: 1 !important;
+}
+
+:root label {
+  color: #334155 !important;
+  font-weight: 700 !important;
+}
+
+.dark input, .dark select, .dark textarea {
+  background-color: rgba(13, 19, 33, 0.8) !important;
+  color: #ffffff !important;
+  border-color: rgba(255, 255, 255, 0.15) !important;
+}
+.dark label {
+  color: #cbd5e1 !important;
+}
+
+/* ==========================================
+   BADGES & STATUS PILLS
+   ========================================== */
+/* Light Mode Badges */
+:root [class*="bg-emerald-500/"], :root [class*="bg-emerald-600/"], :root .badge-emerald {
+  background-color: #ecfdf5 !important;
+  color: #047857 !important;
+  border: 1px solid #a7f3d0 !important;
+}
+
+:root [class*="bg-cyan-500/"], :root [class*="bg-blue-500/"], :root .badge-blue {
+  background-color: #eff6ff !important;
+  color: #1d4ed8 !important;
+  border: 1px solid #bfdbfe !important;
+}
+
+:root [class*="bg-violet-500/"], :root [class*="bg-purple-500/"], :root .badge-purple {
+  background-color: #f5f3ff !important;
+  color: #6d28d9 !important;
+  border: 1px solid #ddd6fe !important;
+}
+
+:root [class*="bg-rose-500/"], :root [class*="bg-red-500/"], :root .badge-red {
+  background-color: #fef2f2 !important;
+  color: #b91c1c !important;
+  border: 1px solid #fecaca !important;
+}
+
+:root [class*="bg-amber-500/"], :root .badge-amber {
+  background-color: #fffbeb !important;
+  color: #b45309 !important;
+  border: 1px solid #fde68a !important;
+}
+
+/* Dark Mode Badges */
+.dark [class*="bg-emerald-500/"] { background-color: rgba(16, 185, 129, 0.2) !important; color: #34d399 !important; border-color: rgba(16, 185, 129, 0.4) !important; }
+.dark [class*="bg-cyan-500/"] { background-color: rgba(6, 182, 212, 0.2) !important; color: #22d3ee !important; border-color: rgba(6, 182, 212, 0.4) !important; }
+.dark [class*="bg-violet-500/"] { background-color: rgba(139, 92, 246, 0.2) !important; color: #c084fc !important; border-color: rgba(139, 92, 246, 0.4) !important; }
+.dark [class*="bg-rose-500/"] { background-color: rgba(244, 63, 94, 0.2) !important; color: #f87171 !important; border-color: rgba(244, 63, 94, 0.4) !important; }
+
+/* ==========================================
+   SIDEBAR & NAVIGATION
+   ========================================== */
+:root aside {
+  background: #ffffff !important;
+  border-right: 1px solid #d9e2e0 !important;
+  box-shadow: 4px 0 20px -4px rgba(6, 78, 59, 0.05) !important;
+}
+
+:root aside nav a {
+  color: #334155 !important;
+  font-weight: 600 !important;
+}
+
+:root aside nav a svg {
+  color: #475569 !important;
+  stroke: #475569 !important;
+}
+
+:root aside nav a:hover {
+  background-color: #ecfdf5 !important;
+  color: #047857 !important;
+}
+
+:root aside nav a:hover svg {
+  color: #047857 !important;
+  stroke: #047857 !important;
+}
+
+/* Active Nav Item */
+aside nav a.bg-gradient-to-r,
+:root aside nav a.bg-gradient-to-r {
+  background: linear-gradient(135deg, #059669 0%, #10b981 100%) !important;
+  color: #ffffff !important;
+  border-left: 4px solid #064e3b !important;
+  box-shadow: 0 4px 14px rgba(5, 150, 105, 0.2) !important;
+}
+
+aside nav a.bg-gradient-to-r *,
+aside nav a.bg-gradient-to-r span,
+aside nav a.bg-gradient-to-r svg {
+  color: #ffffff !important;
+  stroke: #ffffff !important;
+}
+
+/* Header Navbar */
+:root header {
+  background: rgba(255, 255, 255, 0.9) !important;
+  backdrop-filter: blur(12px) !important;
+  border-bottom: 1px solid #d9e2e0 !important;
+}
+
+/* Profile Nav Badge Header */
+:root .profile-nav-badge span,
+:root .profile-nav-badge * {
+  color: #172033 !important;
+}
+
+/* ==========================================
+   MODALS & POPUPS
+   ========================================== */
+:root .modal-panel,
+:root [class*="glass-panel"][class*="fixed"],
+:root [class*="glass-panel"][class*="max-w-"] {
+  background-color: #ffffff !important;
+  border: 1px solid #cbd5e1 !important;
+  box-shadow: 0 20px 50px -10px rgba(17, 32, 51, 0.15) !important;
+}
+
+:root [class*="glass-panel"] h2,
+:root [class*="glass-panel"] h3,
+:root [class*="glass-panel"] h4 {
+  color: #172033 !important;
+}
+
+/* ==========================================
+   GRID & TABLE CONTENT CONTRAST
+   ========================================== */
 :root .glass-panel a.grid-card-link,
 :root .glass-panel a.grid-card-link *,
 :root .glass-panel a.grid-card-link h4,
 :root .glass-panel a.grid-card-link p,
 :root .glass-panel a.grid-card-link span {
-  color: #0f172a !important;
+  color: #172033 !important;
 }
 
 :root .calendar-grid,
 :root .calendar-grid div,
 :root .calendar-grid span:not(.bg-indigoAccent),
 :root .calendar-grid a.grid-card-link {
-  color: #0f172a !important;
+  color: #172033 !important;
 }
 
-/* Sidebar Navigation Links, Text & Icons in Light Mode -> ALWAYS BLACK (#0f172a) */
-aside nav a,
-aside nav a *,
-aside nav a span,
-aside nav a svg,
-:root aside nav a,
-:root aside nav a *,
-:root aside nav a span,
-:root aside nav a svg {
-  color: #0f172a !important;
-  stroke: #0f172a !important;
+:root table {
+  background-color: #ffffff !important;
+  border-color: #d9e2e0 !important;
+}
+
+:root th {
+  background-color: #f1f5f9 !important;
+  color: #172033 !important;
   font-weight: 700 !important;
 }
 
-aside nav a:hover span,
-aside nav a:hover svg,
-:root aside nav a:hover span,
-:root aside nav a:hover svg {
-  color: #4f46e5 !important;
-  stroke: #4f46e5 !important;
+:root td {
+  color: #172033 !important;
+  border-color: #e2e8f0 !important;
 }
 
-aside nav a.bg-gradient-to-r span,
-aside nav a.bg-gradient-to-r svg,
-:root aside nav a.bg-gradient-to-r span,
-:root aside nav a.bg-gradient-to-r svg {
-  color: #0f172a !important;
-  stroke: #0f172a !important;
-  font-weight: 800 !important;
-}
-
-/* Header Menu Button & Profile Badge Text in Light Mode -> Dark Black (#0f172a) */
-:root .header-menu-btn,
-:root .header-menu-btn *,
-:root .header-menu-btn svg {
-  color: #0f172a !important;
-  stroke: #0f172a !important;
-}
-
-:root .profile-nav-badge span,
-:root .profile-nav-badge * {
-  color: #0f172a !important;
-}
-
-/* Explicit Copy Link button icon color -> Black in Light Mode (#0f172a), White in Dark Mode */
-.copy-link-btn,
-.copy-link-btn *,
-.copy-link-btn svg,
-.copy-link-btn svg path,
-.copy-link-btn svg rect,
-:root .copy-link-btn,
-:root .copy-link-btn *,
-:root .copy-link-btn svg,
-:root .copy-link-btn svg path,
-:root .copy-link-btn svg rect,
-:root .glass-panel .copy-link-btn,
-:root .glass-panel .copy-link-btn *,
-:root .glass-panel .copy-link-btn svg {
-  color: #0f172a !important;
-  stroke: #0f172a !important;
-}
-
-.dark .copy-link-btn,
-.dark .copy-link-btn *,
-.dark .copy-link-btn svg,
-.dark .copy-link-btn svg path,
-.dark .copy-link-btn svg rect,
-.dark :root .copy-link-btn,
-.dark :root .copy-link-btn *,
-.dark :root .copy-link-btn svg,
-.dark :root .glass-panel .copy-link-btn,
-.dark :root .glass-panel .copy-link-btn *,
-.dark :root .glass-panel .copy-link-btn svg {
-  color: #ffffff !important;
-  stroke: #ffffff !important;
-}
-
-.dark .header-menu-btn,
-.dark .header-menu-btn *,
-.dark .header-menu-btn svg {
-  color: #ffffff !important;
-  stroke: #ffffff !important;
-}
-
-.dark .profile-nav-badge span,
-.dark .profile-nav-badge * {
-  color: #ffffff !important;
-}
-
-.dark aside nav a,
-.dark aside nav a span {
-  color: #94a3b8 !important;
-}
-
-.dark aside nav a svg {
-  stroke: #94a3b8 !important;
-  color: #94a3b8 !important;
-}
-
-.dark aside nav a.bg-gradient-to-r span,
-.dark aside nav a.bg-gradient-to-r svg {
-  color: #ffffff !important;
-  stroke: #ffffff !important;
-}
-
-/* Explicit Sign Out / Logout button text & icon -> Always pure crisp white */
-.signout-btn,
-.signout-btn *,
-.signout-btn span,
-.signout-btn svg,
-:root .signout-btn,
-:root .signout-btn *,
-:root .signout-btn span,
-:root .signout-btn svg {
-  color: #ffffff !important;
-  stroke: #ffffff !important;
-}
-
-/* Accent colors remain vibrant */
-:root .text-indigo-400, :root .text-indigo-300 { color: #4f46e5 !important; }
-:root .text-indigo-500 { color: #4338ca !important; }
-:root .text-cyan-400, :root .text-cyan-300 { color: #0891b2 !important; }
-:root .text-emerald-400 { color: #059669 !important; }
-:root .text-amber-400 { color: #d97706 !important; }
-:root .text-rose-400, :root .text-red-400 { color: #dc2626 !important; }
-:root .text-purple-400 { color: #7c3aed !important; }
-
-/* Inputs in light mode */
-:root .glass-panel input,
-:root .glass-panel select,
-:root .glass-panel textarea {
-  background-color: #f8faff !important;
-  border-color: rgba(99, 102, 241, 0.18) !important;
-  color: #0f172a !important;
-  font-size: 0.9375rem !important;
-}
-
-:root .glass-panel input:focus,
-:root .glass-panel select:focus,
-:root .glass-panel textarea:focus {
-  border-color: #6366f1 !important;
-  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.12) !important;
-  outline: none !important;
-}
-
-:root .glass-panel input::placeholder,
-:root .glass-panel textarea::placeholder {
-  color: #94a3b8 !important;
+:root tr:hover td {
+  background-color: #f8fafc !important;
 }
 
 /* ==========================================
-   SIDEBAR LIGHT MODE
-   ========================================== */
-:root aside {
-  background: linear-gradient(160deg, #ffffff 0%, #f5f3ff 100%) !important;
-  border-right: 1px solid rgba(99, 102, 241, 0.12) !important;
-  box-shadow: 4px 0 20px -4px rgba(99, 102, 241, 0.08) !important;
-}
-
-:root aside nav a,
-:root aside nav a span,
-:root aside nav a svg {
-  color: #0f172a !important;
-  stroke: #0f172a !important;
-  font-weight: 700 !important;
-  font-size: 0.9375rem !important;
-  border-radius: 12px;
-  transition: all 0.2s ease;
-}
-
-:root aside nav a:hover,
-:root aside nav a:hover span,
-:root aside nav a:hover svg {
-  background-color: rgba(99, 102, 241, 0.08) !important;
-  color: #4f46e5 !important;
-  stroke: #4f46e5 !important;
-  transform: translateX(2px);
-}
-
-:root aside nav a.bg-gradient-to-r,
-:root aside nav a.bg-gradient-to-r span,
-:root aside nav a.bg-gradient-to-r svg {
-  background: linear-gradient(135deg, rgba(99, 102, 241, 0.15) 0%, rgba(6, 182, 212, 0.1) 100%) !important;
-  color: #4f46e5 !important;
-  stroke: #4f46e5 !important;
-  border-left: 3px solid #6366f1 !important;
-  font-weight: 800 !important;
-}
-
-/* Sidebar user info */
-:root aside .text-gray-400,
-:root aside span.text-gray-400 {
-  color: #64748b !important;
-}
-
-/* ==========================================
-   HEADER LIGHT MODE
-   ========================================== */
-:root header {
-  background: rgba(255, 255, 255, 0.85) !important;
-  backdrop-filter: blur(12px) !important;
-  border-bottom: 1px solid rgba(99, 102, 241, 0.1) !important;
-}
-
-/* ==========================================
-   GLASS PANEL LIGHT MODE ENHANCEMENTS
-   ========================================== */
-:root .glass-panel {
-  background: linear-gradient(135deg, #ffffff 0%, #fafbff 100%) !important;
-  border-color: rgba(99, 102, 241, 0.1) !important;
-  box-shadow: 0 4px 24px -4px rgba(99, 102, 241, 0.08), 0 1px 4px rgba(0,0,0,0.04) !important;
-}
-
-:root .glass-panel:hover {
-  box-shadow: 0 8px 32px -8px rgba(99, 102, 241, 0.14), 0 2px 8px rgba(0,0,0,0.05) !important;
-}
-
-/* ==========================================
-   BACKGROUND OVERRIDES - LIGHT MODE
+   BACKGROUND OVERRIDES FOR LIGHT MODE
    ========================================== */
 :root [class*="bg-[#0d1321]"],
 :root [class*="bg-[#090d16]"],
 :root [class*="bg-[#0c1220]"],
-:root [class*="bg-[#080c14]"],
-:root [class*="bg-[#0c1220]/60"],
-:root [class*="bg-[#090d16]/30"],
-:root [class*="bg-[#090d16]/40"],
-:root [class*="bg-[#090d16]/50"] {
-  background-color: #f1f5f9 !important;
-  border-color: rgba(99, 102, 241, 0.08) !important;
-}
-
-:root [class*="bg-[#0c1220]"][class*="rounded"] {
-  background-color: #ffffff !important;
-  box-shadow: 0 2px 12px -2px rgba(0,0,0,0.04) !important;
-}
-
-:root [class*="border-white/5"],
-:root [class*="border-cardBorder"] {
-  border-color: rgba(99, 102, 241, 0.1) !important;
-}
-
-/* ==========================================
-   DARK MODE RESTORES
-   ========================================== */
-.dark h1, .dark h2, .dark h3, .dark h4 { color: #ffffff !important; }
-.dark p { color: #94a3b8 !important; }
-
-.dark .glass-panel .text-white,
-.dark .glass-panel [class*="text-white"],
-.dark .glass-panel [class*="text-gray-100"] { color: #ffffff !important; }
-
-.dark .glass-panel p,
-.dark .glass-panel span,
-.dark .glass-panel [class*="text-gray-200"],
-.dark .glass-panel [class*="text-gray-300"],
-.dark .glass-panel [class*="text-gray-400"] { color: #94a3b8 !important; }
-
-.dark .glass-panel a.grid-card-link,
-.dark .glass-panel a.grid-card-link h4 { color: #e2e8f0 !important; }
-.dark .glass-panel a.grid-card-link p,
-.dark .glass-panel a.grid-card-link span:not([class*="bg-"]) { color: #94a3b8 !important; }
-.dark .calendar-grid div,
-.dark .calendar-grid span:not(.bg-indigoAccent) { color: #94a3b8 !important; }
-.dark .calendar-grid a.grid-card-link { color: inherit !important; }
-
-.dark .text-indigo-400, .dark .text-indigo-300 { color: #818cf8 !important; }
-.dark .text-emerald-400 { color: #34d399 !important; }
-.dark .text-cyan-400 { color: #22d3ee !important; }
-.dark .text-amber-400 { color: #fbbf24 !important; }
-
-.dark .glass-panel input,
-.dark .glass-panel select,
-.dark .glass-panel textarea {
-  background-color: rgba(13, 19, 33, 0.6) !important;
-  border-color: rgba(255, 255, 255, 0.08) !important;
-  color: #e2e8f0 !important;
-}
-
-.dark aside {
-  background: rgba(17, 25, 40, 0.85) !important;
-  border-right-color: rgba(255, 255, 255, 0.08) !important;
-}
-
-.dark aside nav a { color: #94a3b8 !important; }
-.dark aside nav a:hover { background-color: rgba(255,255,255,0.05) !important; color: #fff !important; }
-.dark aside nav a.bg-gradient-to-r {
-  background: linear-gradient(135deg, rgba(99,102,241,0.3) 0%, rgba(6,182,212,0.2) 100%) !important;
-  color: #ffffff !important;
-  border-left-color: #6366f1 !important;
+:root [class*="bg-[#080c14]"] {
+  background-color: #f8faf8 !important;
+  border-color: #d9e2e0 !important;
 }
 
 .dark [class*="bg-[#0d1321]"] { background-color: #0d1321 !important; }
 .dark [class*="bg-[#090d16]"] { background-color: #090d16 !important; }
-.dark [class*="bg-[#090d16]/30"] { background-color: rgba(9,13,22,0.3) !important; }
-.dark [class*="bg-[#090d16]/40"] { background-color: rgba(9,13,22,0.4) !important; }
-.dark [class*="bg-[#090d16]/50"] { background-color: rgba(9,13,22,0.5) !important; }
 .dark [class*="bg-[#0c1220]"] { background-color: #0c1220 !important; }
-.dark [class*="bg-[#0c1220]/60"] { background-color: rgba(12,18,32,0.6) !important; }
-.dark [class*="bg-[#080c14]/40"] { background-color: rgba(8,12,20,0.4) !important; }
-.dark [class*="border-white/5"] { border-color: rgba(255,255,255,0.05) !important; }
-.dark [class*="border-cardBorder"] { border-color: rgba(255,255,255,0.08) !important; }
 
 /* ==========================================
-   EXTRA LIGHT MODE HIGHLIGHTS
+   KEYFRAME ANIMATIONS
    ========================================== */
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes slideUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes slideInLeft { from { opacity: 0; transform: translateX(-20px); } to { opacity: 1; transform: translateX(0); } }
+@keyframes scaleIn { from { opacity: 0; transform: scale(0.94); } to { opacity: 1; transform: scale(1); } }
 
-/* Stats cards gradient accent tops */
-:root .glass-panel.group:hover {
-  border-color: rgba(99, 102, 241, 0.25) !important;
-}
-
-/* Badge / pill colours more vibrant in light */
-:root [class*="bg-indigo-500/10"] { background-color: rgba(99,102,241,0.1) !important; }
-:root [class*="bg-emerald-500/10"] { background-color: rgba(5,150,105,0.08) !important; }
-:root [class*="bg-cyan-500/10"] { background-color: rgba(8,145,178,0.08) !important; }
-:root [class*="bg-amber-500/10"] { background-color: rgba(217,119,6,0.08) !important; }
-:root [class*="bg-red-500/10"], :root [class*="bg-rose-500/10"] { background-color: rgba(220,38,38,0.08) !important; }
-
-/* ==========================================
-   GRADIENT ACCENT LINE UTILITY
-   ========================================== */
-.accent-border-top {
-  border-top: 3px solid;
-  border-image: linear-gradient(90deg, #6366f1, #06b6d4) 1;
-}
-
-/* ==========================================
-   LINK HOVER EFFECTS
-   ========================================== */
-:root a:not([class*="bg-"]):not([class*="px-"]):not(.no-style) {
-  transition: color 0.2s ease;
-}
-
-/* ==========================================
-   FOCUS RING GLOBAL
-   ========================================== */
-*:focus-visible {
-  outline: 2px solid rgba(99, 102, 241, 0.6) !important;
-  outline-offset: 2px;
-}
+.animate-fade-in { animation: fadeIn 0.45s ease-out forwards; }
+.animate-slide-up { animation: slideUp 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+.animate-slide-in-left { animation: slideInLeft 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+.animate-scale-in { animation: scaleIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards; }

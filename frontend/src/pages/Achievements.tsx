@@ -70,27 +70,27 @@ export const Achievements: React.FC = () => {
         <p className="text-gray-400 text-sm mt-1">Showcase and review your completed hackathons and placement results.</p>
       </div>
 
-      {/* Portfolio Stats Panel (Green, Yellow, Amber, Blue, Red) */}
+      {/* Portfolio Stats Panel */}
       <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-        <div className="glass-panel p-5 rounded-2xl border border-emerald-500/30 bg-emerald-500/5 text-center hover:-translate-y-1 transition-all">
-          <p className="text-xs text-emerald-400 font-bold uppercase tracking-wider">Completed</p>
-          <p className="text-2xl font-extrabold text-white font-outfit mt-1">{totalParticipation}</p>
+        <div className="glass-panel p-5 rounded-2xl border border-emerald-500/30 bg-emerald-500/10 dark:bg-emerald-500/5 text-center hover:-translate-y-1 transition-all">
+          <p className="text-xs text-emerald-800 dark:text-emerald-400 font-extrabold uppercase tracking-wider">Completed</p>
+          <p className="text-2xl font-extrabold text-slate-900 dark:text-white font-outfit mt-1">{totalParticipation}</p>
         </div>
-        <div className="glass-panel p-5 rounded-2xl border border-amber-500/30 bg-amber-500/5 text-center hover:-translate-y-1 transition-all">
-          <p className="text-xs text-amber-400 font-bold uppercase tracking-wider">Winners</p>
-          <p className="text-2xl font-extrabold text-amber-300 font-outfit mt-1">{winnersCount}</p>
+        <div className="glass-panel p-5 rounded-2xl border border-amber-500/30 bg-amber-500/10 dark:bg-amber-500/5 text-center hover:-translate-y-1 transition-all">
+          <p className="text-xs text-amber-900 dark:text-amber-400 font-extrabold uppercase tracking-wider">Winners</p>
+          <p className="text-2xl font-extrabold text-slate-900 dark:text-amber-300 font-outfit mt-1">{winnersCount}</p>
         </div>
-        <div className="glass-panel p-5 rounded-2xl border border-yellow-500/30 bg-yellow-500/5 text-center hover:-translate-y-1 transition-all">
-          <p className="text-xs text-yellow-400 font-bold uppercase tracking-wider">Runner-ups</p>
-          <p className="text-2xl font-extrabold text-yellow-300 font-outfit mt-1">{runnerupsCount}</p>
+        <div className="glass-panel p-5 rounded-2xl border border-yellow-500/30 bg-yellow-500/10 dark:bg-yellow-500/5 text-center hover:-translate-y-1 transition-all">
+          <p className="text-xs text-yellow-900 dark:text-yellow-400 font-extrabold uppercase tracking-wider">Runner-ups</p>
+          <p className="text-2xl font-extrabold text-slate-900 dark:text-yellow-300 font-outfit mt-1">{runnerupsCount}</p>
         </div>
-        <div className="glass-panel p-5 rounded-2xl border border-blue-500/30 bg-blue-500/5 text-center hover:-translate-y-1 transition-all">
-          <p className="text-xs text-blue-400 font-bold uppercase tracking-wider">Finalists</p>
-          <p className="text-2xl font-extrabold text-blue-300 font-outfit mt-1">{finalistsCount}</p>
+        <div className="glass-panel p-5 rounded-2xl border border-blue-500/30 bg-blue-500/10 dark:bg-blue-500/5 text-center hover:-translate-y-1 transition-all">
+          <p className="text-xs text-blue-900 dark:text-blue-400 font-extrabold uppercase tracking-wider">Finalists</p>
+          <p className="text-2xl font-extrabold text-slate-900 dark:text-blue-300 font-outfit mt-1">{finalistsCount}</p>
         </div>
-        <div className="glass-panel p-5 rounded-2xl border border-rose-500/30 bg-rose-500/5 text-center col-span-2 md:col-span-1 hover:-translate-y-1 transition-all">
-          <p className="text-xs text-rose-400 font-bold uppercase tracking-wider">Certificates</p>
-          <p className="text-2xl font-extrabold text-rose-300 font-outfit mt-1">{certificatesCount}</p>
+        <div className="glass-panel p-5 rounded-2xl border border-rose-500/30 bg-rose-500/10 dark:bg-rose-500/5 text-center col-span-2 md:col-span-1 hover:-translate-y-1 transition-all">
+          <p className="text-xs text-rose-900 dark:text-rose-400 font-extrabold uppercase tracking-wider">Certificates</p>
+          <p className="text-2xl font-extrabold text-slate-900 dark:text-rose-300 font-outfit mt-1">{certificatesCount}</p>
         </div>
       </div>
 
