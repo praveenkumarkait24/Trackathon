@@ -141,11 +141,11 @@ export const Calendar: React.FC = () => {
 
   const getEventBadgeClass = (type: EventItem['type']) => {
     switch (type) {
-      case 'registration_deadline': return 'bg-rose-500/20 text-rose-300 border border-rose-500/40 font-black';
-      case 'hackathon_start': return 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 font-black';
-      case 'hackathon_end': return 'bg-amber-500/20 text-amber-300 border border-amber-500/40 font-black';
-      case 'round_date': return 'bg-blue-500/20 text-blue-300 border border-blue-500/40 font-black';
-      default: return 'bg-white/10 text-gray-300';
+      case 'registration_deadline': return 'bg-rose-500/20 text-slate-900 dark:text-rose-300 border border-rose-500/40 font-black';
+      case 'hackathon_start': return 'bg-emerald-500/20 text-slate-900 dark:text-emerald-300 border border-emerald-500/40 font-black';
+      case 'hackathon_end': return 'bg-amber-500/20 text-slate-900 dark:text-amber-300 border border-amber-500/40 font-black';
+      case 'round_date': return 'bg-blue-500/20 text-slate-900 dark:text-blue-300 border border-blue-500/40 font-black';
+      default: return 'bg-slate-200 dark:bg-white/10 text-slate-900 dark:text-gray-300';
     }
   };
 
@@ -160,18 +160,18 @@ export const Calendar: React.FC = () => {
       {/* Header Controls */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-3xl font-extrabold text-white font-outfit tracking-wide">Calendar</h1>
-          <p className="text-gray-400 text-sm mt-1">Track deadlines and event timings visually.</p>
+          <h1 className="text-3xl font-extrabold text-slate-900 dark:text-white font-outfit tracking-wide">Calendar</h1>
+          <p className="text-slate-600 dark:text-gray-400 text-sm mt-1">Track deadlines and event timings visually.</p>
         </div>
 
-        <div className="flex items-center space-x-4 bg-[#0d1321]/60 border border-cardBorder rounded-full px-4 py-1.5 shrink-0">
+        <div className="flex items-center space-x-4 bg-slate-100 dark:bg-[#0d1321]/60 border border-slate-200 dark:border-cardBorder rounded-full px-4 py-1.5 shrink-0">
           <button 
             onClick={handlePrevMonth}
             className="p-2 text-white bg-blue-600 hover:bg-blue-500 rounded-full transition-all shadow-md shadow-blue-500/20"
           >
             <ChevronLeft size={16} />
           </button>
-          <span className="text-sm font-extrabold text-white min-w-32 text-center font-outfit">
+          <span className="text-sm font-extrabold text-slate-900 dark:text-white min-w-32 text-center font-outfit">
             {monthName} {year}
           </span>
           <button 
@@ -184,9 +184,9 @@ export const Calendar: React.FC = () => {
       </div>
 
       {/* Calendar Grid Container */}
-      <div className="glass-panel rounded-3xl border border-cardBorder overflow-hidden shadow-xl">
+      <div className="glass-panel rounded-3xl border border-slate-200 dark:border-cardBorder overflow-hidden shadow-xl">
         {/* Days of Week label */}
-        <div className="grid grid-cols-7 border-b border-cardBorder bg-[#090d16]/50 py-3 text-center text-xs font-bold text-gray-500 uppercase tracking-wider">
+        <div className="grid grid-cols-7 border-b border-slate-200 dark:border-cardBorder bg-slate-100 dark:bg-[#090d16]/50 py-3 text-center text-xs font-extrabold text-slate-900 dark:text-gray-400 uppercase tracking-wider">
           <div>Sun</div>
           <div>Mon</div>
           <div>Tue</div>
@@ -197,7 +197,7 @@ export const Calendar: React.FC = () => {
         </div>
 
         {/* Date Boxes */}
-        <div className="grid grid-cols-7 grid-rows-5 gap-px bg-cardBorder">
+        <div className="grid grid-cols-7 grid-rows-5 gap-px bg-slate-200 dark:bg-cardBorder calendar-grid">
           {daysArray.map((day, idx) => {
             const isToday = day ? isSameDay(day, new Date()) : false;
             const events = day ? getEventsForDate(day) : [];
@@ -205,8 +205,8 @@ export const Calendar: React.FC = () => {
             return (
               <div 
                 key={idx} 
-                className={`min-h-[100px] md:min-h-[130px] p-2 bg-[#090d16]/30 flex flex-col justify-between ${
-                  day ? 'text-gray-200' : 'text-gray-700 bg-[#060a12]/10'
+                className={`min-h-[100px] md:min-h-[130px] p-2 flex flex-col justify-between ${
+                  day ? 'bg-slate-50 dark:bg-[#090d16]/30 text-slate-900 dark:text-gray-200' : 'bg-slate-100/70 dark:bg-[#060a12]/10 text-slate-400 dark:text-gray-700'
                 }`}
               >
                 {day ? (
@@ -216,7 +216,7 @@ export const Calendar: React.FC = () => {
                       <span className={`text-xs font-bold w-6 h-6 rounded-full flex items-center justify-center ${
                         isToday 
                           ? 'bg-indigoAccent text-white shadow-glow' 
-                          : 'text-gray-400'
+                          : 'text-slate-900 dark:text-gray-400 font-extrabold'
                       }`}>
                         {day.getDate()}
                       </span>
@@ -228,7 +228,7 @@ export const Calendar: React.FC = () => {
                         <Link
                           key={eIdx}
                           to={`/hackathons/${ev.hackathonId}`}
-                          className={`block p-1 text-[9px] rounded font-bold truncate transition-all hover:scale-[1.02] ${getEventBadgeClass(ev.type)}`}
+                          className={`block p-1 text-[9px] rounded font-bold truncate transition-all hover:scale-[1.02] grid-card-link ${getEventBadgeClass(ev.type)}`}
                           title={`${ev.title}${ev.time ? ` at ${ev.time}` : ''}`}
                         >
                           {ev.title}

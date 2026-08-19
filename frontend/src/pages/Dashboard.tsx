@@ -308,7 +308,7 @@ export const Dashboard: React.FC = () => {
             {upcomingDeadlines.length === 0 ? (
               <div className="flex flex-col items-center justify-center h-full text-center p-4">
                 <Calendar className="h-10 w-10 text-gray-600 mb-2" />
-                <p className="text-xs text-gray-500">No approaching deadlines.</p>
+                <p className="text-xs text-slate-600 dark:text-gray-500">No approaching deadlines.</p>
               </div>
             ) : (
               upcomingDeadlines.map((item, idx) => {
@@ -317,15 +317,17 @@ export const Dashboard: React.FC = () => {
                   <Link 
                     key={idx} 
                     to={`/hackathons/${item.id}`}
-                    className="flex items-center justify-between p-3.5 bg-white/5 hover:bg-white/10 border border-cardBorder hover:border-gray-800 rounded-xl transition-all group"
+                    className="flex items-center justify-between p-3.5 bg-slate-100/90 hover:bg-slate-200/90 dark:bg-white/5 dark:hover:bg-white/10 border border-slate-200 dark:border-cardBorder hover:border-gray-400 dark:hover:border-gray-800 rounded-xl transition-all group grid-card-link"
                   >
                     <div className="min-w-0 flex-1 pr-3">
-                      <p className="text-xs text-gray-500 font-bold uppercase tracking-wider">{item.type} Deadline</p>
-                      <p className="text-sm font-semibold text-gray-200 truncate group-hover:text-white mt-0.5">{item.name}</p>
+                      <p className="text-xs text-slate-700 dark:text-gray-400 font-bold uppercase tracking-wider">{item.type} Deadline</p>
+                      <p className="text-sm font-bold text-slate-900 dark:text-gray-200 truncate group-hover:text-black dark:group-hover:text-white mt-0.5">{item.name}</p>
                     </div>
                     <div className="text-right shrink-0">
                       <span className={`text-xs px-2.5 py-1 rounded-lg font-bold ${
-                        isOverdue ? 'bg-red-500/10 text-red-400' : 'bg-indigoAccent/10 text-indigo-300'
+                        isOverdue 
+                          ? 'bg-red-500/15 text-red-700 dark:text-red-400 border border-red-500/30' 
+                          : 'bg-indigo-500/15 text-indigo-900 dark:text-indigo-300 border border-indigo-500/30'
                       }`}>
                         {item.deadline.toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}
                       </span>
@@ -414,26 +416,26 @@ export const Dashboard: React.FC = () => {
               <Link 
                 key={index} 
                 to={`/hackathons/${item.id}`}
-                className="block p-4 bg-white/5 hover:bg-white/10 border border-cardBorder hover:border-gray-800 rounded-xl transition-all"
+                className="block p-4 bg-slate-100/90 hover:bg-slate-200/90 dark:bg-white/5 dark:hover:bg-white/10 border border-slate-200 dark:border-cardBorder hover:border-gray-400 dark:hover:border-gray-800 rounded-xl transition-all grid-card-link"
               >
                 <div className="flex justify-between items-start mb-2">
                   <span className={`text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded border shadow-sm ${
                     item.status === 'ongoing' 
-                      ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40 animate-pulse' 
+                      ? 'bg-emerald-500/20 text-slate-900 dark:text-emerald-300 border-emerald-500/40 animate-pulse' 
                       : item.status === 'upcoming'
-                      ? 'bg-cyan-500/20 text-cyan-300 border-cyan-500/40'
+                      ? 'bg-cyan-500/20 text-slate-900 dark:text-cyan-300 border-cyan-500/40'
                       : item.status === 'completed'
-                      ? 'bg-violet-500/20 text-violet-300 border-violet-500/40'
-                      : 'bg-rose-500/20 text-rose-300 border-rose-500/40'
+                      ? 'bg-violet-500/20 text-slate-900 dark:text-violet-300 border-violet-500/40'
+                      : 'bg-rose-500/20 text-slate-900 dark:text-rose-300 border-rose-500/40'
                   }`}>
                     {item.status}
                   </span>
-                  <span className="text-[10px] text-gray-500 font-medium">
+                  <span className="text-[10px] text-slate-700 dark:text-gray-400 font-semibold">
                     {item.participation_type}
                   </span>
                 </div>
-                <h4 className="text-sm font-semibold text-gray-200 truncate">{item.name}</h4>
-                <p className="text-xs text-gray-500 truncate mt-1">Organized by {item.organizer}</p>
+                <h4 className="text-sm font-bold text-slate-900 dark:text-gray-200 truncate">{item.name}</h4>
+                <p className="text-xs text-slate-700 dark:text-gray-400 font-medium truncate mt-1">Organized by {item.organizer}</p>
               </Link>
             ))}
           </div>

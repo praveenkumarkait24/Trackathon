@@ -260,15 +260,15 @@ button:active:not(:disabled) {
   color: #1e293b !important;
 }
 
-/* Ensure ALL action buttons, icons, and nested text in glass panels stay 100% crisp white (excluding sidebar navigation & copy link button) */
+/* Ensure ALL action buttons, icons, and nested text in glass panels stay 100% crisp white (excluding sidebar navigation, copy link button & grid card links) */
 :root .glass-panel button:not(aside nav *):not(.copy-link-btn):not(.copy-link-btn *),
 :root .glass-panel button:not(aside nav *):not(.copy-link-btn) *,
 :root .glass-panel button:not(aside nav *):not(.copy-link-btn) span,
 :root .glass-panel button:not(aside nav *):not(.copy-link-btn) svg,
-:root .glass-panel a[class*="bg-"]:not(aside nav *),
-:root .glass-panel a[class*="bg-"]:not(aside nav *) *,
-:root .glass-panel a[class*="bg-"]:not(aside nav *) span,
-:root .glass-panel a[class*="bg-"]:not(aside nav *) svg,
+:root .glass-panel a[class*="bg-"]:not(aside nav *):not(.grid-card-link):not(.grid-card-link *),
+:root .glass-panel a[class*="bg-"]:not(aside nav *):not(.grid-card-link) *,
+:root .glass-panel a[class*="bg-"]:not(aside nav *):not(.grid-card-link) span,
+:root .glass-panel a[class*="bg-"]:not(aside nav *):not(.grid-card-link) svg,
 :root [class*="bg-rose-600"]:not(aside nav *),
 :root [class*="bg-rose-600"]:not(aside nav *) *,
 :root [class*="bg-emerald-600"]:not(aside nav *),
@@ -281,6 +281,22 @@ button:active:not(:disabled) {
 :root [class*="bg-indigoAccent"]:not(aside nav *) * {
   color: #ffffff !important;
   stroke: #ffffff !important;
+}
+
+/* Explicit Light Mode Text Colors for Recent Hackathons, Upcoming Deadlines & Calendar Grid Items */
+:root .glass-panel a.grid-card-link,
+:root .glass-panel a.grid-card-link *,
+:root .glass-panel a.grid-card-link h4,
+:root .glass-panel a.grid-card-link p,
+:root .glass-panel a.grid-card-link span {
+  color: #0f172a !important;
+}
+
+:root .calendar-grid,
+:root .calendar-grid div,
+:root .calendar-grid span:not(.bg-indigoAccent),
+:root .calendar-grid a.grid-card-link {
+  color: #0f172a !important;
 }
 
 /* Sidebar Navigation Links, Text & Icons in Light Mode -> ALWAYS BLACK (#0f172a) */
@@ -540,6 +556,14 @@ aside nav a.bg-gradient-to-r svg,
 .dark .glass-panel [class*="text-gray-200"],
 .dark .glass-panel [class*="text-gray-300"],
 .dark .glass-panel [class*="text-gray-400"] { color: #94a3b8 !important; }
+
+.dark .glass-panel a.grid-card-link,
+.dark .glass-panel a.grid-card-link h4 { color: #e2e8f0 !important; }
+.dark .glass-panel a.grid-card-link p,
+.dark .glass-panel a.grid-card-link span:not([class*="bg-"]) { color: #94a3b8 !important; }
+.dark .calendar-grid div,
+.dark .calendar-grid span:not(.bg-indigoAccent) { color: #94a3b8 !important; }
+.dark .calendar-grid a.grid-card-link { color: inherit !important; }
 
 .dark .text-indigo-400, .dark .text-indigo-300 { color: #818cf8 !important; }
 .dark .text-emerald-400 { color: #34d399 !important; }
