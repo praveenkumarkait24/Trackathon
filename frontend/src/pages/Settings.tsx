@@ -176,12 +176,12 @@ export const Settings: React.FC = () => {
     <div className="max-w-3xl mx-auto space-y-6 md:space-y-8 animate-slide-up select-none">
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-extrabold text-white font-outfit tracking-wide">Settings</h1>
-        <p className="text-gray-400 text-sm mt-1">Configure your notifications, calendar syncs, and reminder preferences.</p>
+        <h1 className="text-3xl font-extrabold text-slate-900 dark:text-white font-outfit tracking-wide">Settings</h1>
+        <p className="text-slate-600 dark:text-gray-400 text-sm mt-1">Configure your notifications, calendar syncs, and reminder preferences.</p>
       </div>
 
       {success && (
-        <div className="p-4 bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 rounded-xl flex items-center space-x-2 text-xs font-bold animate-fade-in">
+        <div className="p-4 bg-emerald-500/10 border border-emerald-500/30 text-emerald-800 dark:text-emerald-400 rounded-xl flex items-center space-x-2 text-xs font-bold animate-fade-in">
           <Check size={16} />
           <span>Configurations updated successfully!</span>
         </div>
@@ -191,16 +191,16 @@ export const Settings: React.FC = () => {
       <div className="space-y-6">
 
         {/* Section 1: Profile Settings */}
-        <div className="glass-panel p-6 rounded-2xl border border-cardBorder space-y-6">
-          <h3 className="font-bold text-white border-b border-cardBorder/30 pb-3 flex items-center space-x-2">
-            <User size={18} className="text-indigo-400" />
+        <div className="glass-panel p-6 rounded-2xl border border-slate-200 dark:border-cardBorder space-y-6">
+          <h3 className="font-bold text-slate-900 dark:text-white border-b border-slate-200 dark:border-cardBorder/30 pb-3 flex items-center space-x-2">
+            <User size={18} className="text-emerald-600 dark:text-indigo-400" />
             <span>Profile Settings</span>
           </h3>
 
           <div className="flex flex-col md:flex-row items-center md:items-start gap-6">
             {/* Avatar block */}
             <div className="flex flex-col items-center space-y-3 shrink-0">
-              <div className="w-20 h-20 rounded-full bg-gradient-to-br from-indigo-500 to-cyan-400 relative overflow-hidden flex items-center justify-center font-bold text-white text-2xl shadow-glow">
+              <div className="w-20 h-20 rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 relative overflow-hidden flex items-center justify-center font-bold text-white text-2xl shadow-md">
                 {avatarUrl || authAvatar ? (
                   <img src={avatarUrl || authAvatar || ''} alt="Avatar" className="w-full h-full object-cover" />
                 ) : (
@@ -213,15 +213,15 @@ export const Settings: React.FC = () => {
             <div className="flex-1 w-full space-y-4">
               {/* Full Name */}
               <div className="space-y-1.5">
-                <label className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-gray-400">Full Name</label>
+                <label className="text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-gray-400">Full Name</label>
                 <div className="relative flex items-center">
-                  <User className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-indigo-500 dark:text-indigo-400 z-10 shrink-0" />
+                  <User className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-emerald-600 dark:text-indigo-400 z-10 shrink-0" />
                   <input
                     type="text"
                     required
                     value={fullName || authName}
                     disabled={true}
-                    className="w-full bg-slate-50 dark:bg-[#0d1321]/50 border border-slate-200 dark:border-cardBorder rounded-xl py-2.5 pl-10 pr-4 text-sm font-medium text-slate-800 dark:text-gray-200 cursor-not-allowed outline-none select-none"
+                    className="w-full bg-slate-100 dark:bg-[#0d1321]/50 border border-slate-200 dark:border-cardBorder rounded-xl py-2.5 pl-10 pr-4 text-sm font-bold text-slate-900 dark:text-gray-200 cursor-not-allowed outline-none select-none"
                     placeholder="Full Name"
                   />
                 </div>
@@ -229,14 +229,14 @@ export const Settings: React.FC = () => {
 
               {/* Email Address below Full Name */}
               <div className="space-y-1.5">
-                <label className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-gray-400">Email Address</label>
+                <label className="text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-gray-400">Email Address</label>
                 <div className="relative flex items-center">
-                  <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-indigo-500 dark:text-indigo-400 z-10 shrink-0" />
+                  <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-emerald-600 dark:text-indigo-400 z-10 shrink-0" />
                   <input
                     type="email"
                     value={userEmail}
                     disabled={true}
-                    className="w-full bg-slate-50 dark:bg-[#0d1321]/50 border border-slate-200 dark:border-cardBorder rounded-xl py-2.5 pl-10 pr-4 text-sm font-medium text-slate-800 dark:text-gray-200 cursor-not-allowed outline-none select-none"
+                    className="w-full bg-slate-100 dark:bg-[#0d1321]/50 border border-slate-200 dark:border-cardBorder rounded-xl py-2.5 pl-10 pr-4 text-sm font-bold text-slate-900 dark:text-gray-200 cursor-not-allowed outline-none select-none"
                     placeholder="Email Address"
                   />
                 </div>
@@ -246,9 +246,9 @@ export const Settings: React.FC = () => {
         </div>
 
         {/* Section 2: Notification Toggles */}
-        <div className="glass-panel p-6 rounded-2xl border border-cardBorder space-y-6">
-          <h3 className="font-bold text-white border-b border-cardBorder/30 pb-3 flex items-center space-x-2">
-            <Bell size={18} className="text-cyan-400" />
+        <div className="glass-panel p-6 rounded-2xl border border-slate-200 dark:border-cardBorder space-y-6">
+          <h3 className="font-bold text-slate-900 dark:text-white border-b border-slate-200 dark:border-cardBorder/30 pb-3 flex items-center space-x-2">
+            <Bell size={18} className="text-emerald-600 dark:text-cyan-400" />
             <span>Notification Settings</span>
           </h3>
 
@@ -256,18 +256,18 @@ export const Settings: React.FC = () => {
             {/* Email Notifications */}
             <div className="flex items-center justify-between">
               <div className="space-y-0.5 pr-4">
-                <span className="text-sm font-bold text-gray-200 flex items-center space-x-2">
-                  <Mail size={16} className="text-gray-500" />
+                <span className="text-sm font-bold text-slate-900 dark:text-gray-200 flex items-center space-x-2">
+                  <Mail size={16} className="text-slate-500 dark:text-gray-400" />
                   <span>Email Notifications</span>
                 </span>
-                <p className="text-xs text-gray-500 leading-relaxed">
+                <p className="text-xs text-slate-600 dark:text-gray-400 leading-relaxed">
                   Receive alerts in your inbox for upcoming registration deadlines and round submissions.
                 </p>
               </div>
               <button
                 onClick={() => handleTogglePref('email_enabled')}
                 className={`w-11 h-6 rounded-full transition-colors relative shrink-0 ${
-                  prefs.email_enabled ? 'bg-indigoAccent' : 'bg-gray-800 border border-cardBorder'
+                  prefs.email_enabled ? 'bg-emerald-600' : 'bg-slate-300 dark:bg-gray-800 border border-slate-300 dark:border-cardBorder'
                 }`}
               >
                 <span className={`w-4 h-4 rounded-full bg-white absolute top-1 transition-all ${
@@ -279,18 +279,18 @@ export const Settings: React.FC = () => {
             {/* Push Notifications */}
             <div className="flex items-center justify-between">
               <div className="space-y-0.5 pr-4">
-                <span className="text-sm font-bold text-gray-200 flex items-center space-x-2">
-                  <Smartphone size={16} className="text-gray-500" />
+                <span className="text-sm font-bold text-slate-900 dark:text-gray-200 flex items-center space-x-2">
+                  <Smartphone size={16} className="text-slate-500 dark:text-gray-400" />
                   <span>Browser Push Notifications</span>
                 </span>
-                <p className="text-xs text-gray-500 leading-relaxed">
+                <p className="text-xs text-slate-600 dark:text-gray-400 leading-relaxed">
                   Receive real-time alerts in your web browser before round starts and deadlines approach.
                 </p>
               </div>
               <button
                 onClick={() => handleTogglePref('push_enabled')}
                 className={`w-11 h-6 rounded-full transition-colors relative shrink-0 ${
-                  prefs.push_enabled ? 'bg-indigoAccent' : 'bg-gray-800 border border-cardBorder'
+                  prefs.push_enabled ? 'bg-emerald-600' : 'bg-slate-300 dark:bg-gray-800 border border-slate-300 dark:border-cardBorder'
                 }`}
               >
                 <span className={`w-4 h-4 rounded-full bg-white absolute top-1 transition-all ${
@@ -302,18 +302,18 @@ export const Settings: React.FC = () => {
             {/* Google Calendar Sync Toggle */}
             <div className="flex items-center justify-between">
               <div className="space-y-0.5 pr-4">
-                <span className="text-sm font-bold text-gray-200 flex items-center space-x-2">
-                  <Calendar size={16} className="text-gray-500" />
+                <span className="text-sm font-bold text-slate-900 dark:text-gray-200 flex items-center space-x-2">
+                  <Calendar size={16} className="text-slate-500 dark:text-gray-400" />
                   <span>Calendar Synchronization Enabled</span>
                 </span>
-                <p className="text-xs text-gray-500 leading-relaxed">
+                <p className="text-xs text-slate-600 dark:text-gray-400 leading-relaxed">
                   Allow background synchronization to publish events to Google Calendar.
                 </p>
               </div>
               <button
                 onClick={() => handleTogglePref('calendar_sync_enabled')}
                 className={`w-11 h-6 rounded-full transition-colors relative shrink-0 ${
-                  prefs.calendar_sync_enabled ? 'bg-indigoAccent' : 'bg-gray-800 border border-cardBorder'
+                  prefs.calendar_sync_enabled ? 'bg-emerald-600' : 'bg-slate-300 dark:bg-gray-800 border border-slate-300 dark:border-cardBorder'
                 }`}
               >
                 <span className={`w-4 h-4 rounded-full bg-white absolute top-1 transition-all ${
@@ -325,10 +325,10 @@ export const Settings: React.FC = () => {
         </div>
 
         {/* Section 3: Reminder offsets */}
-        <div className="glass-panel p-6 rounded-2xl border border-cardBorder space-y-5">
-          <div className="space-y-1 border-b border-cardBorder/30 pb-3">
-            <h3 className="font-bold text-white font-outfit text-base">Reminder Preferences</h3>
-            <p className="text-xs text-gray-500">Configure how early you want to receive push/email reminders before deadlines.</p>
+        <div className="glass-panel p-6 rounded-2xl border border-slate-200 dark:border-cardBorder space-y-5">
+          <div className="space-y-1 border-b border-slate-200 dark:border-cardBorder/30 pb-3">
+            <h3 className="font-bold text-slate-900 dark:text-white font-outfit text-base">Reminder Preferences</h3>
+            <p className="text-xs text-slate-600 dark:text-gray-400">Configure how early you want to receive push/email reminders before deadlines.</p>
           </div>
 
           <div className="space-y-3.5">
@@ -338,22 +338,22 @@ export const Settings: React.FC = () => {
                 <div 
                   key={opt.value}
                   onClick={() => handleToggleOffset(opt.value)}
-                  className="flex items-center space-x-3 p-3 bg-[#090d16]/40 border border-cardBorder hover:border-indigo-500/10 rounded-xl cursor-pointer transition-all"
+                  className="flex items-center space-x-3 p-3.5 bg-slate-100/90 dark:bg-[#090d16]/40 border border-slate-200 dark:border-cardBorder hover:border-emerald-500/30 rounded-xl cursor-pointer transition-all"
                 >
                   <input
                     type="checkbox"
                     checked={checked}
                     readOnly
-                    className="h-4 w-4 bg-[#0d1321] border border-cardBorder rounded text-indigoAccent focus:ring-0"
+                    className="h-4 w-4 bg-white dark:bg-[#0d1321] border border-slate-300 dark:border-cardBorder rounded text-emerald-600 focus:ring-0"
                   />
-                  <span className="text-xs font-semibold text-gray-300">{opt.label}</span>
+                  <span className="text-xs font-bold text-slate-900 dark:text-gray-200">{opt.label}</span>
                 </div>
               );
             })}
           </div>
 
           {prefs.reminder_offsets.length === 0 && (
-            <div className="p-3.5 bg-amber-500/10 border border-amber-500/20 text-amber-300 rounded-xl flex items-center space-x-2 text-xs">
+            <div className="p-3.5 bg-amber-500/15 border border-amber-500/30 text-amber-900 dark:text-amber-300 rounded-xl flex items-center space-x-2 text-xs font-bold">
               <AlertTriangle size={15} />
               <span>Selecting no offsets will effectively disable upcoming reminder alerts.</span>
             </div>
